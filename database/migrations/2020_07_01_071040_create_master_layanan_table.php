@@ -1,0 +1,38 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+class CreateMasterLayananTable extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create('master_layanan', function (Blueprint $table) {
+            $table->increments('id_layanan');
+            $table->string('nama');
+            $table->integer('tarif');
+            $table->integer('id_kategori')->unsigned()->unique();
+            $table->timestamps();
+        });
+
+        Schema::table('master_layanan', function (Blueprint $table){
+            $table->foreign("id_kategori")->references("id_kategori")->on("master_kategori")->onUpdate('cascade')->onDelete('cascade');
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists('master_layanan');
+    }
+}
