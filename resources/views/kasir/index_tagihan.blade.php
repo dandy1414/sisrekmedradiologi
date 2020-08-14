@@ -149,8 +149,8 @@
                                 <td>{{ $s->jadwal->waktu_mulai }} - {{ $s->jadwal->waktu_selesai }}</td>
                                 <td>@currency($s->tarif_dokter)</td>
                                 <td>@currency($s->tarif_jasa)</td>
-                                <td>@currency($s->total_harga)</td>
                                 <td>{{ ucfirst($s->kasir->nama) }}</td>
+                                <td>@currency($s->total_harga)</td>
                                 <td>
                                     <div class="input-group margin">
                                         <div class="input-group-btn">
