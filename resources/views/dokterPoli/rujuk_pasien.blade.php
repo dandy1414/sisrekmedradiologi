@@ -181,6 +181,13 @@
                                 placeholder="Keluhan ...">
                             <span class="help-block">{{ $errors->first('keluhan') }}</span>
                         </div>
+
+                        <div class="form-group {{ $errors->first('permintaan') ? "has-error": "" }}">
+                            <label>Informasi Tambahan :</label>
+                            <input value="{{ old('permintaan') }}" type="text" name="permintaan" class="form-control"
+                                placeholder="Informasi tambahan  ...">
+                            <span class="help-block">{{ $errors->first('permintaan') }}</span>
+                        </div>
                     </div>
                     <div class="box-footer">
                         <div class="form-group">

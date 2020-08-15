@@ -131,6 +131,7 @@
                                 <th>Tarif Jasa</th>
                                 <th>Kasir</th>
                                 <th>Total Tarif</th>
+                                <th>Status Pembayaran</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -151,6 +152,7 @@
                                 <td>@currency($s->tarif_jasa)</td>
                                 <td>{{ ucfirst($s->kasir->nama) }}</td>
                                 <td>@currency($s->total_harga)</td>
+                                <td><span class="badge bg-green">LUNAS</span></td>
                                 <td>
                                     <div class="input-group margin">
                                         <div class="input-group-btn">

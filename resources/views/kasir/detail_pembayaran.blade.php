@@ -1,6 +1,6 @@
 @extends('layouts.global')
 
-@section('title')Pembayaran @endsection
+@section('title')Detail Pembayaran @endsection
 
 @section('content')
 <section class="content-header" style="margin-top: 50px;">
@@ -161,8 +161,12 @@
                             <td>@currency($tagihan->bayar)</td>
                         </tr>
                         <tr>
-                            <th>Kembalian:</th>
+                            <th>Kembali:</th>
                             <td>@currency($tagihan->kembali)</td>
+                        </tr>
+                        <tr>
+                            <th>Status Pembayaran:</th>
+                            <td><span class="badge bg-green">LUNAS</span></td>
                         </tr>
                     </table>
                 </div>
@@ -176,9 +180,7 @@
     <!-- this row will not appear when printing -->
     <div class="row no-print">
         <div class="col-xs-12">
-            {{--  <a href="invoice-print.html" target="_blank" class="btn btn-default"><i class="fa fa-print"></i> Print</a>  --}}
-            <button type="button" class="btn btn-info pull-left" data-toggle="modal" data-target="#pembayaran"> Cetak PDF
-            </button>
+            <a class="btn btn-danger btn" href="{{ route('kasir.pasien.print.tagihan', ['id'=>$tagihan->id]) }}" target="_blank"><i class="fa fa-print"></i> Export PDF</a>
         </div>
     </div>
 

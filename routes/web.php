@@ -86,12 +86,15 @@ Route::group(['prefix' => 'resepsionis/'], function () {
     Route::put('/{id}/pasien/pasien-rs', 'PendaftaranController@updatePasienRs')->name('resepsionis.pasien.update-pasien-rs');
 
     Route::get('{id}/pendaftaran/pasien-umum', 'PendaftaranController@pendaftaranPasienUmum')->name('resepsionis.pasien.pendaftaran.pasien-umum');
-    Route::get('{id}pendaftaran/pasien-rs', 'PendaftaranController@pendaftaranPasienRs')->name('resepsionis.pasien.pendaftaran.pasien-rs');
+    Route::get('{id}/pendaftaran/pasien-rs', 'PendaftaranController@pendaftaranPasienRs')->name('resepsionis.pasien.pendaftaran.pasien-rs');
 
     Route::post('{id}/pendaftaran/pasien-umum', 'PendaftaranController@storePendaftaranPasienUmum')->name('resepsionis.pasien.store.pendaftaran.pasien-umum');
     Route::post('{id}/pendaftaran/pasien-rs', 'PendaftaranController@storePendaftaranPasienRs')->name('resepsionis.pasien.store.pendaftaran.pasien-rs');
 
     Route::get('/pendaftaran/index/', 'PendaftaranController@indexPendaftaran')->name('resepsionis.pasien.index.pendaftaran');
+
+    Route::get('{id}/pendaftaran/detail/surat-rujukan', 'PendaftaranController@detailSuratRujukan')->name('resepsionis.pasien.pendaftaran.surat-rujukan');
+    Route::get('{id}/pendaftaran/export-pdf/surat-rujukan', 'PendaftaranController@SuratRujukan')->name('resepsionis.pasien.pendaftaran.print.surat-rujukan');
 });
 
 Route::group(['prefix' => 'dokter-poli/'], function () {
@@ -107,6 +110,9 @@ Route::group(['prefix' => 'dokter-poli/'], function () {
 
     Route::get('/index/rujuk-pemeriksaan', 'RujukanController@indexRujuk')->name('dokterPoli.pasien.index-rujuk');
     Route::get('/index/pemeriksaan', 'RujukanController@indexPemeriksaan')->name('dokterPoli.pasien.index-pemeriksaan');
+
+    Route::get('{id}/rujuk/detail/surat-rujukan', 'RujukanController@detailSuratRujukan')->name('dokterPoli.pasien.pendaftaran.surat-rujukan');
+    Route::get('{id}/rujuk/export-pdf/surat-rujukan', 'PendaftaranController@SuratRujukan')->name('dokterPoli.pasien.pendaftaran.print.surat-rujukan');
 });
 
 Route::group(['prefix' => 'radiografer/'], function () {
@@ -119,6 +125,9 @@ Route::group(['prefix' => 'radiografer/'], function () {
     Route::get('/index/pemeriksaan', 'PemeriksaanController@indexPemeriksaan')->name('radiografer.pasien.index-pemeriksaan');
     Route::get('{id}/create/pemeriksaan-pasien', 'PemeriksaanController@pemeriksaanPasien')->name('radiografer.pasien.pemeriksaan-pasien');
     Route::put('{id}/pemeriksaan-pasien', 'PemeriksaanController@storePemeriksaanPasien')->name('radiografer.pasien.store.pemeriksaan-pasien');
+
+    Route::get('{id}/pemeriksaan/detail/surat-rujukan', 'PemeriksaanController@detailSuratRujukan')->name('radiografer.pasien.pendaftaran.surat-rujukan');
+    Route::get('{id}/pemeriksaan/export-pdf/surat-rujukan', 'PendaftaranController@SuratRujukan')->name('radiografer.pasien.pendaftaran.print.surat-rujukan');
 });
 
 Route::group(['prefix' => 'dokter-radiologi/'], function () {
@@ -131,6 +140,9 @@ Route::group(['prefix' => 'dokter-radiologi/'], function () {
     Route::get('/index/pemeriksaan', 'ExpertiseController@indexPemeriksaan')->name('dokterRadiologi.pasien.index-pemeriksaan');
     Route::get('{id}/create/expertise-pasien', 'ExpertiseController@expertisePasien')->name('dokterRadiologi.pasien.expertise-pasien');
     Route::put('{id}/expertise-pasien', 'ExpertiseController@storeExpertisePasien')->name('dokterRadiologi.pasien.store.expertise-pasien');
+
+    Route::get('{id}/pemeriksaan/detail/surat-rujukan', 'ExpertiseController@detailSuratRujukan')->name('dokterRadiologi.pasien.pendaftaran.surat-rujukan');
+    Route::get('{id}/pemeriksaan/export-pdf/surat-rujukan', 'PendaftaranController@SuratRujukan')->name('dokterRadiologi.pasien.pendaftaran.print.surat-rujukan');
 });
 
 Route::group(['prefix' => 'kasir/'], function () {
@@ -144,6 +156,7 @@ Route::group(['prefix' => 'kasir/'], function () {
     Route::get('{id}/create/pembayaran-pasien', 'TagihanController@pembayaranPasien')->name('kasir.pasien.pembayaran-pasien');
     Route::put('{id}/pembayaran-pasien', 'TagihanController@storePembayaranPasien')->name('kasir.pasien.store.pembayaran-pasien');
     Route::get('/{id}/pasien/detail/tagihan', 'TagihanController@detailTagihan')->name('kasir.pasien.detail-tagihan');
+    Route::get('{id}/pasien/export-pdf/detail-pembayaran', 'TagihanController@strukPembayaran')->name('kasir.pasien.print.tagihan');
 });
 
 Auth::routes();

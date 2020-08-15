@@ -98,7 +98,7 @@
                         <h3 class="box-title">Form Pendaftaran Pemeriksaan</h3>
                     </div>
                     <div class="box-body">
-                        <div class="form-group {{ $errors->first('jenisPemeriksaan') ? "has-error": "" }}">
+                        <div class="form-group {{ $errors->first('jenisPemeriksaan') ? "has-error" : "" }}">
                             <label>Jenis Pemeriksaan :</label>
                             <div class="radio">
                                 <label>
@@ -115,7 +115,7 @@
                             </div>
                         </div>
 
-                        <div class="form-group {{ $errors->first('cito') ? "has-error": "" }}">
+                        <div class="form-group {{ $errors->first('cito') ? "has-error" : "" }}">
                             <label>CITO :</label>
                             <div class="radio">
                                 <label>
@@ -132,7 +132,7 @@
                             </div>
                         </div>
 
-                        <div class="form-group {{ $errors->first('layanan') ? "has-error": "" }}">
+                        <div class="form-group {{ $errors->first('layanan') ? "has-error" : "" }}">
                             <label>Layanan :</label>
                             <select class="form-control select2" name="layanan" style="width: 100%;">
                                 <option selected disabled>Silahkan Pilih Salah Satu :</option>
@@ -151,7 +151,7 @@
                             <span class="help-block">{{ $errors->first('layanan') }}</span>
                         </div>
 
-                        <div class="form-group {{ $errors->first('jadwal') ? "has-error": "" }}">
+                        <div class="form-group {{ $errors->first('jadwal') ? "has-error" : "" }}">
                             <label>Jadwal :</label>
                             <select class="form-control select2" name="jadwal" style="width: 100%;">
                                 <option selected disabled>Silahkan pilih salah satu</option>
@@ -163,7 +163,7 @@
                             <span class="help-block">{{ $errors->first('jadwal') }}</span>
                         </div>
 
-                        <div class="form-group {{ $errors->first('dokterPerujuk') ? "has-error": "" }}">
+                        <div class="form-group {{ $errors->first('dokterPerujuk') ? "has-error" : "" }}">
                             <label>Dokter Perujuk :</label>
                             <select class="form-control select2" name="dokterPerujuk" style="width: 100%;">
                                 <option selected disabled>Silahkan pilih salah satu</option>
@@ -194,10 +194,11 @@
                             <span class="help-block">{{ $errors->first('keluhan') }}</span>
                         </div>
 
-                        <div class="form-group {{ $errors->first('suratRujukan') ? "has-error": "" }}">
-                            <label for="foto">Surat Rujukan</label>
-                            <input id="avatar" name="suratRujukan" class="form-control" type="file" id="suratRujukan">
-                            <span class="help-block">{{ $errors->first('suratRujukan') }}</span>
+                        <div class="form-group {{ $errors->first('permintaan') ? "has-error": "" }}">
+                            <label>Informasi Tambahan :</label>
+                            <input value="{{ old('permintaan') }}" type="text" name="permintaan" class="form-control"
+                                placeholder="Informasi tambahan  ...">
+                            <span class="help-block">{{ $errors->first('permintaan') }}</span>
                         </div>
                     </div>
                     <div class="box-footer">
@@ -211,6 +212,7 @@
     </div>
 </section>
 @endsection
+@push('scripts')
 <script type="text/javascript">
     function yesnoSelect() {
         if (document.getElementById("yesSelect").selected) {
@@ -222,8 +224,6 @@
         }
     }
 
-
-
     function yesnoSelectAsuransi() {
         if (document.getElementById("yesSelectAsuransi").selected) {
             document.getElementById("ifYesAsuransi").style.display = "block";
@@ -233,3 +233,4 @@
     }
 
 </script>
+@endpush

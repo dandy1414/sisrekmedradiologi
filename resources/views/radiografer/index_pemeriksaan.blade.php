@@ -107,6 +107,9 @@
                                             </button>
                                             <ul class="dropdown-menu">
                                                 <li><a href="{{ route('radiografer.pasien.pemeriksaan-pasien', ['id'=>$b->id]) }}">Unggah Hasil</a></li>
+                                                @if ($b->jenis_pemeriksaan == 'penuh')
+                                                <li><a href="{{ route('radiografer.pasien.pendaftaran.surat-rujukan', ['id'=>$b->pendaftaran_id]) }}" target="_blank">Lihat Surat Rujukan </a></li>
+                                                @endif
                                             </ul>
                                         </div>
                                     </div>
@@ -190,6 +193,9 @@
                                             <ul class="dropdown-menu">
                                                 <li><a href="#">Detail Pemeriksaan</a></li>
                                                 <li><a href="#">Lihat Hasil Foto</a></li>
+                                                @if ($p->jenis_pemeriksaan == 'penuh')
+                                                <li><a href="{{ route('radiografer.pasien.pendaftaran.surat-rujukan', ['id'=>$p->pendaftaran_id]) }}" target="_blank">Lihat Surat Rujukan </a></li>
+                                                @endif
                                             </ul>
                                         </div>
                                     </div>
@@ -277,7 +283,10 @@
                                             </button>
                                             <ul class="dropdown-menu">
                                                 <li><a href="#">Detail Pemeriksaan</a></li>
-                                                <li><a href="#">Cetak Anamnesa</a></li>
+                                                @if ($s->jenis_pemeriksaan == 'penuh')
+                                                <li><a href="{{ route('radiografer.pasien.pendaftaran.surat-rujukan', ['id'=>$s->pendaftaran_id]) }}" target="_blank">Lihat Surat Rujukan </a></li>
+                                                @endif
+                                                <li><a href="#">Cetak Expertise</a></li>
                                             </ul>
                                         </div>
                                     </div>

@@ -126,7 +126,9 @@
                                                 <span class="fa fa-caret-down"></span>
                                             </button>
                                             <ul class="dropdown-menu">
-                                                <li><a href="#">Lihat rujukan</a></li>
+                                                @if ($pemeriksaan->jenis_pemeriksaan == 'penuh')
+                                                <li><a href="{{ route('dokterPoli.pasien.pendaftaran.surat-rujukan', ['id'=>$r->id]) }}" target="_blank">Lihat Surat Rujukan </a></li>
+                                                @endif
                                             </ul>
                                         </div>
                                     </div>

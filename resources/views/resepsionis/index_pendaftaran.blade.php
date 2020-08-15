@@ -92,8 +92,10 @@
                                                 <span class="fa fa-caret-down"></span>
                                             </button>
                                             <ul class="dropdown-menu">
-                                                <li><a href="#">Detail Pasien</a></li>
-                                                <li><a href="#">Lihat Surat Rujukan </a></li>
+                                                @if ($p->jenis_pemeriksaan == 'penuh')
+                                                <li><a href="{{ route('resepsionis.pasien.pendaftaran.surat-rujukan', ['id'=>$p->id]) }}" target="_blank">Lihat Surat Rujukan </a></li>
+                                                @endif
+
                                             </ul>
                                         </div>
                                     </div>

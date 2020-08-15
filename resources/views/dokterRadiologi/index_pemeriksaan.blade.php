@@ -104,6 +104,9 @@
                                             </button>
                                             <ul class="dropdown-menu">
                                                 <li><a href="{{ route('dokterRadiologi.pasien.expertise-pasien', ['id'=>$b->id]) }}">Lakukan Expertise</a></li>
+                                                @if ($b->jenis_pemeriksaan == 'penuh')
+                                                <li><a href="{{ route('dokterRadiologi.pasien.pendaftaran.surat-rujukan', ['id'=>$b->pendaftaran_id]) }}" target="_blank">Lihat Surat Rujukan </a></li>
+                                                @endif
                                             </ul>
                                         </div>
                                     </div>
@@ -178,6 +181,7 @@
                                                 <li><a href="#">Detail Pemeriksaan</a></li>
                                                 <li><a href="#">Lihat Hasil Foto</a></li>
                                                 <li><a href="#">Cetak Expertise</a></li>
+                                                <li><a href="{{ route('dokterRadiologi.pasien.pendaftaran.surat-rujukan', ['id'=>$s->pendaftaran_id]) }}" target="_blank">Lihat Surat Rujukan </a></li>
                                             </ul>
                                         </div>
                                     </div>

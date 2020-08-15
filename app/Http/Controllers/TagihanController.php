@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use PDF;
 
 class TagihanController extends Controller
 {
@@ -92,5 +93,13 @@ class TagihanController extends Controller
         $tarif = $tagihan->layanan->tarif - 25000;
 
         return view('kasir.detail_pembayaran', ['tagihan'=>$tagihan, 'tarif'=>$tarif]);
+    }
+
+    public function strukPembayaran($id){
+        $tagihan = Tagihan::findOrFail($id);
+        $tarif = $tagihan->layanan->tarif - 25000;
+
+        $pdf = PDF::loadview('strukPembayaran.struk_pembayaran_pdf', ['tagihan'=>$tagihan, 'tarif'=>$tarif])->setPaper('A4', 'potrait');
+        return $pdf->stream('struk-pembayaran'.$tagihan->nomor_tagihan.'.pdf');
     }
 }

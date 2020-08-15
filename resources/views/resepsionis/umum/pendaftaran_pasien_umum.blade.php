@@ -155,6 +155,13 @@
                             <span class="help-block">{{ $errors->first('keluhan') }}</span>
                         </div>
 
+                        <div class="form-group {{ $errors->first('permintaan') ? "has-error": "" }}">
+                            <label>Informasi Tambahan :</label>
+                            <input value="{{ old('permintaan') }}" type="text" name="permintaan" class="form-control"
+                                placeholder="Informasi tambahan  ...">
+                            <span class="help-block">{{ $errors->first('permintaan') }}</span>
+                        </div>
+
                         <div class="form-group {{ $errors->first('suratRujukan') ? "has-error": "" }}">
                             <label for="foto">Surat Rujukan</label>
                             <input id="avatar" name="suratRujukan" class="form-control" type="file" id="suratRujukan">
@@ -172,6 +179,7 @@
     </div>
 </section>
 @endsection
+@push('scripts')
 <script type="text/javascript">
     function yesnoSelect() {
         if (document.getElementById("yesSelect").selected) {
@@ -192,3 +200,5 @@
     }
 
 </script>
+@endpush
+

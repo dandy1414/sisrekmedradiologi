@@ -97,18 +97,18 @@
                             @foreach ($tagihan as $t)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
-                                <td>{{ $s->tanggal }}</td>
-                                <td>{{ $s->nomor_tagihan }}</td>
-                                <td>{{ $s->pasien->nama }}</td>
-                                <td>{{ $s->pasien->nomor_rm }}</td>
-                                <td>{{ $s->pasien->nomor_ktp }}</td>
-                                <td>{{ ($s->pasien->jenis_pasien) == 'umum' ? "Umum" : "Rumah Sakit" }}</td>
-                                <td>{{ ucfirst($s->jenis_pemeriksaan) }}</td>
-                                <td>{{ ucfirst($s->layanan->nama) }}</td>
-                                <td>{{ $s->jadwal->waktu_mulai }} - {{ $s->jadwal->waktu_selesai }}</td>
-                                <td>@currency($s->tarif_dokter)</td>
-                                <td>@currency($s->tarif_jasa)</td>
-                                <td>@currency($s->total_harga)</td>
+                                <td>{{ $t->tanggal }}</td>
+                                <td>{{ $t->nomor_tagihan }}</td>
+                                <td>{{ $t->pasien->nama }}</td>
+                                <td>{{ $t->pasien->nomor_rm }}</td>
+                                <td>{{ $t->pasien->nomor_ktp }}</td>
+                                <td>{{ ($t->pasien->jenis_pasien) == 'umum' ? "Umum" : "Rumah Sakit" }}</td>
+                                <td>{{ ucfirst($t->jenis_pemeriksaan) }}</td>
+                                <td>{{ ucfirst($t->layanan->nama) }}</td>
+                                <td>{{ $t->jadwal->waktu_mulai }} - {{ $t->jadwal->waktu_selesai }}</td>
+                                <td>@currency($t->tarif_dokter)</td>
+                                <td>@currency($t->tarif_jasa)</td>
+                                <td>@currency($t->total_harga)</td>
                                 <td>
                                     <div class="input-group margin">
                                         <div class="input-group-btn">
@@ -118,7 +118,7 @@
                                                 <span class="fa fa-caret-down"></span>
                                             </button>
                                             <ul class="dropdown-menu">
-                                                <li><a href="#">Detail Pembayaran</a></li>
+                                                <li><a href="{{ route('kasir.pasien.detail-tagihan', ['id'=>$t->id]) }}">Detail Pembayaran</a></li>
                                             </ul>
                                         </div>
                                     </div>

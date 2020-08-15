@@ -120,7 +120,9 @@
                                                 <span class="fa fa-caret-down"></span>
                                             </button>
                                             <ul class="dropdown-menu">
-                                                <li><a href="#">Lihat rujukan</a></li>
+                                                @if ($b->jenis_pemeriksaan == 'penuh')
+                                                <li><a href="{{ route('radiografer.pasien.pendaftaran.surat-rujukan', ['id'=>$b->pendaftaran_id]) }}" target="_blank">Lihat Surat Rujukan </a></li>
+                                                @endif
                                             </ul>
                                         </div>
                                     </div>
