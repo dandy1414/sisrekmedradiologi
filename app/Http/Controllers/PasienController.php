@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pasien;
+use App\Models\Pendaftaran;
+use App\Models\Pemeriksaan;
+use App\Models\Tagihan;
 use App\Models\Ruangan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -29,12 +32,21 @@ class PasienController extends Controller
     }
 
     public function detailPasienUmum($id){
-        $pasien = Pasien::findOrFail($id)->first();
+        $pasien = Pasien::findOrFail($id);
         $pendaftaran = Pendaftaran::where('pasien_id', $id)->orderBy('created_at', 'desc')->get();
         $pemeriksaan = Pemeriksaan::where('pasien_id', $id)->orderBy('created_at', 'desc')->get();
         $tagihan = Tagihan::where('pasien_id', $id)->orderBy('created_at', 'desc')->get();
 
-        return view('admin.pasien.umum.detail_pasien_umum', ['pasien'=> $pasien]);
+        return view('admin.pasien.umum.detail_pasien_umum', ['pasien'=> $pasien, 'pendaftaran'=>$pendaftaran, 'pemeriksaan'=>$pemeriksaan, 'tagihan'=> $tagihan]);
+    }
+
+    public function detailPasienRs($id){
+        $pasien = Pasien::findOrFail($id);
+        $pendaftaran = Pendaftaran::where('pasien_id', $id)->orderBy('created_at', 'desc')->get();
+        $pemeriksaan = Pemeriksaan::where('pasien_id', $id)->orderBy('created_at', 'desc')->get();
+        $tagihan = Tagihan::where('pasien_id', $id)->orderBy('created_at', 'desc')->get();
+
+        return view('admin.pasien.rs.detail_pasien_rs', ['pasien'=> $pasien, 'pendaftaran'=>$pendaftaran, 'pemeriksaan'=>$pemeriksaan, 'tagihan'=> $tagihan]);
     }
 
     public function createPasienUmum(){

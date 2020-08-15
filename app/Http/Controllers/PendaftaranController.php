@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Auth;
+use PDF;
 
 class PendaftaranController extends Controller
 {
@@ -232,6 +233,7 @@ class PendaftaranController extends Controller
 
     public function indexPendaftaran(){
         $pendaftaran = Pendaftaran::orderBy('created_at', 'desc')->get();
+        // dd($pendaftaran);
 
         return view('resepsionis.index_pendaftaran', ['pendaftaran'=> $pendaftaran]);
     }
@@ -270,6 +272,7 @@ class PendaftaranController extends Controller
             "jadwal" => "required",
         ])->validate();
 
+        if($request->jenisPemeriksaan == 'biasa'){
             $new_pendaftaran = new Pendaftaran();
             $new_pendaftaran->jenis_pemeriksaan = $request->jenisPemeriksaan;
             $new_pendaftaran->pasien_id = $id;
@@ -278,39 +281,70 @@ class PendaftaranController extends Controller
             $new_pendaftaran->id_resepsionis = Auth::user()->id;
             $new_pendaftaran->id_dokterRadiologi = $request->dokterRujukan;
             $new_pendaftaran->keluhan = $request->keluhan;
-            $name = '';
-            if($request->hasFile('suratRujukan') ){
-                $resource = $request->suratRujukan;
-                $name = Str::slug($resource->getClientOriginalName()."_".time()).".".$resource->getClientOriginalExtension();
-                $resource->move(\base_path() ."/public/storage/surat_rujukan", $name);
-                $new_pendaftaran->surat_rujukan = $name;
-            }
+
             $new_pendaftaran->save();
             $id_pendaftaran = $new_pendaftaran->id;
 
+            DB::beginTransaction();
+            try{
+                $tarif = Layanan::where('id', $request->layanan)->value('tarif');
+                $pemeriksaan = new Pemeriksaan;
+                $pemeriksaan->pendaftaran_id = $id_pendaftaran;
+                $pemeriksaan->jenis_pemeriksaan = $request->jenisPemeriksaan;
+                $pemeriksaan->pasien_id = $id;
+                $pemeriksaan->id_jadwal = $request->jadwal;
+                $pemeriksaan->id_layanan = $request->layanan;
+                $pemeriksaan->id_dokterRadiologi = $request->dokterRujukan;
+                $pemeriksaan->keluhan = $request->keluhan;
+                $pemeriksaan->total_tarif = $tarif;
+                $pemeriksaan->save();
 
-        DB::beginTransaction();
-        try{
-            $tarif = Layanan::where('id', $request->layanan)->value('tarif');
-            $pemeriksaan = new Pemeriksaan;
-            $pemeriksaan->id_pendaftaran = $id_pendaftaran;
-            $pemeriksaan->jenis_pemeriksaan = $request->jenisPemeriksaan;
-            $pemeriksaan->pasien_id = $id;
-            $pemeriksaan->id_jadwal = $request->jadwal;
-            $pemeriksaan->id_layanan = $request->layanan;
-            $pemeriksaan->id_dokterRadiologi = $request->dokterRujukan;
-            $pemeriksaan->keluhan = $request->keluhan;
-            $pemeriksaan->surat_rujukan = $name;
-            $pemeriksaan->total_tarif = $tarif;
-            $pemeriksaan->save();
+                DB::commit();
 
-            DB::commit();
+                return redirect()->route('resepsionis.pasien.index-pasien-umum')->with(['success' => 'Pendaftaran pemeriksaan berhasil']);
+            }catch (QueryException $x){
+                DB::rollBack();
+                dd($x->getMessage());
+                return redirect()->route('resepsionis.pasien.pendaftaran.pasien-umum')->with(['error' => 'Pendaftaran pemeriksaan gagal']);
+            }
+        } else {
+            $new_pendaftaran = new Pendaftaran();
+            $new_pendaftaran->jenis_pemeriksaan = $request->jenisPemeriksaan;
+            $new_pendaftaran->pasien_id = $id;
+            $new_pendaftaran->id_jadwal = $request->jadwal;
+            $new_pendaftaran->id_layanan = $request->layanan;
+            $new_pendaftaran->id_resepsionis = Auth::user()->id;
+            $new_pendaftaran->id_dokterRadiologi = $request->dokterRujukan;
+            $new_pendaftaran->keluhan = $request->keluhan;
 
-            return redirect()->route('resepsionis.pasien.index-pasien-umum')->with(['success' => 'Pendaftaran pemeriksaan berhasil']);
-        }catch (QueryException $x){
-            DB::rollBack();
-            dd($x->getMessage());
-            return redirect()->route('resepsionis.pasien.pendaftaran.pasien-umum')->with(['error' => 'Pendaftaran pemeriksaan gagal']);
+            $new_pendaftaran->save();
+            $id_pendaftaran = $new_pendaftaran->id;
+
+            DB::beginTransaction();
+            try{
+                $tarif = Layanan::where('id', $request->layanan)->value('tarif');
+                $pemeriksaan = new Pemeriksaan;
+                $pemeriksaan->pendaftaran_id = $id_pendaftaran;
+                $pemeriksaan->jenis_pemeriksaan = $request->jenisPemeriksaan;
+                $pemeriksaan->pasien_id = $id;
+                $pemeriksaan->id_jadwal = $request->jadwal;
+                $pemeriksaan->id_layanan = $request->layanan;
+                $pemeriksaan->id_dokterRadiologi = $request->dokterRujukan;
+                $pemeriksaan->keluhan = $request->keluhan;
+                $pemeriksaan->permintaan_tambahan = $request->permintaan;
+                $pemeriksaan->total_tarif = $tarif;
+                $pemeriksaan->save();
+
+                DB::commit();
+
+                $pendaftaran = Pendaftaran::findOrFail($id_pendaftaran);
+
+                return view('suratRujukan.surat_rujukan', compact('pendaftaran'));
+            }catch (QueryException $x){
+                DB::rollBack();
+                dd($x->getMessage());
+                return redirect()->route('resepsionis.pasien.pendaftaran.pasien-umum')->with(['error' => 'Pendaftaran pemeriksaan gagal']);
+            }
         }
     }
 
@@ -321,49 +355,96 @@ class PendaftaranController extends Controller
             "jadwal" => "required",
         ])->validate();
 
+        if($request->jenisPemeriksaan == 'biasa'){
             $new_pendaftaran = new Pendaftaran();
             $new_pendaftaran->jenis_pemeriksaan = $request->jenisPemeriksaan;
-            $new_pendaftaran->id_pasien = $id;
+            $new_pendaftaran->pasien_id = $id;
             $new_pendaftaran->id_jadwal = $request->jadwal;
             $new_pendaftaran->id_layanan = $request->layanan;
             $new_pendaftaran->id_resepsionis = Auth::user()->id;
             $new_pendaftaran->id_dokterRadiologi = $request->dokterRujukan;
 
             $new_pendaftaran->keluhan = $request->keluhan;
-            $name = '';
-            if($request->hasFile('suratRujukan') ){
-                $resource = $request->suratRujukan;
-                $name = Str::slug($resource->getClientOriginalName()."_".time()).".".$resource->getClientOriginalExtension();
-                $resource->move(\base_path() ."/public/storage/surat_rujukan", $name);
-                $new_pendaftaran->surat_rujukan = $name;
-            }
             $new_pendaftaran->save();
             $id_pendaftaran = $new_pendaftaran->id;
 
+            DB::beginTransaction();
+            try{
+                $tarif = Layanan::where('id', $request->layanan)->value('tarif');
+                $pemeriksaan = new Pemeriksaan;
+                $pemeriksaan->id_pendaftaran = $id_pendaftaran;
+                $pemeriksaan->jenis_pemeriksaan = $request->jenisPemeriksaan;
+                $pemeriksaan->cito = $request->cito;
+                $pemeriksaan->pasien_id = $id;
+                $pemeriksaan->id_jadwal = $request->jadwal;
+                $pemeriksaan->id_layanan = $request->layanan;
+                $pemeriksaan->id_dokterRadiologi = $request->dokterRujukan;
+                $pemeriksaan->keluhan = $request->keluhan;
+                $pemeriksaan->total_tarif = $tarif;
+                $pemeriksaan->save();
 
-        DB::beginTransaction();
-        try{
-            $tarif = Layanan::where('id_layanan', $request->layanan)->pluck('tarif');
-            $pemeriksaan = new Pemeriksaan;
-            $pemeriksaan->id_pendaftaran = $id_pendaftaran;
-            $pemeriksaan->jenis_pemeriksaan = $request->jenisPemeriksaan;
-            $pemeriksaan->cito = $request->cito;
-            $pemeriksaan->id_pasien = $id;
-            $pemeriksaan->id_jadwal = $request->jadwal;
-            $pemeriksaan->id_layanan = $request->layanan;
-            $pemeriksaan->id_dokterRadiologi = $request->dokterRujukan;
-            $pemeriksaan->keluhan = $request->keluhan;
-            $pemeriksaan->surat_rujukan = $name;
-            $pemeriksaan->total_tarif = $tarif;
-            $pemeriksaan->save();
+                DB::commit();
 
-            DB::commit();
+                return redirect()->route('resepsionis.pasien.index-pasien-umum')->with(['success' => 'Pendaftaran pemeriksaan berhasil']);
+            }catch (QueryException $x){
+                DB::rollBack();
+                dd($x->getMessage());
+                return redirect()->route('resepsionis.pasien.pendaftaran.pasien-umum')->with(['error' => 'Pendaftaran pemeriksaan gagal']);
+            }
+        }else{
+            $new_pendaftaran = new Pendaftaran();
+            $new_pendaftaran->jenis_pemeriksaan = $request->jenisPemeriksaan;
+            $new_pendaftaran->pasien_id = $id;
+            $new_pendaftaran->id_jadwal = $request->jadwal;
+            $new_pendaftaran->id_layanan = $request->layanan;
+            $new_pendaftaran->id_resepsionis = Auth::user()->id;
+            $new_pendaftaran->id_dokterRadiologi = $request->dokterRujukan;
+            $new_pendaftaran->id_dokterPoli = $request->dokterPerujuk;
 
-            return redirect()->route('resepsionis.pasien.index-pasien-umum')->with(['success' => 'Pendaftaran pemeriksaan berhasil']);
-        }catch (QueryException $x){
-            DB::rollBack();
-            dd($x->getMessage());
-            return redirect()->route('resepsionis.pasien.pendaftaran.pasien-umum')->with(['error' => 'Pendaftaran pemeriksaan gagal']);
+            $new_pendaftaran->keluhan = $request->keluhan;
+            $new_pendaftaran->save();
+            $id_pendaftaran = $new_pendaftaran->id;
+
+            DB::beginTransaction();
+            try{
+                $tarif = Layanan::where('id', $request->layanan)->value('tarif');
+                $pemeriksaan = new Pemeriksaan;
+                $pemeriksaan->pendaftaran_id = $id_pendaftaran;
+                $pemeriksaan->jenis_pemeriksaan = $request->jenisPemeriksaan;
+                $pemeriksaan->cito = $request->cito;
+                $pemeriksaan->pasien_id = $id;
+                $pemeriksaan->id_jadwal = $request->jadwal;
+                $pemeriksaan->id_layanan = $request->layanan;
+                $pemeriksaan->id_dokterRadiologi = $request->dokterRujukan;
+                $new_pendaftaran->id_dokterPoli = $request->dokterPerujuk;
+                $pemeriksaan->keluhan = $request->keluhan;
+                $pemeriksaan->permintaan_tambahan = $request->permintaan;
+                $pemeriksaan->total_tarif = $tarif;
+                $pemeriksaan->save();
+
+                DB::commit();
+
+                $pendaftaran = Pendaftaran::findOrFail($id_pendaftaran);
+
+                return view('suratRujukan.surat_rujukan', compact('pendaftaran'));
+            }catch (QueryException $x){
+                DB::rollBack();
+                dd($x->getMessage());
+                return redirect()->route('resepsionis.pasien.pendaftaran.pasien-umum')->with(['error' => 'Pendaftaran pemeriksaan gagal']);
+            }
         }
+    }
+
+    public function detailSuratRujukan($id){
+        $pendaftaran = Pendaftaran::findOrFail($id);
+
+        return view('suratRujukan.surat_rujukan_resepsionis', compact('pendaftaran'));
+    }
+
+    public function suratRujukan($id){
+        $pendaftaran = Pendaftaran::findOrFail($id);
+
+        $pdf = PDF::loadview('suratRujukan.surat_rujukan_pdf', compact('pendaftaran'))->setPaper('A4', 'potrait');
+        return $pdf->stream('surat-rujukan-'.$pendaftaran->nomor_pendaftaran.'.pdf');
     }
 }

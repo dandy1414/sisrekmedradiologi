@@ -74,7 +74,11 @@ class ExpertiseController extends Controller
             dd($x->getMessage());
             return redirect()->route('dokterRadiologi.pasien.expertise-pasien')->with(['error' => 'Expertise gagal dikirim']);
         }
+    }
 
+    public function detailSuratRujukan($id){
+        $pendaftaran = Pendaftaran::findOrFail($id);
 
+        return view('suratRujukan.surat_rujukan_dokterRadiologi', compact('pendaftaran'));
     }
 }

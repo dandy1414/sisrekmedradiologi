@@ -40,7 +40,7 @@ class Pemeriksaan extends Model
     }
 
     public function pendaftaran(){
-        return $this->belongsTo("App\Models\Pendaftaran" , "id_pendaftaran", "id");
+        return $this->belongsTo("App\Models\Pendaftaran" , "pendaftaran_id", "id");
     }
 
     public function pasien(){

@@ -163,7 +163,7 @@ class RujukanController extends Controller
             "jadwal" => "required",
         ])->validate();
 
-
+        if($request->jenisPemeriksaan == 'biasa'){
             $new_pendaftaran = new Pendaftaran();
             $new_pendaftaran->jenis_pemeriksaan = $request->jenisPemeriksaan;
             $new_pendaftaran->pasien_id = $id;
@@ -176,30 +176,76 @@ class RujukanController extends Controller
             $new_pendaftaran->save();
             $id_pendaftaran = $new_pendaftaran->id;
 
+            DB::beginTransaction();
+            try{
+                $tarif = Layanan::where('id', $request->layanan)->value('tarif');
+                $pemeriksaan = new Pemeriksaan;
+                $pemeriksaan->pendaftaran_id = $id_pendaftaran;
+                $pemeriksaan->jenis_pemeriksaan = $request->jenisPemeriksaan;
+                $pemeriksaan->cito = $request->cito;
+                $pemeriksaan->pasien_id = $id;
+                $pemeriksaan->id_jadwal = $request->jadwal;
+                $pemeriksaan->id_layanan = $request->layanan;
+                $pemeriksaan->id_dokterPoli = Auth::user()->id;
+                $pemeriksaan->id_dokterRadiologi = $request->dokterRujukan;
+                $pemeriksaan->keluhan = $request->keluhan;
+                $pemeriksaan->total_tarif = $tarif;
+                $pemeriksaan->save();
 
-        DB::beginTransaction();
-        try{
-            $tarif = Layanan::where('id', $request->layanan)->value('tarif');
-            $pemeriksaan = new Pemeriksaan;
-            $pemeriksaan->id_pendaftaran = $id_pendaftaran;
-            $pemeriksaan->jenis_pemeriksaan = $request->jenisPemeriksaan;
-            $pemeriksaan->cito = $request->cito;
-            $pemeriksaan->pasien_id = $id;
-            $pemeriksaan->id_jadwal = $request->jadwal;
-            $pemeriksaan->id_layanan = $request->layanan;
-            $pemeriksaan->id_dokterPoli = Auth::user()->id;
-            $pemeriksaan->id_dokterRadiologi = $request->dokterRujukan;
-            $pemeriksaan->keluhan = $request->keluhan;
-            $pemeriksaan->total_tarif = $tarif;
-            $pemeriksaan->save();
+                DB::commit();
 
-            DB::commit();
+                return redirect()->route('dokterPoli.pasien.index-pasien')->with(['success' => 'Rujuk pemeriksaan berhasil']);
+            }catch (QueryException $x){
+                DB::rollBack();
+                dd($x->getMessage());
+                return redirect()->route('dokterPoli.pasien.rujuk-pasien')->with(['error' => 'Rujuk pemeriksaan gagal']);
+            }
+        }else{
+            $new_pendaftaran = new Pendaftaran();
+            $new_pendaftaran->jenis_pemeriksaan = $request->jenisPemeriksaan;
+            $new_pendaftaran->pasien_id = $id;
+            $new_pendaftaran->id_jadwal = $request->jadwal;
+            $new_pendaftaran->id_layanan = $request->layanan;
+            $new_pendaftaran->id_dokterPoli = Auth::user()->id;
+            $new_pendaftaran->id_dokterRadiologi = $request->dokterRujukan;
 
-            return redirect()->route('dokterPoli.pasien.index-pasien')->with(['success' => 'Rujuk pemeriksaan berhasil']);
-        }catch (QueryException $x){
-            DB::rollBack();
-            dd($x->getMessage());
-            return redirect()->route('dokterPoli.pasien.rujuk-pasien')->with(['error' => 'Rujuk pemeriksaan gagal']);
+            $new_pendaftaran->keluhan = $request->keluhan;
+            $new_pendaftaran->save();
+            $id_pendaftaran = $new_pendaftaran->id;
+
+            DB::beginTransaction();
+            try{
+                $tarif = Layanan::where('id', $request->layanan)->value('tarif');
+                $pemeriksaan = new Pemeriksaan;
+                $pemeriksaan->pendaftaran_id = $id_pendaftaran;
+                $pemeriksaan->jenis_pemeriksaan = $request->jenisPemeriksaan;
+                $pemeriksaan->cito = $request->cito;
+                $pemeriksaan->pasien_id = $id;
+                $pemeriksaan->id_jadwal = $request->jadwal;
+                $pemeriksaan->id_layanan = $request->layanan;
+                $pemeriksaan->id_dokterPoli = Auth::user()->id;
+                $pemeriksaan->id_dokterRadiologi = $request->dokterRujukan;
+                $pemeriksaan->keluhan = $request->keluhan;
+                $pemeriksaan->permintaan_tambahan = $request->permintaan;
+                $pemeriksaan->total_tarif = $tarif;
+                $pemeriksaan->save();
+
+                DB::commit();
+
+                $pendaftaran = Pendaftaran::findOrFail($id_pendaftaran);
+
+                return view('suratRujukan.surat_rujukan', compact('pendaftaran'));
+            }catch (QueryException $x){
+                DB::rollBack();
+                dd($x->getMessage());
+                return redirect()->route('dokterPoli.pasien.rujuk-pasien')->with(['error' => 'Rujuk pemeriksaan gagal']);
+            }
         }
+    }
+
+    public function detailSuratRujukan($id){
+        $pendaftaran = Pendaftaran::findOrFail($id);
+
+        return view('suratRujukan.surat_rujukan_dokterPoli', compact('pendaftaran'));
     }
 }

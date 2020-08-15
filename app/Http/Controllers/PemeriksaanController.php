@@ -181,5 +181,9 @@ class PemeriksaanController extends Controller
         }
     }
 
+    public function detailSuratRujukan($id){
+        $pendaftaran = Pendaftaran::findOrFail($id);
 
+        return view('suratRujukan.surat_rujukan_radiografer', compact('pendaftaran'));
+    }
 }
