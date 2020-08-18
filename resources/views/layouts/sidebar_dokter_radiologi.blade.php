@@ -37,7 +37,7 @@
             <li class="header">MENU</li>
             <li class="{{ (request()->is('dokter-radiologi/index/pemeriksaan')) ? 'active' : '' }}">
                 <a href="{{ route('dokterRadiologi.pasien.index-pemeriksaan') }}">
-                    <i class="fa fa-stethoscope"></i> <span>Expertise</span>
+                    <i class="fa fa-stethoscope"></i> <span>Pemeriksaan</span>
                 </a>
             </li>
             <li class="{{ (request()->is('dokter-radiologi/pasien/index/pasien-umum')) ? 'active' : '' }}">

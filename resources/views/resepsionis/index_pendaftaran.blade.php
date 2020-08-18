@@ -42,7 +42,7 @@
 
     <div class="row">
         <div class="col-xs-12">
-            <div class="box" id="tabelsemuapasien1" style="position: relative;">
+            <div class="box box-info" id="tabelsemuapasien1" style="position: relative;">
                 <!-- /.box-header -->
                 <div class="box-body">
                     <table id="table1" class="table table-bordered table-hover" style="width: 100%">

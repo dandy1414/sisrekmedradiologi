@@ -87,12 +87,11 @@
                                                 <span class="fa fa-caret-down"></span>
                                             </button>
                                             <ul class="dropdown-menu">
-                                                {{-- <li><a href="#">Detail Pemeriksaan</a></li>
-                                                <li><a href="#">Lihat Hasil Anamnesa </a></li>
-                                                <li><a href="{{ route('resepsionis.pasien.edit-pasien-rs',
-                                                    ['id'=>$p->id_pasien]) }}">Edit Pasien</a></li>
-                                                <li><a href="{{ route('resepsionis.pasien.delete',
-                                                    ['id'=>$p->id_pasien]) }}">Hapus Pasien</a></li> --}}
+                                                <li><a href="#">Detail Pemeriksaan</a></li>
+                                                @if ($p->jenis_pemeriksaan == 'penuh')
+                                                <li><a href="{{ route('dokterPoli.pasien.pendaftaran.surat-rujukan', ['id'=>$p->pendaftaran_id]) }}" target="_blank">Lihat Surat Rujukan </a></li>
+                                                <li><a href="{{ route('dokterPoli.pasien.pemeriksaan.hasil-expertise', ['id'=>$p->id]) }}" target="_blank">Lihat Hasil Expertise </a></li>
+                                                @endif
                                             </ul>
                                         </div>
                                     </div>

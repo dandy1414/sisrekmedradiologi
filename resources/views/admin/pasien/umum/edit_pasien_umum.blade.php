@@ -8,8 +8,7 @@
         Edit Pasien Umum
     </h1>
     <ol class="breadcrumb">
-        <li><a href="{{ route('pasien.index-pasien-umum') }}"><i class="fa fa-users"></i> Pasien Umum</a> |
-            <a href="{{ route('pasien.index-pasien-rs') }}"><i class="fa fa-users"></i> Pasien Rs</a></li>
+        <li><a href="{{ route('pasien.index-pasien-umum') }}"><i class="fa fa-users"></i> Pasien Umum</a>
         <li class="active">Edit Pasien</li>
     </ol>
 </section>
@@ -53,7 +52,7 @@
                                     <span class="help-block">{{ $errors->first('jenisPasien') }}</span>
                                 </div>
 
-                                <div id="ifYes1" class="form-group {{ $errors->first('noRm') ? "has-error": "" }}" style="display: none">
+                                <div class="form-group {{ $errors->first('noRm') ? "has-error": "" }}">
                                     <label>Nomor Rekam Medis :</label>
                                     <input value="{{ $pasien->nomor_rm }}" type="text" name="noRm" class="form-control"
                                         placeholder="Nomor Rekam Medis ...">

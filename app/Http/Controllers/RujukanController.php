@@ -30,9 +30,7 @@ class RujukanController extends Controller
 
     public function detailPasien($id){
         $pasien = Pasien::findOrFail($id);
-        $pemeriksaan = Pasien::whereHas('pemeriksaan', function($query){
-            $query->where('status_pemeriksaan', 'selesai');
-        })->where('id', $id)->orderBy('created_at', 'desc')->get();
+        $pemeriksaan = Pemeriksaan::where('pasien_id', $id)->where('status_pemeriksaan', 'selesai')->orderBy('created_at', 'desc')->get();
 
         return view('dokterPoli.detail_pasien', ['pasien'=> $pasien, 'pemeriksaan'=>$pemeriksaan ]);
     }
@@ -112,6 +110,7 @@ class RujukanController extends Controller
                 'umur' => $request->umur,
                 'id_ruangan' => $request->asalRuangan,
                 'jenis_kelamin' => $request->jenisKelamin,
+                'id_ruangan' => $request->asalRuangan,
                 'alamat' => $request->alamat,
                 'nomor_telepon' => $request->nomorTelepon,
                 'jenis_asuransi' => $request->jenisAsuransi,
@@ -246,6 +245,6 @@ class RujukanController extends Controller
     public function detailSuratRujukan($id){
         $pendaftaran = Pendaftaran::findOrFail($id);
 
-        return view('suratRujukan.surat_rujukan_dokterPoli', compact('pendaftaran'));
+        return view('suratRujukan.surat_rujukan', compact('pendaftaran'));
     }
 }

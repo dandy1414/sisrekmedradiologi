@@ -214,6 +214,7 @@ class PendaftaranController extends Controller
                 'umur' => $request->umur,
                 'id_ruangan' => $request->asalRuangan,
                 'jenis_kelamin' => $request->jenisKelamin,
+                'id_ruangan' => $request->asalRuangan,
                 'alamat' => $request->alamat,
                 'nomor_telepon' => $request->nomorTelepon,
                 'jenis_asuransi' => $request->jenisAsuransi,
@@ -314,6 +315,7 @@ class PendaftaranController extends Controller
             $new_pendaftaran->id_jadwal = $request->jadwal;
             $new_pendaftaran->id_layanan = $request->layanan;
             $new_pendaftaran->id_resepsionis = Auth::user()->id;
+            $new_pendaftaran->id_dokterPoli = $request->dokterPerujuk;
             $new_pendaftaran->id_dokterRadiologi = $request->dokterRujukan;
             $new_pendaftaran->keluhan = $request->keluhan;
 
@@ -329,6 +331,7 @@ class PendaftaranController extends Controller
                 $pemeriksaan->pasien_id = $id;
                 $pemeriksaan->id_jadwal = $request->jadwal;
                 $pemeriksaan->id_layanan = $request->layanan;
+                $pemeriksaan->id_dokterPoli = $request->dokterPerujuk;
                 $pemeriksaan->id_dokterRadiologi = $request->dokterRujukan;
                 $pemeriksaan->keluhan = $request->keluhan;
                 $pemeriksaan->permintaan_tambahan = $request->permintaan;
@@ -362,6 +365,7 @@ class PendaftaranController extends Controller
             $new_pendaftaran->id_jadwal = $request->jadwal;
             $new_pendaftaran->id_layanan = $request->layanan;
             $new_pendaftaran->id_resepsionis = Auth::user()->id;
+            $new_pendaftaran->id_dokterPoli = $request->dokterPerujuk;
             $new_pendaftaran->id_dokterRadiologi = $request->dokterRujukan;
 
             $new_pendaftaran->keluhan = $request->keluhan;
@@ -416,7 +420,7 @@ class PendaftaranController extends Controller
                 $pemeriksaan->id_jadwal = $request->jadwal;
                 $pemeriksaan->id_layanan = $request->layanan;
                 $pemeriksaan->id_dokterRadiologi = $request->dokterRujukan;
-                $new_pendaftaran->id_dokterPoli = $request->dokterPerujuk;
+                $pemeriksaan->id_dokterPoli = $request->dokterPerujuk;
                 $pemeriksaan->keluhan = $request->keluhan;
                 $pemeriksaan->permintaan_tambahan = $request->permintaan;
                 $pemeriksaan->total_tarif = $tarif;
@@ -438,7 +442,7 @@ class PendaftaranController extends Controller
     public function detailSuratRujukan($id){
         $pendaftaran = Pendaftaran::findOrFail($id);
 
-        return view('suratRujukan.surat_rujukan_resepsionis', compact('pendaftaran'));
+        return view('suratRujukan.surat_rujukan', compact('pendaftaran'));
     }
 
     public function suratRujukan($id){

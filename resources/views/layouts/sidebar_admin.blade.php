@@ -40,11 +40,18 @@
                     <i class="fa fa-dashboard"></i> <span>Dashboard</span>
                 </a>
             </li>
-            <li class="{{ (request()->is('admin/user/*')) ? 'active' : '' }}">
-                <a href="{{ route('user.index') }}">
-                    <i class="fa fa-users"></i> <span>User</span>
+            <li class="{{ (request()->is('admin/user/*')) ? 'active' : '' }} treeview">
+                <a href="#">
+                  <i class="fa fa-users"></i> <span>User</span>
+                  <span class="pull-right-container">
+                    <i class="fa fa-angle-left pull-right"></i>
+                  </span>
                 </a>
-            </li>
+                <ul class="treeview-menu">
+                  <li class="{{ (request()->is('admin/user/index-dokter')) ? 'active' : '' }}"><a href="{{ route('dokter.index') }}"><i class="fa fa-user-md"></i> Dokter</a></li>
+                  <li class="{{ (request()->is('admin/user/index-pegawai')) ? 'active' : '' }}"><a href="{{ route('pegawai.index') }}"><i class="fa fa-users"></i> Pegawai</a></li>
+                </ul>
+              </li>
             <li class="{{ (request()->is('admin/pelayanan/*')) ? 'active' : '' }}">
                 <a href="{{ route('pelayanan.index') }}">
                     <i class="fa fa-list-ul"></i> <span>Pelayanan</span>

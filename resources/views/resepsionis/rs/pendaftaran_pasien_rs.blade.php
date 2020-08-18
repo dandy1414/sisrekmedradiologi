@@ -115,7 +115,7 @@
                             </div>
                         </div>
 
-                        <div class="form-group {{ $errors->first('cito') ? "has-error" : "" }}">
+                        {{--  <div class="form-group {{ $errors->first('cito') ? "has-error" : "" }}">
                             <label>CITO :</label>
                             <div class="radio">
                                 <label>
@@ -130,19 +130,16 @@
                                 </label>
                                 <span class="help-block">{{ $errors->first('cito') }}</span>
                             </div>
-                        </div>
+                        </div>  --}}
 
                         <div class="form-group {{ $errors->first('layanan') ? "has-error" : "" }}">
                             <label>Layanan :</label>
                             <select class="form-control select2" name="layanan" style="width: 100%;">
                                 <option selected disabled>Silahkan Pilih Salah Satu :</option>
-                                <option disabled>Kategori Rontgen :</option>
                                 @foreach ($layanan_rontgen as $lr)
                                 <option value="{{ $lr->id }}" {{ old('layanan') == $lr->id ? "selected" : "" }}>
                                     {{ $lr->nama }}</option>
                                 @endforeach
-
-                                <option disabled>Kategori USG :</option>
                                 @foreach ($layanan_usg as $lu)
                                 <option value="{{ $lu->id }}" {{ old('layanan') == $lu->id ? "selected" : "" }}>
                                     {{ $lu->nama }}</option>
@@ -195,7 +192,7 @@
                         </div>
 
                         <div class="form-group {{ $errors->first('permintaan') ? "has-error": "" }}">
-                            <label>Informasi Tambahan :</label>
+                            <label>Informasi Tambahan/Permintaan Tambahan :</label>
                             <input value="{{ old('permintaan') }}" type="text" name="permintaan" class="form-control"
                                 placeholder="Informasi tambahan  ...">
                             <span class="help-block">{{ $errors->first('permintaan') }}</span>

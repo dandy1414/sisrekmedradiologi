@@ -8,10 +8,17 @@
         Tagihan
         <small>#{{ $tagihan->nomor_tagihan }}</small>
     </h1>
+    @if (request()->is('kasir/*/pembayaran-pasien'))
+    <ol class="breadcrumb">
+        <li><a href="{{ route('kasir.index-tagihan') }}"><i class="fa fa-money"></i> Tagihan</a></li>
+        <li class="active">Pembayaran</li>
+    </ol>
+    @else
     <ol class="breadcrumb">
         <li><a href="{{ route('kasir.index-tagihan') }}"><i class="fa fa-money"></i> Tagihan</a></li>
         <li class="active">Detail Pembayaran</li>
     </ol>
+    @endif
 </section>
 
 <section class="invoice">
@@ -180,7 +187,12 @@
     <!-- this row will not appear when printing -->
     <div class="row no-print">
         <div class="col-xs-12">
-            <a class="btn btn-danger btn" href="{{ route('kasir.pasien.print.tagihan', ['id'=>$tagihan->id]) }}" target="_blank"><i class="fa fa-print"></i> Export PDF</a>
+        @if (request()->is('kasir/*/pembayaran-pasien'))
+        <a class="btn btn-success btn" href="{{ route('kasir.index-tagihan') }}"><i class="fa fa-money"></i> Kembali</a>
+        <a class="btn btn-danger btn" href="{{ route('kasir.pasien.print.tagihan', ['id'=>$tagihan->id]) }}" target="_blank"><i class="fa fa-print"></i> Export PDF</a>
+        @else
+        <a class="btn btn-danger btn" href="{{ route('kasir.pasien.print.tagihan', ['id'=>$tagihan->id]) }}" target="_blank"><i class="fa fa-print"></i> Export PDF</a>
+        @endif
         </div>
     </div>
 

@@ -103,10 +103,9 @@
                                                 <span class="fa fa-caret-down"></span>
                                             </button>
                                             <ul class="dropdown-menu">
-                                                <li><a href="{{ route('dokterRadiologi.pasien.expertise-pasien', ['id'=>$b->id]) }}">Lakukan Expertise</a></li>
-                                                @if ($b->jenis_pemeriksaan == 'penuh')
                                                 <li><a href="{{ route('dokterRadiologi.pasien.pendaftaran.surat-rujukan', ['id'=>$b->pendaftaran_id]) }}" target="_blank">Lihat Surat Rujukan </a></li>
-                                                @endif
+                                                <li><a href="#">Detail Pemeriksaan</a></li>
+                                                <li><a href="{{ route('dokterRadiologi.pasien.expertise-pasien', ['id'=>$b->id]) }}">Lakukan Expertise</a></li>
                                             </ul>
                                         </div>
                                     </div>
@@ -178,10 +177,11 @@
                                                 <span class="fa fa-caret-down"></span>
                                             </button>
                                             <ul class="dropdown-menu">
+                                                <li><a href="{{ route('dokterRadiologi.pasien.pendaftaran.surat-rujukan', ['id'=>$s->pendaftaran_id]) }}" target="_blank">Lihat Surat Rujukan </a></li>
                                                 <li><a href="#">Detail Pemeriksaan</a></li>
                                                 <li><a href="#">Lihat Hasil Foto</a></li>
                                                 <li><a href="#">Cetak Expertise</a></li>
-                                                <li><a href="{{ route('dokterRadiologi.pasien.pendaftaran.surat-rujukan', ['id'=>$s->pendaftaran_id]) }}" target="_blank">Lihat Surat Rujukan </a></li>
+                                                <li><a href="{{ route('dokterRadiologi.pasien.pemeriksaan.hasil-expertise', ['id'=>$s->id]) }}" target="_blank">Lihat Hasil Expertise </a></li>
                                             </ul>
                                         </div>
                                     </div>

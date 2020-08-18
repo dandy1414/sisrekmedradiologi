@@ -285,6 +285,7 @@
                                                 <li><a href="#">Detail Pemeriksaan</a></li>
                                                 @if ($s->jenis_pemeriksaan == 'penuh')
                                                 <li><a href="{{ route('radiografer.pasien.pendaftaran.surat-rujukan', ['id'=>$s->pendaftaran_id]) }}" target="_blank">Lihat Surat Rujukan </a></li>
+                                                <li><a href="{{ route('radiografer.pasien.pemeriksaan.hasil-expertise', ['id'=>$s->id]) }}" target="_blank">Lihat Hasil Expertise </a></li>
                                                 @endif
                                                 <li><a href="#">Cetak Expertise</a></li>
                                             </ul>

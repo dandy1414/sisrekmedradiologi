@@ -161,6 +161,7 @@ class PemeriksaanController extends Controller
                 $new_tagihan->pasien_id = $pasien_id;
                 $new_tagihan->id_pemeriksaan = $id;
                 $new_tagihan->id_layanan = $id_layanan;
+                $new_tagihan->id_jadwal = $id_jadwal;
                 $new_tagihan->id_film = $id_film;
                 $new_tagihan->status_pembayaran = "belum";
                 $new_tagihan->tarif_dokter = (30/100)*$tarif_layanan;
@@ -184,6 +185,6 @@ class PemeriksaanController extends Controller
     public function detailSuratRujukan($id){
         $pendaftaran = Pendaftaran::findOrFail($id);
 
-        return view('suratRujukan.surat_rujukan_radiografer', compact('pendaftaran'));
+        return view('suratRujukan.surat_rujukan', compact('pendaftaran'));
     }
 }

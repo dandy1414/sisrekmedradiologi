@@ -34,8 +34,8 @@ class PasienController extends Controller
     public function detailPasienUmum($id){
         $pasien = Pasien::findOrFail($id);
         $pendaftaran = Pendaftaran::where('pasien_id', $id)->orderBy('created_at', 'desc')->get();
-        $pemeriksaan = Pemeriksaan::where('pasien_id', $id)->orderBy('created_at', 'desc')->get();
-        $tagihan = Tagihan::where('pasien_id', $id)->orderBy('created_at', 'desc')->get();
+        $pemeriksaan = Pemeriksaan::where('status_pemeriksaan', 'selesai')->where('pasien_id', $id)->orderBy('created_at', 'desc')->get();
+        $tagihan = Tagihan::where('status_pembayaran', 'sudah')->where('pasien_id', $id)->orderBy('created_at', 'desc')->get();
 
         return view('admin.pasien.umum.detail_pasien_umum', ['pasien'=> $pasien, 'pendaftaran'=>$pendaftaran, 'pemeriksaan'=>$pemeriksaan, 'tagihan'=> $tagihan]);
     }
@@ -43,8 +43,8 @@ class PasienController extends Controller
     public function detailPasienRs($id){
         $pasien = Pasien::findOrFail($id);
         $pendaftaran = Pendaftaran::where('pasien_id', $id)->orderBy('created_at', 'desc')->get();
-        $pemeriksaan = Pemeriksaan::where('pasien_id', $id)->orderBy('created_at', 'desc')->get();
-        $tagihan = Tagihan::where('pasien_id', $id)->orderBy('created_at', 'desc')->get();
+        $pemeriksaan = Pemeriksaan::where('status_pemeriksaan', 'selesai')->where('pasien_id', $id)->orderBy('created_at', 'desc')->get();
+        $tagihan = Tagihan::where('status_pembayaran', 'sudah')->where('pasien_id', $id)->orderBy('created_at', 'desc')->get();
 
         return view('admin.pasien.rs.detail_pasien_rs', ['pasien'=> $pasien, 'pendaftaran'=>$pendaftaran, 'pemeriksaan'=>$pemeriksaan, 'tagihan'=> $tagihan]);
     }
@@ -144,16 +144,17 @@ class PasienController extends Controller
 
     public function editPasienUmum($id){
         $ruangan = Ruangan::all();
-        $pasien = Pasien::findOrFail($id)->first();
+        $pasien = Pasien::findOrFail($id);
 
         return view('admin.pasien.umum.edit_pasien_umum', ['pasien'=> $pasien, 'ruangan' => $ruangan]);
     }
 
     public function editPasienRs($id){
         $ruangan = Ruangan::all();
-        $pasien = Pasien::findOrFail($id)->first();
+        $pas = Pasien::findOrFail($id);
+        // dd($pas);
 
-        return view('admin.pasien.rs.edit_pasien_rs', ['pasien'=> $pasien, 'ruangan' => $ruangan]);
+        return view('admin.pasien.rs.edit_pasien_rs', ['pas'=> $pas, 'ruangan' => $ruangan]);
     }
 
     public function updatePasienUmum(Request $request, $id){
@@ -217,6 +218,7 @@ class PasienController extends Controller
                 'umur' => $request->umur,
                 'id_ruangan' => $request->asalRuangan,
                 'jenis_kelamin' => $request->jenisKelamin,
+                'id_ruangan' => $request->asalRuangan,
                 'alamat' => $request->alamat,
                 'nomor_telepon' => $request->nomorTelepon,
                 'jenis_asuransi' => $request->jenisAsuransi,
@@ -267,4 +269,22 @@ class PasienController extends Controller
         return redirect()->route('user.trash')->with(['success' => 'User berhasil dihapus permanen']);
     }
 
+    public function detailSuratRujukan($id){
+        $pendaftaran = Pendaftaran::findOrFail($id);
+
+        return view('suratRujukan.surat_rujukan', compact('pendaftaran'));
+    }
+
+    public function detailHasilExpertise($id){
+        $pemeriksaan = Pemeriksaan::findOrFail($id);
+
+        return view('hasilExpertise.hasil_expertise', compact('pemeriksaan'));
+    }
+
+    public function detailTagihan($id){
+        $tagihan = Tagihan::findOrFail($id);
+        $tarif = $tagihan->layanan->tarif - 25000;
+
+        return view('kasir.detail_pembayaran', ['tagihan'=>$tagihan, 'tarif'=>$tarif]);
+    }
 }

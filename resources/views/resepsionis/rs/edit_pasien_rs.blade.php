@@ -40,7 +40,7 @@
                     <div class="box-body">
                         <div class="row">
                             <div class="col-md-6">
-                                <div id="ifYes1" class="form-group {{ $errors->first('noRm') ? "has-error": "" }}">
+                                <div class="form-group {{ $errors->first('noRm') ? "has-error": "" }}">
                                     <label>Nomor Rekam Medis :</label>
                                     <input value="{{ $pasien->nomor_rm }}" type="text" name="noRm" class="form-control"
                                         placeholder="Nomor Rekam Medis ...">
@@ -72,8 +72,8 @@
                                     <label>Asal Ruangan :</label>
                                     <select class="form-control select2" name="asalRuangan" style="width: 100%;">
                                         @foreach ($ruangan as $r)
-                                        <option value="{{ $r->id_ruangan }}"
-                                            {{ $r->id_ruangan ? "selected" : "" }}>
+                                        <option value="{{ $r->id }}"
+                                            {{ ($r->id == $pasien->id_ruangan) ? "selected" : "" }}>
                                             {{ $r->nama_ruangan }}</option>
                                         @endforeach
                                     </select>
@@ -154,16 +154,6 @@
 </section>
 @endsection
 <script type="text/javascript">
-    // function yesnoSelect() {
-    //     if(document.getElementById("yesSelect").selected) {
-    //         document.getElementById("ifYes1").style.display = "none";
-    //         document.getElementById("ifYes2").style.display = "none";
-    //     } else {
-    //         document.getElementById("ifYes1").style.display = "block";
-    //         document.getElementById("ifYes2").style.display = "block";
-    //     }
-    // }
-
     function yesnoSelectAsuransi() {
         if(document.getElementById("yesSelectAsuransi").selected) {
             document.getElementById("ifYesAsuransi").style.display = "block";

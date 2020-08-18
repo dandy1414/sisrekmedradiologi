@@ -74,7 +74,7 @@
                                                 <span class="fa fa-caret-down"></span>
                                             </button>
                                             <ul class="dropdown-menu">
-                                                <li><a href="{{ route('radiografer.pasien.detail-pasien-rs',
+                                                <li><a href="{{ route('dokterRadiologi.pasien.detail-pasien-rs',
                                                     ['id'=>$p->id]) }}">Detail Pasien</a></li>
                                             </ul>
                                         </div>

@@ -1,14 +1,14 @@
 @extends('layouts.global')
 
-@section('title') List User @endsection
+@section('title') List Dokter @endsection
 
 @section('content')
 <section class="content-header" style="margin-top: 50px;">
     <h1>
-        List User
+        List Dokter
     </h1>
     <ol class="breadcrumb" style="margin-top: 58px">
-        <li><a href="{{ route('user.index') }}"><i class="fa fa-users"></i> Data User</a></li>
+        <li><a href="#"><i class="fa fa-users"></i> Dokter</a></li>
     </ol>
 </section>
 
@@ -60,10 +60,10 @@
                             <tr>
                                 <th>No.</th>
                                 <th>Username</th>
+                                <th>Nama</th>
                                 <th>Email</th>
                                 <th>Role</th>
                                 <th>SIP</th>
-                                <th>NIP</th>
                                 <th>Nama</th>
                                 <th>Jenis Kelamin</th>
                                 <th>Alamat</th>
@@ -76,10 +76,16 @@
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $user->name }}</td>
+                                <td>{{ $user->nama }}</td>
                                 <td>{{ $user->email }}</td>
-                                <td>{{ ucfirst($user->role) }}</td>
+                                <td>
+                                    @if ($user->role == 'dokterPoli')
+                                    Dokter Poli
+                                    @else
+                                    Dokter Radiologi
+                                    @endif
+                                </td>
                                 <td>{{ $user->sip == null ? '-' : $user->sip }}</td>
-                                <td>{{ $user->nip == null ? '-' : $user->nip }}</td>
                                 <td>{{ $user->nama }}</td>
                                 <td>{{ ucfirst($user->jenis_kelamin) }}</td>
                                 <td>{{ $user->alamat }}</td>

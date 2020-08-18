@@ -67,20 +67,23 @@ class TagihanController extends Controller
     }
 
     public function storePembayaranPasien(Request $request, $id){
-        $tagihan = Tagihan::where('id', $id)->firstOrFail();
+        $total_harga = Tagihan::where('id', $id)->firstOrFail();
         try{
             $bayar = Tagihan::findOrFail($id);
             $bayar->id_kasir = Auth::user()->id;
             $bayar->metode_pembayaran = $request->metode;
             $bayar->bayar = $request->bayar;
-            $bayar->kembali = $request->bayar - $tagihan->total_harga;
+            $bayar->kembali = $request->bayar - $total_harga->total_harga;
             $bayar->tanggal = date('Y-m-d H:i:s');
             $bayar->status_pembayaran = "sudah";
             $bayar->save();
 
             DB::commit();
 
-            return redirect()->route('kasir.index-tagihan')->with(['success' => 'Pembayaran Berhasil']);
+            $tagihan = Tagihan::findOrFail($id);
+            $tarif = $tagihan->layanan->tarif - 25000;
+
+            return view('kasir.detail_pembayaran', ['tagihan'=>$tagihan, 'tarif'=>$tarif]);
         } catch(QueryException $x) {
             DB::rollBack();
             dd($x->getMessage());

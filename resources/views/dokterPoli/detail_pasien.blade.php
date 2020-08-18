@@ -1,12 +1,12 @@
 @extends('layouts.global')
 
-@section('title') Detail Pasien @endsection
+@section('title') Detail Pasien Rumah Sakit @endsection
 
 @section('content')
 
 <section class="content-header" style="margin-top: 50px;">
     <h1>
-        Detail Pasien
+        Detail Pasien Rumah Sakit
     </h1>
     <ol class="breadcrumb">
         <li><a href="{{ route('dokterPoli.pasien.index-pasien') }}"><i class="fa fa-users"></i> Pasien</a></li>
@@ -58,10 +58,10 @@
                             <p class="text-muted">{{ ($pasien->nomor_bpjs) != null ? $pasien->nomor_bpjs : "-" }}</p>
 
                             <strong><i class="fa fa-pencil margin-r-5"></i> Asal Ruangan :</strong>
-                            <p class="text-muted">{{ ($pasien->ruangan->nama_ruangan) }}</p>
+                            <p class="text-muted">{{ $pasien->ruangan->nama_ruangan }}</p>
 
                             <strong><i class="fa fa-pencil margin-r-5"></i> Kelas :</strong>
-                            <p class="text-muted">{{ ($pasien->ruangan->kelas) }}</p>
+                            <p class="text-muted">{{ $pasien->ruangan->kelas }}</p>
                         </div>
                     </div>
                     <!-- /.box-body -->
@@ -101,23 +101,23 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($pemeriksaan as $pemeriksaan)
+                            @foreach ($pemeriksaan as $p)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
-                                <td>{{ $pemeriksaan->nomor_pemeriksaan }}</td>
-                                <td>{{ $pemeriksaan->pasien->nama }}</td>
-                                <td>{{ $pemeriksaan->pasien->nomor_rm }}</td>
-                                <td>{{ $pemeriksaan->pasien->nomor_ktp }}</td>
-                                <td>{{ ucfirst($pemeriksaan->pasien->jenis_pasien) }}</td>
-                                <td>{{ ucfirst($pemeriksaan->jenis_pemeriksaan) }}</td>
-                                <td>{{ $pemeriksaan->cito }}</td>
-                                <td>{{ ucfirst($pemeriksaan->layanan->nama) }}</td>
-                                <td>{{ $pemeriksaan->jadwal->waktu_mulai }} - {{ $pemeriksaan->jadwal->waktu_selesai }}</td>
-                                <td>{{ $pemeriksaan->created_at }}</td>
-                                <td>{{ ($pemeriksaan->id_dokterPoli) != null ? $pemeriksaan->dokterPoli->nama : "-" }}</td>
-                                <td>{{ ($pemeriksaan->id_dokterRadiologi) != null ? $pemeriksaan->dokterRadiologi->nama : "-" }}</td>
-                                <td>{{ ($pemeriksaan->keluhan) != null ? ucfirst($pemeriksaan->keluhan) : "Tidak ada" }}</td>
-                                <td>{{ ($pemeriksaan->permintaan_tambahan) != null ? ucfirst($pemeriksaan->permintaan_tambahan) : "Tidak ada" }}</td>
+                                <td>{{ $p->nomor_pemeriksaan }}</td>
+                                <td>{{ $p->pasien->nama }}</td>
+                                <td>{{ $p->pasien->nomor_rm }}</td>
+                                <td>{{ $p->pasien->nomor_ktp }}</td>
+                                <td>{{ ucfirst($p->pasien->jenis_pasien) }}</td>
+                                <td>{{ ucfirst($p->jenis_pemeriksaan) }}</td>
+                                <td>{{ $p->cito }}</td>
+                                <td>{{ ucfirst($p->layanan->nama) }}</td>
+                                <td>{{ $p->jadwal->waktu_mulai }} - {{ $p->jadwal->waktu_selesai }}</td>
+                                <td>{{ $p->created_at }}</td>
+                                <td>{{ ($p->id_dokterPoli) != null ? $p->dokterPoli->nama : "-" }}</td>
+                                <td>{{ ($p->id_dokterRadiologi) != null ? $p->dokterRadiologi->nama : "-" }}</td>
+                                <td>{{ ($p->keluhan) != null ? ucfirst($p->keluhan) : "Tidak ada" }}</td>
+                                <td>{{ ($p->permintaan_tambahan) != null ? ucfirst($p->permintaan_tambahan) : "Tidak ada" }}</td>
                                 <td>
                                     <div class="input-group margin">
                                         <div class="input-group-btn">
@@ -126,8 +126,10 @@
                                                 <span class="fa fa-caret-down"></span>
                                             </button>
                                             <ul class="dropdown-menu">
-                                                @if ($pemeriksaan->jenis_pemeriksaan == 'penuh')
-                                                <li><a href="{{ route('dokterPoli.pasien.pendaftaran.surat-rujukan', ['id'=>$r->id]) }}" target="_blank">Lihat Surat Rujukan </a></li>
+                                                <li><a href="#">Detail Pemeriksaan</a></li>
+                                                @if ($p->jenis_pemeriksaan == 'penuh')
+                                                <li><a href="{{ route('dokterPoli.pasien.pendaftaran.surat-rujukan', ['id'=>$p->pendaftaran_id]) }}" target="_blank">Lihat Surat Rujukan </a></li>
+                                                <li><a href="{{ route('dokterPoli.pasien.pemeriksaan.hasil-expertise', ['id'=>$p->id]) }}" target="_blank">Lihat Hasil Expertise </a></li>
                                                 @endif
                                             </ul>
                                         </div>

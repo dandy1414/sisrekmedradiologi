@@ -113,14 +113,43 @@
         <br>
         <div class="row">
             <div class="col-xs-9">
-                @if (request()->is('admin/*/pendaftaran/detail/*'))
 
-                @else
-                    <a class="btn btn-success btn" href="{{ route('admin.pasien.index.pendaftaran') }}"><i class="fa fa-list"></i> Kembali</a>
-                @endif
+                @if (request()->is('resepsionis/*/pendaftaran/pasien*') )
+                <a class="btn btn-success btn" href="{{ route('resepsionis.pasien.index.pendaftaran') }}"><i class="fa fa-list"></i>Kembali</a>
                 <a class="btn btn-danger btn"
                     href="{{ route('resepsionis.pasien.pendaftaran.print.surat-rujukan', ['id'=>$pendaftaran->id]) }}"
                     target="_blank"><i class="fa fa-print"></i> Export PDF</a>
+                @endif
+                @if(request()->is('dokter-poli/*/rujuk-pasien'))
+                <a class="btn btn-success btn" href="{{ route('dokterPoli.pasien.index-rujuk') }}"><i class="fa fa-list"></i>Kembali</a>
+                @endif
+
+
+                @if (request()->is('{resepsionis/*/pendaftaran/detail/surat-rujukan'))
+                <a class="btn btn-danger btn"
+                    href="{{ route('dokterPoli.pasien.pendaftaran.print.surat-rujukan', ['id'=>$pendaftaran->id]) }}"
+                    target="_blank"><i class="fa fa-print"></i> Export PDF</a>
+                @endif
+                @if (request()->is('{dokter-poli/*/rujuk/detail/surat-rujukan'))
+                <a class="btn btn-danger btn"
+                    href="{{ route('dokterPoli.pasien.pendaftaran.print.surat-rujukan', ['id'=>$pendaftaran->id]) }}"
+                    target="_blank"><i class="fa fa-print"></i> Export PDF</a>
+                @endif
+                @if (request()->is('{dokter-radiologi/*/rujuk/detail/surat-rujukan'))
+                <a class="btn btn-danger btn"
+                    href="{{ route('dokterRadiologi.pasien.pendaftaran.print.surat-rujukan', ['id'=>$pendaftaran->id]) }}"
+                    target="_blank"><i class="fa fa-print"></i> Export PDF</a>
+                @endif
+                @if (request()->is('{radiografer/*/pemeriksaan/detail/surat-rujukan'))
+                <a class="btn btn-danger btn"
+                    href="{{ route('dokterPoli.pasien.pendaftaran.print.surat-rujukan', ['id'=>$pendaftaran->id]) }}"
+                    target="_blank"><i class="fa fa-print"></i> Export PDF</a>
+                @endif
+                @if (request()->is('{admin/*/pasien/detail/surat-rujukan'))
+                <a class="btn btn-danger btn"
+                    href="{{ route('pasien.pendaftaran.surat-rujukan', ['id'=>$pendaftaran->id]) }}"
+                    target="_blank"><i class="fa fa-print"></i> Export PDF</a>
+                @endif
             </div>
             <div class="col-xs-3">
                 Tanggal cetak &nbsp;: {{ date('Y-m-d H:i:s') }}<br>

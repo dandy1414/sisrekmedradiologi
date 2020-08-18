@@ -1,16 +1,16 @@
 @extends('layouts.global')
 
-@section('title') Detail Pasien Umum @endsection
+@section('title') Detail Pasien Rumah Sakit @endsection
 
 @section('content')
 
 <section class="content-header" style="margin-top: 50px;">
     <h1>
-        Detail Pasien Umum
+        Detail Pasien Rumah Sakit
     </h1>
     <ol class="breadcrumb">
-        <li><a href="{{ route('pasien.index-pasien-umum') }}"><i class="fa fa-users"></i> Pasien Umum</a></li>
-        <li class="active">Detail Pasien Umum</li>
+        <li><a href="{{ route('pasien.index-pasien-rs') }}"><i class="fa fa-users"></i> Pasien RS</a></li>
+        <li class="active">Detail Pasien Rumah Sakit</li>
     </ol>
 </section>
 
@@ -59,6 +59,14 @@
 
                             <p class="text-muted">{{ $pasien->nomor_telepon }}</p>
 
+                            <strong><i class="fa fa-pencil margin-r-5"></i> Asal Ruangan :</strong>
+
+                            <p class="text-muted">{{ $pasien->ruangan->nama }}</p>
+
+                            <strong><i class="fa fa-pencil margin-r-5"></i> Kelas :</strong>
+
+                            <p class="text-muted">{{ $pasien->ruangan->kelas }}</p>
+
                             <strong><i class="fa fa-pencil margin-r-5"></i> Jenis Asuransi :</strong>
 
                             <p class="text-muted">{{ ucfirst($pasien->jenis_asuransi) }}</p>
@@ -102,19 +110,19 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($pasien->pendaftaran as $pendaftaran)
+                            @foreach ($pendaftaran as $pen)
                             <tr>
                                 <th>{{ $loop->iteration }}</th>
-                                <td>{{ $pendaftaran->nomor_pendaftaran }}</td>
-                                <td>{{ $pendaftaran->jenis_pemeriksaan }}</td>
-                                <td>{{ ucfirst($pendaftaran->layanan->nama) }}</td>
-                                <td>{{ $pendaftaran->jadwal->waktu_mulai }} - {{ $pendaftaran->jadwal->waktu_selesai }}</td>
-                                <td>{{ $pendaftaran->created_at->toDateString() }}</td>
-                                <td>{{ ($pendaftaran->id_dokterPoli) != null ? $pendaftaran->dokterPoli->nama : "-" }}</td>
-                                <td>{{ ($pendaftaran->id_dokterRadiologi) != null ? $pendaftaran->dokterRadiologi->nama : "-" }}</td>
-                                <td>{{ ($pendaftaran->id_resepsionis) != null ? $pendaftaran->resepsionis->nama : "-" }}</td>
-                                <td>{{ ($pendaftaran->keluhan) != null ? ucfirst($pendaftaran->keluhan) : "Tidak ada" }}</td>
-                                <td>{{ ($pendaftaran->surat_rujukan) != null ? 'Ada' : 'Tidak ada' }}</td>
+                                <td>{{ $pen->nomor_pendaftaran }}</td>
+                                <td>{{ ucfirst($pen->jenis_pemeriksaan) }}</td>
+                                <td>{{ ucfirst($pen->layanan->nama) }}</td>
+                                <td>{{ $pen->jadwal->waktu_mulai }} - {{ $pen->jadwal->waktu_selesai }}</td>
+                                <td>{{ $pen->created_at->toDateString() }}</td>
+                                <td>{{ ($pen->id_dokterPoli) != null ? $pen->dokterPoli->nama : "-" }}</td>
+                                <td>{{ ($pen->id_dokterRadiologi) != null ? $pen->dokterRadiologi->nama : "-" }}</td>
+                                <td>{{ ($pen->id_resepsionis) != null ? $pen->resepsionis->nama : "-" }}</td>
+                                <td>{{ ($pen->keluhan) != null ? ucfirst($pen->keluhan) : "Tidak ada" }}</td>
+                                <td>{{ ($pen->surat_rujukan) != null ? 'Ada' : 'Tidak ada' }}</td>
                                 <td>
                                     <div class="input-group margin">
                                         <div class="input-group-btn">
@@ -123,12 +131,10 @@
                                                 <span class="fa fa-caret-down"></span>
                                             </button>
                                             <ul class="dropdown-menu">
-                                                {{-- <li><a data-toggle="modal" data-target="#lihat-hasil">Lihat
-                                                        hasil</a></li>
-                                                <li><a data-toggle="modal" data-target="#lihat-expertise">Lihat
-                                                        expertise
-                                                    </a></li>
-                                                <li><a href="#">Lihat rujukan</a></li> --}}
+                                                @if ($pen->jenis_pemeriksaan == 'penuh')
+                                                <li><a href="{{ route('pasien.pendaftaran.surat-rujukan', ['id'=>$pen->id]) }}"
+                                                        target="_blank">Lihat Surat Rujukan </a></li>
+                                                @endif
                                             </ul>
                                         </div>
                                     </div>
@@ -138,117 +144,11 @@
                         </tbody>
                     </table>
                 </div>
-
-                <div class="modal fade" id="lihat-expertise">
-                    <div class="modal-dialog modal-lg">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span></button>
-                                <h4 class="modal-title" style="text-align: center">Lihat Expertise </h4>
-                            </div>
-                            <div class="modal-body">
-                                <div class="row">
-                                    <div class="col-xs-6">
-                                        <strong><i class="fa fa-book margin-r-5"></i> Nomor Rekam Medis :</strong>
-
-                                        <p class="text-muted">
-                                            B.S. in Computer Science from the University of Tennessee at Knoxville
-                                        </p>
-
-                                        <strong><i class="fa fa-book margin-r-5"></i> Nomor Pendaftaran :</strong>
-
-                                        <p class="text-muted">
-                                            B.S. in Computer Science from the University of Tennessee at Knoxville
-                                        </p>
-
-                                        <strong><i class="fa fa-book margin-r-5"></i> Nama :</strong>
-
-                                        <p class="text-muted">
-                                            B.S. in Computer Science from the University of Tennessee at Knoxville
-                                        </p>
-
-                                        <strong><i class="fa fa-book margin-r-5"></i> Umur :</strong>
-
-                                        <p class="text-muted">
-                                            B.S. in Computer Science from the University of Tennessee at Knoxville
-                                        </p>
-
-                                        <strong><i class="fa fa-book margin-r-5"></i> Alamat :</strong>
-
-                                        <p class="text-muted">
-                                            B.S. in Computer Science from the University of Tennessee at Knoxville
-                                        </p>
-                                    </div>
-                                    <div class="col-xs--6">
-                                        <strong><i class="fa fa-book margin-r-5"></i> Jenis Kelamin :</strong>
-
-                                        <p class="text-muted">
-                                            B.S. in Computer Science from the University of Tennessee at Knoxville
-                                        </p>
-
-                                        <strong><i class="fa fa-book margin-r-5"></i> Alamat :</strong>
-
-                                        <p class="text-muted">
-                                            B.S. in Computer Science from the University of Tennessee at Knoxville
-                                        </p>
-
-                                        <strong><i class="fa fa-book margin-r-5"></i> Layanan :</strong>
-
-                                        <p class="text-muted">
-                                            B.S. in Computer Science from the University of Tennessee at Knoxville
-                                        </p>
-
-                                        <strong><i class="fa fa-book margin-r-5"></i> Dokter Perujuk :</strong>
-
-                                        <p class="text-muted">
-                                            B.S. in Computer Science from the University of Tennessee at Knoxville
-                                        </p>
-
-                                        <strong><i class="fa fa-book margin-r-5"></i> Dokter Rujukan :</strong>
-
-                                        <p class="text-muted">
-                                            B.S. in Computer Science from the University of Tennessee at Knoxville
-                                        </p>
-                                    </div>
-                                </div>
-                                <hr>
-                                <h4 class="modal-title" style="text-align: center">Hasil Foto </h4>
-                                <hr>
-                                disini hasil foto
-                                <h4 class="modal-title" style="text-align: center">Expertise</h4>
-                                <br>
-                                disini hasil expertise
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-default pull-left"
-                                        data-dismiss="modal">Kembali</button>
-                                </div>
-                            </div>
-                            <!-- /.modal-content -->
-                        </div>
-                        <!-- /.modal-dialog -->
-                    </div>
-                    <!-- /.modal -->
-                </div>
-                <div class="modal fade" id="lihat-hasil">
-                    <div class="modal-dialog modal-md">
-                        <div class="modal-content" style="overflow: auto;">
-                            <div class="modal-body" style="height: 500px">
-                                <img src="https://upload.wikimedia.org/wikipedia/commons/2/22/Turkish_Van_Cat.jpg"
-                                    id="imagepreview" style="width: 100%;height: 100%;position: absolute;">
-                            </div>
-                        </div>
-                        <div style="display: flex;">
-                            <button class="btn btn-primary" style="width: 50%;" onclick="zoomin()">Zoom In</button>
-                            <button class="btn btn-danger" style="width: 50%;" onclick="zoomout()">Zoom Out</button>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
 
-    {{-- <div class="row">
+    <div class="row">
         <div class="col-xs-12">
             <div class="box box-warning">
                 <div class="box-header with-border">
@@ -273,7 +173,7 @@
                                 <th>Aksi</th>
                             </tr>
                         </thead>
-                        @foreach ($pasien->pemeriksaans as $pem)
+                        @foreach ($pemeriksaan as $pem)
                         <tbody>
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
@@ -286,7 +186,8 @@
                                 <td>{{ ($pem->id_dokterPoli) != null ? $pem->dokterPoli->nama : "-" }}</td>
                                 <td>{{ ($pem->id_dokterRadiologi) != null ? $pem->dokterRadiologi->nama : "-" }}</td>
                                 <td>{{ ($pem->keluhan) != null ? ucfirst($pem->keluhan) : "Tidak ada" }}</td>
-                                <td>{{ ($pem->permintaan_tambahan) != null ? ucfirst($pem->permintaan_tambahan) : "Tidak ada" }}</td>
+                                <td>{{ ($pem->permintaan_tambahan) != null ? ucfirst($pem->permintaan_tambahan) : "Tidak ada" }}
+                                </td>
                                 <td>
                                     <div class="input-group margin">
                                         <div class="input-group-btn">
@@ -298,10 +199,12 @@
                                             <ul class="dropdown-menu">
                                                 <li><a data-toggle="modal" data-target="#lihat-hasil">Lihat
                                                         hasil</a></li>
-                                                <li><a data-toggle="modal" data-target="#lihat-expertise">Lihat
-                                                        expertise
-                                                    </a></li>
-                                                <li><a href="#">Lihat rujukan</a></li>
+                                                @if ($pem->jenis_pemeriksaan == 'penuh')
+                                                <li><a href="{{ route('pasien.pendaftaran.surat-rujukan', ['id'=>$pem->pendaftaran_id]) }}"
+                                                        target="_blank">Lihat Surat Rujukan </a></li>
+                                                <li><a href="{{ route('pasien.pemeriksaan.hasil-expertise', ['id'=>$pem->id]) }}"
+                                                        target="_blank">Lihat Hasil Expertise </a></li>
+                                                @endif
                                             </ul>
                                         </div>
                                     </div>
@@ -311,100 +214,7 @@
                         @endforeach
                     </table>
                 </div>
-
-
-                <div class="modal fade" id="lihat-expertise">
-                    <div class="modal-dialog modal-lg">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span></button>
-                                <h4 class="modal-title" style="text-align: center">Lihat Expertise </h4>
-                            </div>
-                            <div class="modal-body">
-                                <div class="row">
-                                    <div class="col-xs-6">
-                                        <strong><i class="fa fa-book margin-r-5"></i> Nomor Rekam Medis :</strong>
-
-                                        <p class="text-muted">
-                                            B.S. in Computer Science from the University of Tennessee at Knoxville
-                                        </p>
-
-                                        <strong><i class="fa fa-book margin-r-5"></i> Nomor Pendaftaran :</strong>
-
-                                        <p class="text-muted">
-                                            B.S. in Computer Science from the University of Tennessee at Knoxville
-                                        </p>
-
-                                        <strong><i class="fa fa-book margin-r-5"></i> Nama :</strong>
-
-                                        <p class="text-muted">
-                                            B.S. in Computer Science from the University of Tennessee at Knoxville
-                                        </p>
-
-                                        <strong><i class="fa fa-book margin-r-5"></i> Umur :</strong>
-
-                                        <p class="text-muted">
-                                            B.S. in Computer Science from the University of Tennessee at Knoxville
-                                        </p>
-
-                                        <strong><i class="fa fa-book margin-r-5"></i> Alamat :</strong>
-
-                                        <p class="text-muted">
-                                            B.S. in Computer Science from the University of Tennessee at Knoxville
-                                        </p>
-                                    </div>
-                                    <div class="col-xs--6">
-                                        <strong><i class="fa fa-book margin-r-5"></i> Jenis Kelamin :</strong>
-
-                                        <p class="text-muted">
-                                            B.S. in Computer Science from the University of Tennessee at Knoxville
-                                        </p>
-
-                                        <strong><i class="fa fa-book margin-r-5"></i> Alamat :</strong>
-
-                                        <p class="text-muted">
-                                            B.S. in Computer Science from the University of Tennessee at Knoxville
-                                        </p>
-
-                                        <strong><i class="fa fa-book margin-r-5"></i> Layanan :</strong>
-
-                                        <p class="text-muted">
-                                            B.S. in Computer Science from the University of Tennessee at Knoxville
-                                        </p>
-
-                                        <strong><i class="fa fa-book margin-r-5"></i> Dokter Perujuk :</strong>
-
-                                        <p class="text-muted">
-                                            B.S. in Computer Science from the University of Tennessee at Knoxville
-                                        </p>
-
-                                        <strong><i class="fa fa-book margin-r-5"></i> Dokter Rujukan :</strong>
-
-                                        <p class="text-muted">
-                                            B.S. in Computer Science from the University of Tennessee at Knoxville
-                                        </p>
-                                    </div>
-                                </div>
-                                <hr>
-                                <h4 class="modal-title" style="text-align: center">Hasil Foto </h4>
-                                <hr>
-                                disini hasil foto
-                                <h4 class="modal-title" style="text-align: center">Expertise</h4>
-                                <br>
-                                disini hasil expertise
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-default pull-left"
-                                        data-dismiss="modal">Kembali</button>
-                                </div>
-                            </div>
-                            <!-- /.modal-content -->
-                        </div>
-                        <!-- /.modal-dialog -->
-                    </div>
-                    <!-- /.modal -->
-                </div>
-                <div class="modal fade" id="lihat-hasil">
+                {{--  <div class="modal fade" id="lihat-hasil">
                     <div class="modal-dialog modal-md">
                         <div class="modal-content" style="overflow: auto;">
                             <div class="modal-body" style="height: 500px">
@@ -417,10 +227,79 @@
                             <button class="btn btn-danger" style="width: 50%;" onclick="zoomout()">Zoom Out</button>
                         </div>
                     </div>
+                </div>  --}}
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box box-success" style="position: relative;">
+                <div class="box-header">
+                    <h3 class="box-title">Riwayat Pembayaran</h3>
+                </div>
+                <div class="box-body">
+                    <table id="table5" class="table table-bordered table-hover" style="width: 100%;">
+                        <thead>
+                            <tr>
+                                <th>No.</th>
+                                <th>Tanggal Pembayaran</th>
+                                <th>Nomor Tagihan</th>
+                                <th>Nama</th>
+                                <th>Nomor RM</th>
+                                <th>Nomor KTP</th>
+                                <th>Jenis Pasien</th>
+                                <th>Jenis Pemeriksaan</th>
+                                <th>Layanan</th>
+                                <th>Jadwal</th>
+                                <th>Tarif Dokter</th>
+                                <th>Tarif Jasa</th>
+                                <th>Kasir</th>
+                                <th>Total Tarif</th>
+                                <th>Status Pembayaran</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($tagihan as $t)
+                            <tr>
+                                <td>{{ $loop->iteration }}</td>
+                                <td>{{ $t->tanggal }}</td>
+                                <td>{{ $t->nomor_tagihan }}</td>
+                                <td>{{ $t->pasien->nama }}</td>
+                                <td>{{ $t->pasien->nomor_rm }}</td>
+                                <td>{{ $t->pasien->nomor_ktp }}</td>
+                                <td>{{ ($t->pasien->jenis_pasien) == 'umum' ? "Umum" : "Rumah Sakit" }}</td>
+                                <td>{{ ucfirst($t->pemeriksaan->jenis_pemeriksaan) }}</td>
+                                <td>{{ ucfirst($t->layanan->nama) }}</td>
+                                <td>{{ $t->jadwal->waktu_mulai }} - {{ $t->jadwal->waktu_selesai }}</td>
+                                <td>@currency($t->tarif_dokter)</td>
+                                <td>@currency($t->tarif_jasa)</td>
+                                <td>{{ ucfirst($t->kasir->nama) }}</td>
+                                <td>@currency($t->total_harga)</td>
+                                <td><span class="badge bg-green">LUNAS</span></td>
+                                <td>
+                                    <div class="input-group margin">
+                                        <div class="input-group-btn">
+                                            <button type="button" class="btn btn-success dropdown-toggle"
+                                                data-toggle="dropdown">Aksi
+                                                <span class="fa fa-caret-down"></span>
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                <li><a href="{{ route('pasien.detail-tagihan', ['id'=>$t->id]) }}">Detail
+                                                        Pembayaran</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
-    </div> --}}
+    </div>
 </section>
 
 @endsection

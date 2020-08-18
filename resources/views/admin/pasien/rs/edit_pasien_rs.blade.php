@@ -8,8 +8,8 @@
         Edit Pasien Rumah Sakit
     </h1>
     <ol class="breadcrumb">
-        <li><a href="{{ route('pasien.index-pasien-umum') }}"><i class="fa fa-users"></i> Pasien Umum</a> |
-            <a href="{{ route('pasien.index-pasien-rs') }}"><i class="fa fa-users"></i> Pasien RS</a></li>
+        <li>
+            <a href="{{ route('resepsionis.pasien.index-pasien-rs') }}"><i class="fa fa-users"></i> Pasien RS</a></li>
         <li class="active">Edit Pasien</li>
     </ol>
 </section>
@@ -32,7 +32,7 @@
 
     <div class="row">
         <div class="col-xs-12">
-            <form method="POST" action="{{ route('pasien.update-pasien-rs', ['id' => $pasien->id]) }}" enctype="multipart/form-data">
+            <form method="POST" action="{{ route('resepsionis.pasien.update-pasien-rs', ['id' => $pas->id]) }}" enctype="multipart/form-data">
                 @csrf
                 {{ method_field('PUT') }}
 
@@ -42,28 +42,28 @@
                             <div class="col-md-6">
                                 <div class="form-group {{ $errors->first('noRm') ? "has-error": "" }}">
                                     <label>Nomor Rekam Medis :</label>
-                                    <input value="{{ $pasien->nomor_rm }}" type="text" name="noRm" class="form-control"
+                                    <input value="{{ $pas->nomor_rm }}" type="text" name="noRm" class="form-control"
                                         placeholder="Nomor Rekam Medis ...">
                                     <span class="help-block">{{ $errors->first('noRm') }}</span>
                                 </div>
 
                                 <div class="form-group {{ $errors->first('nomorKtp') ? "has-error": "" }}">
                                     <label>Nomor KTP :</label>
-                                    <input value="{{ $pasien->nomor_ktp }}" type="text" name="nomorKtp" class="form-control"
+                                    <input value="{{ $pas->nomor_ktp }}" type="text" name="nomorKtp" class="form-control"
                                         placeholder="Nomor KTP ...">
                                     <span class="help-block">{{ $errors->first('nomorKtp') }}</span>
                                 </div>
 
                                 <div class="form-group {{ $errors->first('nama') ? "has-error": "" }}">
                                     <label>Nama :</label>
-                                    <input value="{{ $pasien->nama }}" type="text" name="nama" class="form-control"
+                                    <input value="{{ $pas->nama }}" type="text" name="nama" class="form-control"
                                         placeholder="Nama ...">
                                     <span class="help-block">{{ $errors->first('nama') }}</span>
                                 </div>
 
                                 <div class="form-group {{ $errors->first('umur') ? "has-error": "" }}">
                                     <label>Umur :</label>
-                                    <input value="{{ $pasien->umur }}" type="text" name="umur"
+                                    <input value="{{ $pas->umur }}" type="text" name="umur"
                                         class="form-control" placeholder="Umur ...">
                                     <span class="help-block">{{ $errors->first('umur') }}</span>
                                 </div>
@@ -72,8 +72,8 @@
                                     <label>Asal Ruangan :</label>
                                     <select class="form-control select2" name="asalRuangan" style="width: 100%;">
                                         @foreach ($ruangan as $r)
-                                        <option value="{{ $r->id_ruangan }}"
-                                            {{ $r->id_ruangan ? "selected" : "" }}>
+                                        <option value="{{ $r->id }}"
+                                            {{ ($r->id == $pas->id_ruangan) ? "selected" : "" }}>
                                             {{ $r->nama_ruangan }}</option>
                                         @endforeach
                                     </select>
@@ -87,12 +87,12 @@
                                     <div class="radio">
                                         <label>
                                             <input type="radio" name="jenisKelamin" id="Laki-laki" value="Laki-laki"
-                                                {{ $pasien->jenis_kelamin == 'Laki-laki' ? "checked" : "" }}>
+                                                {{ $pas->jenis_kelamin == 'Laki-laki' ? "checked" : "" }}>
                                             Laki-laki
                                         </label>
                                         <label>
                                             <input type="radio" name="jenisKelamin" id="Perempuan" value="Perempuan"
-                                                {{ $pasien->jenis_kelamin == 'Perempuan' ? "checked" : "" }}>
+                                                {{ $pas->jenis_kelamin == 'Perempuan' ? "checked" : "" }}>
                                             Perempuan
                                         </label>
                                         <span class="help-block">{{ $errors->first('jenisKelamin') }}</span>
@@ -102,13 +102,13 @@
                                 <div class="form-group {{ $errors->first('alamat') ? "has-error": "" }}">
                                     <label>Alamat :</label>
                                     <textarea name="alamat" id="alamat"
-                                        class="form-control {{$errors->first('alamat') ? "is-invalid" : ""}}">{{ $pasien->alamat }}</textarea>
+                                        class="form-control {{$errors->first('alamat') ? "is-invalid" : ""}}">{{ $pas->alamat }}</textarea>
                                     <span class="help-block">{{ $errors->first('alamat') }}</span>
                                 </div>
 
                                 <div class="form-group {{ $errors->first('nomorTelepon') ? "has-error": "" }}">
                                     <label>Nomor Telepon :</label>
-                                    <input value="{{$pasien->nomor_telepon}}" type="text" name="nomorTelepon"
+                                    <input value="{{$pas->nomor_telepon}}" type="text" name="nomorTelepon"
                                         class="form-control {{$errors->first('nomorTelepon') ? "is-invalid" : ""}}"
                                         placeholder="Nomor telepon ...">
                                     <span class="help-block">{{ $errors->first('nomorTelepon') }}</span>
@@ -118,16 +118,16 @@
                                     <label>Jenis Asuransi :</label>
                                     <select onchange="yesnoSelectAsuransi()" class="form-control select2" name="jenisAsuransi" style="width: 100%;">
                                         <option id="noSelectAsuransi" value="umum"
-                                            {{ $pasien->jenis_asuransi == 'umum' ? "selected" : "" }}>
+                                            {{ $pas->jenis_asuransi == 'umum' ? "selected" : "" }}>
                                             Umum</option>
                                         <option id="yesSelectAsuransi" value="bpjs"
-                                            {{ $pasien->jenis_asuransi == 'bpjs' ? "selected" : "" }}>
+                                            {{ $pas->jenis_asuransi == 'bpjs' ? "selected" : "" }}>
                                             BPJS</option>
                                         <option id="noSelectAsuransi" value="lainnya"
-                                            {{ $pasien->jenis_asuransi == 'lainnya' ? "selected" : "" }}>
+                                            {{ $pas->jenis_asuransi == 'lainnya' ? "selected" : "" }}>
                                             Lainnya</option>
                                         <option id="noSelectAsuransi" value="tidak ada"
-                                            {{ $pasien->jenis_asuransi == 'tidak ada' ? "selected" : "" }}>
+                                            {{ $pas->jenis_asuransi == 'tidak ada' ? "selected" : "" }}>
                                             Tidak ada</option>
                                     </select>
                                     <span class="help-block">{{ $errors->first('jenisAsuransi') }}</span>
@@ -135,7 +135,7 @@
 
                                 <div id="ifYesAsuransi" class="form-group {{ $errors->first('noBpjs') ? "has-error": "" }}" style="display: none">
                                     <label>Nomor BPJS :</label>
-                                    <input value="{{ $pasien->nomor_bpjs }}" type="text" name="noBpjs" class="form-control"
+                                    <input value="{{ $pas->nomor_bpjs }}" type="text" name="noBpjs" class="form-control"
                                         placeholder="Nomor BPJS ...">
                                     <span class="help-block">{{ $errors->first('noBpjs') }}</span>
                                 </div>
@@ -154,16 +154,6 @@
 </section>
 @endsection
 <script type="text/javascript">
-    // function yesnoSelect() {
-    //     if(document.getElementById("yesSelect").selected) {
-    //         document.getElementById("ifYes1").style.display = "none";
-    //         document.getElementById("ifYes2").style.display = "none";
-    //     } else {
-    //         document.getElementById("ifYes1").style.display = "block";
-    //         document.getElementById("ifYes2").style.display = "block";
-    //     }
-    // }
-
     function yesnoSelectAsuransi() {
         if(document.getElementById("yesSelectAsuransi").selected) {
             document.getElementById("ifYesAsuransi").style.display = "block";

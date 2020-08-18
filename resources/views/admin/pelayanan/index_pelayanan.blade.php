@@ -120,7 +120,7 @@
                                             <span class="sr-only">Toggle Dropdown</span>
                                         </button>
                                         <ul class="dropdown-menu" role="menu">
-                                            <li><a href="#">Hapus</a></li>
+                                            <li><a href="{{ route('layanan.delete', ['id'=>$l->id]) }}">Hapus</a></li>
                                         </ul>
                                     </div>
                                 </td>
@@ -166,7 +166,7 @@
                                             <span class="sr-only">Toggle Dropdown</span>
                                         </button>
                                         <ul class="dropdown-menu" role="menu">
-                                            <li><a href="#">Hapus</a></li>
+                                            <li><a href="{{ route('film.delete', ['id'=>$f->id]) }}">Hapus</a></li>
                                         </ul>
                                     </div>
                                 </td>
@@ -202,7 +202,7 @@
                                         <select class="form-control select2" name="kategori" style="width: 100%;">
                                             <option selected disabled>Silahkan pilih salah satu</option>
                                             @foreach ($kategori as $k)
-                                            <option value="{{ $k->id_kategori }}">{{ ucfirst($k->nama) }}</option>
+                                            <option value="{{ $k->id }}">{{ ucfirst($k->nama) }}</option>
                                             @endforeach
                                         </select>
                                         <br>
@@ -297,7 +297,7 @@
                                 <select id="kategori-layanan" class="form-control select2" name="kategori"
                                     style="width: 100%;">
                                     @foreach ($kategori as $k)
-                                    <option value="{{ $k->id_kategori }}">{{ $k->nama }}</option>
+                                    <option value="{{ $k->id }}">{{ $k->nama }}</option>
                                     @endforeach
                                 </select>
                                 <br>

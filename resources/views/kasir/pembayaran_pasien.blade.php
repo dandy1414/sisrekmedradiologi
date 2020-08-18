@@ -221,8 +221,9 @@ $(document).ready(function() {
         if(bayar > 0 && kembalian > 0){
             $("#kembalian").val(gabung);
         } else {
-            var kembalian = null;
-            $("#kembalian").val(kembalian);
+            var kembalian = 0;
+            var gabung_kosong = rp.concat(kembalian);
+            $("#kembalian").val(gabung_kosong);
         }
     });
 });

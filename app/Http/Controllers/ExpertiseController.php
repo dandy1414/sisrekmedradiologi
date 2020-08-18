@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Auth;
+use PDF;
 
 class ExpertiseController extends Controller
 {
@@ -33,6 +34,20 @@ class ExpertiseController extends Controller
         $pasien = Pasien::where('jenis_pasien', 'rs')->orderBy('created_at', 'desc')->get();
 
         return view('dokterRadiologi.rs.index_pasien_rs', ['pasien'=> $pasien]);
+    }
+
+    public function detailPasienUmum($id){
+        $pasien = Pasien::findOrFail($id);
+        $pemeriksaan = Pemeriksaan::where('pasien_id', $id)->where('status_pemeriksaan', 'selesai')->orderBy('created_at', 'desc')->get();
+
+        return view('radiografer.umum.detail_pasien_umum', ['pasien'=> $pasien, 'pemeriksaan'=> $pemeriksaan]);
+    }
+
+    public function detailPasienRs($id){
+        $pasien = Pasien::findOrFail($id);
+        $pemeriksaan = Pemeriksaan::where('pasien_id', $id)->where('status_pemeriksaan', 'selesai')->orderBy('created_at', 'desc')->get();
+
+        return view('radiografer.rs.detail_pasien_rs', ['pasien'=> $pasien, 'pemeriksaan'=> $pemeriksaan]);
     }
 
     public function indexPemeriksaan(){
@@ -67,7 +82,9 @@ class ExpertiseController extends Controller
 
             DB::commit();
 
-            return redirect()->route('dokterRadiologi.pasien.index-pemeriksaan')->with(['success' => 'Expertise berhasil dikirim']);
+            $pemeriksaan = Pemeriksaan::findOrFail($id);
+
+            return view('hasilExpertise.hasil_expertise', compact('pemeriksaan'));
         }
         catch(QueryException $x){
             DB::rollBack();
@@ -79,6 +96,19 @@ class ExpertiseController extends Controller
     public function detailSuratRujukan($id){
         $pendaftaran = Pendaftaran::findOrFail($id);
 
-        return view('suratRujukan.surat_rujukan_dokterRadiologi', compact('pendaftaran'));
+        return view('suratRujukan.surat', compact('pendaftaran'));
+    }
+
+    public function detailHasilExpertise($id){
+        $pemeriksaan = Pemeriksaan::findOrFail($id);
+
+        return view('hasilExpertise.hasil_expertise', compact('pemeriksaan'));
+    }
+
+    public function hasilExpertise($id){
+        $pemeriksaan = Pemeriksaan::findOrFail($id);
+
+        $pdf = PDF::loadview('hasilExpertise.hasil_expertise_pdf', ['pemeriksaan'=>$pemeriksaan])->setPaper('A4', 'potrait');
+        return $pdf->stream('hasil-expertise'.$pemeriksaan->nomor_pemeriksaan.'.pdf');
     }
 }

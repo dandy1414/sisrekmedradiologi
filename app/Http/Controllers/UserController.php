@@ -20,10 +20,21 @@ class UserController extends Controller
         $this->middleware('auth');
     }
 
-    public function index(User $user){
-        $users = User::orderBy('created_at', 'desc')->get();;
+    public function indexDokter(User $user){
+        $users = User::whereIn('role', ['dokterPoli', 'dokterRadiologi'])->orderBy('created_at', 'desc')->get();
 
-        return view('admin.user.index_user', ['users'=> $users]);
+        return view('admin.user.index_dokter', ['users'=> $users]);
+    }
+
+    public function indexPegawai(User $user){
+        $users = User::whereIn('role',
+        ['kasir',
+        'radiografer',
+        'admin',
+        'resepsionis',
+        ])->orderBy('created_at', 'desc')->get();
+
+        return view('admin.user.index_pegawai', ['users'=> $users]);
     }
 
     public function create(){

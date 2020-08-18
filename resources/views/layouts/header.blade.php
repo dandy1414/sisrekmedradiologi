@@ -64,22 +64,22 @@
                                 {{ Auth::user()->nama }}
                                 @switch(Auth::user()->role)
                                 @case('admin')
-                                <small>Admin</small>
+                                <small><strong>NIP&nbsp;:&nbsp;</strong>{{ Auth::user()->nip }}</small>
                                     @break
                                 @case('resepsionis')
-                                <small>Resepsionis</small>
+                                <small><strong>NIP&nbsp;:&nbsp;</strong>{{ Auth::user()->nip }}</small>
                                     @break
                                 @case('dokterPoli')
-                                <small>Dokter Poli</small>
+                                <small><strong>SIP&nbsp;:&nbsp;</strong>{{ Auth::user()->sip }}</small>
                                     @break
                                 @case('dokterRadiologi')
-                                <small>Dokter Radiologi</small>
+                                <small><strong>SIP&nbsp;:&nbsp;</strong>{{ Auth::user()->sip }}</small>
                                     @break
                                 @case('radiografer')
-                                <small>Radiografer</small>
+                                <small><strong>NIP&nbsp;:&nbsp;</strong>{{ Auth::user()->nip }}</small>
                                     @break
                                 @case('kasir')
-                                <small>Kasir</small>
+                                <small><strong>NIP&nbsp;:&nbsp;</strong>{{ Auth::user()->nip }}</small>
                                     @break
                                 @default
                             @endswitch
