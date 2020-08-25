@@ -67,6 +67,11 @@ class PemeriksaanController extends Controller
     }
 
     public function storePemeriksaanPasien(Request $request, $id){
+        $validator = Validator::make($request->all(),[
+            "hasilFoto" => '|required|file|image|mimes:jpeg,png,gif,webp|max:2048',
+            "film" =>'required',
+        ])->validate();
+
         $pemeriksaan = Pemeriksaan::where('id', $id)->firstOrFail();
         $id_jadwal = $pemeriksaan->id_jadwal;
         $pasien_id = $pemeriksaan->pasien_id;
@@ -77,13 +82,11 @@ class PemeriksaanController extends Controller
         $id_film = $film->id;
         $harga_film = $film->harga;
 
-        $validator = Validator::make($request->all(),[
-            "hasilFoto" => 'required|file|image|mimes:jpeg,png,gif,webp|max:2048'
-        ])->validate();
-
-        DB::beginTransaction();
 
         if($pemeriksaan->jenis_pemeriksaan == 'biasa'){
+            DB::beginTransaction();
+            try
+            {
             $timestamp = date('Y-m-d H:i:s');
             $new_pemeriksaan = Pemeriksaan::findOrFail($id);
             if($pemeriksaan->hasil_foto == null){
@@ -107,8 +110,7 @@ class PemeriksaanController extends Controller
             $total_tarif = $tarif_layanan + $harga_film;
             $new_pemeriksaan->total_tarif = $total_tarif;
             $new_pemeriksaan->save();
-            try
-            {
+
                 $new_tagihan = new Tagihan;
                 $new_tagihan->pasien_id = $pasien_id;
                 $new_tagihan->id_pemeriksaan = $id;
@@ -132,6 +134,9 @@ class PemeriksaanController extends Controller
                 return redirect()->route('radiografer.pasien.pemeriksaan-pasien')->with(['error' => 'Data pemeriksaan gagal diunggah']);
             }
         } else {
+            DB::beginTransaction();
+            try
+            {
             $timestamp = date('Y-m-d H:i:s');
             $new_pemeriksaan = Pemeriksaan::findOrFail($id);
             if($pemeriksaan->hasil_foto == null){
@@ -155,8 +160,7 @@ class PemeriksaanController extends Controller
             $total_tarif = $tarif_layanan + $harga_film;
             $new_pemeriksaan->total_tarif = $total_tarif;
             $new_pemeriksaan->save();
-            try
-            {
+
                 $new_tagihan = new Tagihan;
                 $new_tagihan->pasien_id = $pasien_id;
                 $new_tagihan->id_pemeriksaan = $id;
