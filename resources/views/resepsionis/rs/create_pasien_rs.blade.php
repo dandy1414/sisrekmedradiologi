@@ -39,7 +39,7 @@
                             <div class="col-md-6">
                                 <div class="form-group {{ $errors->first('noRm') ? "has-error": "" }}">
                                     <label>Nomor Rekam Medis :</label>
-                                    <input value="{{ old('noRm') }}" type="text" name="noRm" class="form-control"
+                                    <input value="{{ old('noRm') }}" type="text" name="nomorRm" class="form-control"
                                         placeholder="Nomor Rekam Medis ...">
                                     <span class="help-block">{{ $errors->first('noRm') }}</span>
                                 </div>
@@ -87,7 +87,7 @@
                                 <div class="form-group {{ $errors->first('asalRuangan') ? "has-error": "" }}">
                                     <label>Asal Ruangan :</label>
                                     <select class="form-control select2" name="asalRuangan" style="width: 100%;">
-                                        <option selected>Silahkan pilih salah satu</option>
+                                        <option selected disabled>Silahkan pilih salah satu</option>
                                         @foreach ($ruangan as $r)
                                         <option value="{{ $r->id_ruangan }}"
                                             {{ old('asalRuangan') == $r->id_ruangan ? "selected" : "" }}>
@@ -115,7 +115,7 @@
                                 <div class="form-group {{ $errors->first('jenisAsuransi') ? "has-error": "" }}">
                                     <label>Jenis Asuransi :</label>
                                     <select onchange="yesnoSelectAsuransi()" class="form-control select2" name="jenisAsuransi" style="width: 100%;">
-                                        <option selected>Silahkan pilih salah satu</option>
+                                        <option selected disabled>Silahkan pilih salah satu</option>
                                         <option id="noSelectAsuransi" value="umum"
                                             {{ old('jenisAsuransi') == 'umum' ? "selected" : "" }}>
                                             Umum</option>

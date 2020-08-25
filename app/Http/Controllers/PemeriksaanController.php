@@ -78,7 +78,7 @@ class PemeriksaanController extends Controller
         $harga_film = $film->harga;
 
         $validator = Validator::make($request->all(),[
-            "hasilFoto" => 'file|image|mimes:jpeg,png,gif,webp|max:2048'
+            "hasilFoto" => 'required|file|image|mimes:jpeg,png,gif,webp|max:2048'
         ])->validate();
 
         DB::beginTransaction();

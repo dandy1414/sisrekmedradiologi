@@ -8,14 +8,14 @@
         List Dokter
     </h1>
     <ol class="breadcrumb" style="margin-top: 58px">
-        <li><a href="#"><i class="fa fa-users"></i> Dokter</a></li>
+        <li><a href="#"><i class="fa fa-user-md"></i> Dokter</a></li>
     </ol>
 </section>
 
 <div class="row">
     <div class="col-xs-8">
         <div class="btn-group" style="float: left; margin-left: 15px; margin-top: 20px">
-            <button class="btn btn-success" onclick="window.location='{{ route('user.create') }}'"><span class="fa fa-user-plus" style="margin-right: 5px"></span>Tambah User</button>
+            <button class="btn btn-success" onclick="window.location='{{ route('dokter.create') }}'"><span class="fa fa-user-plus" style="margin-right: 5px"></span>Tambah Dokter</button>
         </div>
         <div class="btn-group" style="float: left; margin-left: 10px; margin-top: 20px">
             <button class="btn btn-warning" onclick="window.location='{{ route('user.trash') }}'"><span class="fa fa-trash" style="margin-right: 5px"></span>Tempat Sampah</button>
@@ -60,11 +60,11 @@
                             <tr>
                                 <th>No.</th>
                                 <th>Username</th>
+                                <th>SIP</th>
                                 <th>Nama</th>
                                 <th>Email</th>
                                 <th>Role</th>
-                                <th>SIP</th>
-                                <th>Nama</th>
+                                <th>Spesialis</th>
                                 <th>Jenis Kelamin</th>
                                 <th>Alamat</th>
                                 <th>Nomor Telepon</th>
@@ -76,6 +76,7 @@
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $user->name }}</td>
+                                <td>{{ $user->sip }}</td>
                                 <td>{{ $user->nama }}</td>
                                 <td>{{ $user->email }}</td>
                                 <td>
@@ -85,10 +86,43 @@
                                     Dokter Radiologi
                                     @endif
                                 </td>
-                                <td>{{ $user->sip == null ? '-' : $user->sip }}</td>
-                                <td>{{ $user->nama }}</td>
+                                <td>
+                                    @if ($user->spesialis == 'umum')
+                                    Dokter Umum
+                                    @endif
+                                    @if ($user->spesialis == 'obgyn')
+                                    Spesialis Obgyn
+                                    @endif
+                                    @if ($user->spesialis == 'syaraf')
+                                    Spesialis Syaraf
+                                    @endif
+                                    @if ($user->spesialis == 'jiwa')
+                                    Spesialis Jiwa
+                                    @endif
+                                    @if ($user->spesialis == 'gigi')
+                                    Dokter Gigi
+                                    @endif
+                                    @if ($user->spesialis == 'penyakit_dalam')
+                                    Spesialis Penyakit Dalam
+                                    @endif
+                                    @if ($user->spesialis == 'penyakit_mulut')
+                                    Spesialis Penyakit Mulut
+                                    @endif
+                                    @if ($user->spesialis == 'anak')
+                                    Spesialis Anak
+                                    @endif
+                                    @if ($user->spesialis == 'mata')
+                                    Spesialis Mata
+                                    @endif
+                                    @if ($user->spesialis == 'anasthesi')
+                                    Spesialis Anasthesi
+                                    @endif
+                                    @if ($user->spesialis == 'radiologi')
+                                    Dokter Radiologi
+                                    @endif
+                                </td>
                                 <td>{{ ucfirst($user->jenis_kelamin) }}</td>
-                                <td>{{ $user->alamat }}</td>
+                                <td>{{ ucfirst($user->alamat) }}</td>
                                 <td>{{ $user->nomor_telepon }}</td>
                                 <td>
                                     <div class="input-group margin">
@@ -98,11 +132,11 @@
                                                 <span class="fa fa-caret-down"></span>
                                             </button>
                                             <ul class="dropdown-menu">
-                                                <li><a href="#">Detail User</a></li>
-                                                <li><a href="{{ route('user.edit',
-                                                    ['id'=>$user->id]) }}">Edit User</a></li>
+                                                <li><a href="#">Detail Dokter</a></li>
+                                                <li><a href="{{ route('dokter.edit',
+                                                    ['id'=>$user->id]) }}">Edit Dokter</a></li>
                                                 <li><a href="{{ route('user.delete',
-                                                    ['id'=>$user->id]) }}">Hapus User</a></li>
+                                                    ['id'=>$user->id]) }}">Hapus Dokter</a></li>
                                             </ul>
                                         </div>
                                     </div>

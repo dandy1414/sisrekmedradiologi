@@ -48,8 +48,8 @@
                   </span>
                 </a>
                 <ul class="treeview-menu">
-                  <li class="{{ (request()->is('admin/user/index-dokter')) ? 'active' : '' }}"><a href="{{ route('dokter.index') }}"><i class="fa fa-user-md"></i> Dokter</a></li>
-                  <li class="{{ (request()->is('admin/user/index-pegawai')) ? 'active' : '' }}"><a href="{{ route('pegawai.index') }}"><i class="fa fa-users"></i> Pegawai</a></li>
+                  <li class="{{ (request()->is('admin/user/index/dokter')) ? 'active' : '' }}"><a href="{{ route('dokter.index') }}"><i class="fa fa-user-md"></i> Dokter</a></li>
+                  <li class="{{ (request()->is('admin/user/index/pegawai')) ? 'active' : '' }}"><a href="{{ route('pegawai.index') }}"><i class="fa fa-users"></i> Pegawai</a></li>
                 </ul>
               </li>
             <li class="{{ (request()->is('admin/pelayanan/*')) ? 'active' : '' }}">

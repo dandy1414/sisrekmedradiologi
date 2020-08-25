@@ -8,7 +8,7 @@
         Edit User
     </h1>
     <ol class="breadcrumb">
-        <li><a href="{{ route('user.index') }}"><i class="fa fa-users"></i> User</a></li>
+        <li><a href="{{ route('pegawai.index') }}"><i class="fa fa-users"></i> Pegawai</a></li>
         <li class="active">Edit User</li>
     </ol>
 </section>
@@ -31,7 +31,22 @@
 
     <div class="row">
         <div class="col-xs-12">
-            <form method="POST" action="{{ route('user.update', ['id' => $user->id]) }}" enctype="multipart/form-data">
+            <div class="alert alert-info alert-dismissable">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
+                <h4>
+                    <i class="icon fa fa-info"></i>
+                    Aturan
+                </h4>
+                - Username harus kombinasi angka dan huruf <br>
+                - Password harus berisi 6 karakter <br>
+                - Password harus kombinasi angka dan huruf <br>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12">
+            <form method="POST" action="{{ route('pegawai.update', ['id' => $user->id]) }}" enctype="multipart/form-data">
                 @csrf
 
                 {{ method_field('PUT') }}
@@ -76,6 +91,27 @@
                                     <span class="help-block">{{ $errors->first('role') }}</span>
                                 </div>
 
+                                {{--  <div class="form-group {{ $errors->first('jabatan') ? "has-error": "" }}">
+                                    <label>Jabatan :</label>
+                                    <select class="form-control select2" name="jabatan" style="width: 100%;">
+                                        <option selected disabled>Silahkan pilih salah satu</option>
+                                        <option value="resepsionis"
+                                            {{ old('jabatan') == 'resepsionis' ? "selected" : "" }}>
+                                            Resepsionis</option>
+                                        <option value="radiografer"
+                                            {{ old('jabatan') == 'radiografer' ? "selected" : "" }}>
+                                            Radiografer</option>
+                                        <option value="dokterPoli" {{ old('jabatan') == 'dokterPoli' ? "selected" : "" }}>
+                                            Dokter Poli</option>
+                                        <option value="dokterRadiologi"
+                                            {{ old('jabatan') == 'dokterRadiologi' ? "selected" : "" }}>Dokter Radiologi
+                                        </option>
+                                        <option value="kasir" {{ old('jabatan') == 'kasir' ? "selected" : "" }}>Kasir
+                                        </option>
+                                    </select>
+                                    <span class="help-block">{{ $errors->first('jabatan') }}</span>
+                                </div>  --}}
+
                                 <div class="form-group {{ $errors->first('nama') ? "has-error": "" }}">
                                     <label>Nama :</label>
                                     <input value="{{ $user->nama }}" type="text" name="nama"
@@ -86,12 +122,12 @@
                             </div>
 
                             <div class="col-md-6">
-                                <div class="form-group {{ $errors->first('nomorInduk') ? "has-error": "" }}">
-                                    <label>SIP/NIP :</label>
-                                    <input value="{{ $user->sip == null ? $user->nip : $user->sip }}" type="text" name="nomorInduk"
-                                        class="form-control {{$errors->first('nomorInduk') ? "is-invalid" : ""}}"
-                                        placeholder="SIP/NIP ...">
-                                    <span class="help-block">{{ $errors->first('nomorInduk') }}</span>
+                                <div class="form-group {{ $errors->first('nip') ? "has-error": "" }}">
+                                    <label>NIP :</label>
+                                    <input value="{{ old('nip') }}" type="text" name="nip"
+                                        class="form-control {{$errors->first('nip') ? "is-invalid" : ""}}"
+                                        placeholder="NIP ...">
+                                    <span class="help-block">{{ $errors->first('nip') }}</span>
                                 </div>
 
                                 <div class="form-group {{ $errors->first('jenisKelamin') ? "has-error": "" }}">

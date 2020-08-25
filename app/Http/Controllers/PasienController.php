@@ -66,13 +66,14 @@ class PasienController extends Controller
 
     public function storePasienUmum(Request $request){
         $validator = Validator::make($request->all(),[
+            "nomorRm" => "required|max:6|unique:trans_pasien,nomor_rm",
             "nama" => "required|min:3|max:100",
-            "nomorKtp" => "required|digits_between:10,12|unique:trans_pasien,nomor_ktp",
+            "nomorKtp" => "required|max:16|unique:trans_pasien,nomor_ktp",
             "umur" => "required|numeric",
             "jenisKelamin" => "required",
             "alamat" => "required|min:5|max:200",
             "nomorTelepon" => "required|digits_between:10,12|unique:trans_pasien,nomor_telepon",
-            "jenisAsuransi" => "required"
+            "jenisAsuransi" => "required",
         ])->validate();
 
     DB::beginTransaction();
@@ -80,6 +81,7 @@ class PasienController extends Controller
     try{
         $new_pasien = new \App\Models\Pasien;
         $new_pasien->nomor_ktp = $request->nomorKtp;
+        $new_pasien->nomor_rm = $request->nomorRm;
         $new_pasien->nama = $request->nama;
         $new_pasien->jenis_pasien = "umum";
         $new_pasien->umur = $request->umur;
@@ -103,9 +105,9 @@ class PasienController extends Controller
 
     public function storePasienRs(Request $request){
         $validator = Validator::make($request->all(),[
-            "noRm" => "required|unique:trans_pasien,nomor_rm",
+            "nomorRm" => "required|max:6|unique:trans_pasien,nomor_rm",
             "nama" => "required|min:3|max:100",
-            "nomorKtp" => "required|digits_between:10,12|unique:trans_pasien,nomor_ktp",
+            "nomorKtp" => "required|max:16|unique:trans_pasien,nomor_ktp",
             "umur" => "required|numeric",
             "asalRuangan" => "required",
             "jenisKelamin" => "required",
@@ -118,7 +120,7 @@ class PasienController extends Controller
 
         try{
             $new_pasien = new \App\Models\Pasien;
-            $new_pasien->nomor_rm = $request->noRm;
+            $new_pasien->nomor_rm = $request->nomorRm;
             $new_pasien->nomor_ktp = $request->nomorKtp;
             $new_pasien->nama = $request->nama;
             $new_pasien->jenis_pasien = "rs";
@@ -159,12 +161,13 @@ class PasienController extends Controller
 
     public function updatePasienUmum(Request $request, $id){
         $validator = Validator::make($request->all(),[
+            "noRm" => "required|max:6|unique:trans_pasien,nomor_rm,". $id,
             "nama" => "required|min:3|max:100",
-            "nomorKtp" => "required|digits_between:10,12",
+            "nomorKtp" => "required|max:16|unique:trans_pasien,nomor_ktp,". $id,
             "umur" => "required|numeric",
             "jenisKelamin" => "required",
             "alamat" => "required|min:5|max:200",
-            "nomorTelepon" => "required|digits_between:10,12",
+            "nomorTelepon" => "required|digits_between:10,12|unique:trans_pasien,nomor_telepon,". $id,
             "jenisAsuransi" => "required"
         ])->validate();
 
@@ -198,12 +201,13 @@ class PasienController extends Controller
 
     public function updatePasienRs(Request $request, $id){
         $validator = Validator::make($request->all(),[
+            "noRm" => "required|max:6|unique:trans_pasien,nomor_rm,". $id,
             "nama" => "required|min:3|max:100",
-            "nomorKtp" => "required|digits_between:10,12",
+            "nomorKtp" => "required|max:6|unique:trans_pasien,nomor_ktp,". $id,
             "umur" => "required|numeric",
             "jenisKelamin" => "required",
             "alamat" => "required|min:5|max:200",
-            "nomorTelepon" => "required|digits_between:10,12",
+            "nomorTelepon" => "required|digits_between:10,12|unique:trans_pasien,nomor_telepon,". $id,
             "jenisAsuransi" => "required"
         ])->validate();
 

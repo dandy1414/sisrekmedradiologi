@@ -1,11 +1,11 @@
 @extends('layouts.global')
 
-@section('title')Tambah Pasien Baru @endsection
+@section('title')Tambah Pasien Umum Baru @endsection
 
 @section('content')
 <section class="content-header" style="margin-top: 50px;">
     <h1>
-        Tambah Pasien Baru
+        Tambah Pasien Umum Baru
     </h1>
     <ol class="breadcrumb">
         <li><a href="{{ route('pasien.index-pasien-umum') }}"><i class="fa fa-users"></i> Pasien Umum</a>
@@ -37,6 +37,13 @@
                     <div class="box-body">
                         <div class="row">
                             <div class="col-md-6">
+                                <div class="form-group {{ $errors->first('nomorRm') ? "has-error": "" }}">
+                                    <label>Nomor Rekam Medis :</label>
+                                    <input value="{{ old('nomorRm') }}" type="text" name="nomorRm" class="form-control"
+                                        placeholder="Nomor Rekam Medis ...">
+                                    <span class="help-block">{{ $errors->first('nomorRm') }}</span>
+                                </div>
+
                                 <div class="form-group {{ $errors->first('nomorKtp') ? "has-error": "" }}">
                                     <label>Nomor KTP :</label>
                                     <input value="{{ old('nomorKtp') }}" type="text" name="nomorKtp" class="form-control"
@@ -95,7 +102,7 @@
                                 <div class="form-group {{ $errors->first('jenisAsuransi') ? "has-error": "" }}">
                                     <label>Jenis Asuransi :</label>
                                     <select onchange="yesnoSelectAsuransi()" class="form-control select2" name="jenisAsuransi" style="width: 100%;">
-                                        <option selected>Silahkan pilih salah satu</option>
+                                        <option selected disabled>Silahkan pilih salah satu</option>
                                         <option id="noSelectAsuransi" value="umum"
                                             {{ old('jenisAsuransi') == 'umum' ? "selected" : "" }}>
                                             Umum</option>

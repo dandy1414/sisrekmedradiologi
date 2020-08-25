@@ -15,7 +15,7 @@
 <div class="row">
     <div class="col-xs-8">
         <div class="btn-group" style="float: left; margin-left: 15px; margin-top: 20px">
-            <button class="btn btn-success" onclick="window.location='{{ route('user.create') }}'"><span class="fa fa-user-plus" style="margin-right: 5px"></span>Tambah User</button>
+            <button class="btn btn-success" onclick="window.location='{{ route('pegawai.create') }}'"><span class="fa fa-user-plus" style="margin-right: 5px"></span>Tambah Pegawai</button>
         </div>
         <div class="btn-group" style="float: left; margin-left: 10px; margin-top: 20px">
             <button class="btn btn-warning" onclick="window.location='{{ route('user.trash') }}'"><span class="fa fa-trash" style="margin-right: 5px"></span>Tempat Sampah</button>
@@ -60,11 +60,11 @@
                             <tr>
                                 <th>No.</th>
                                 <th>Username</th>
+                                <th>NIP</th>
                                 <th>Nama</th>
                                 <th>Email</th>
                                 <th>Role</th>
-                                <th>NIP</th>
-                                <th>Nama</th>
+                                <th>Jabatan</th>
                                 <th>Jenis Kelamin</th>
                                 <th>Alamat</th>
                                 <th>Nomor Telepon</th>
@@ -76,6 +76,7 @@
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $user->name }}</td>
+                                <td>{{ $user->nip }}</td>
                                 <td>{{ $user->nama }}</td>
                                 <td>{{ $user->email }}</td>
                                 <td>
@@ -92,10 +93,22 @@
                                     Kasir
                                     @endif
                                 </td>
-                                <td>{{ $user->nip == null ? '-' : $user->nip }}</td>
-                                <td>{{ $user->nama }}</td>
+                                <td>
+                                    @if ($user->jabatan == 'pendaftaran_ri')
+                                    Resepsionis Pendaftaran Rawat Inap
+                                    @endif
+                                    @if ($user->jabatan == 'pendaftaran_rj')
+                                    Resepsionis Pendaftaran Rawat Jalan
+                                    @endif
+                                    @if ($user->jabatan == 'radiografer')
+                                    Radiografer
+                                    @endif
+                                    @if ($user->jabatan == 'kasir')
+                                    Kasir
+                                    @endif
+                                </td>
                                 <td>{{ ucfirst($user->jenis_kelamin) }}</td>
-                                <td>{{ $user->alamat }}</td>
+                                <td>{{ ucfirst($user->alamat) }}</td>
                                 <td>{{ $user->nomor_telepon }}</td>
                                 <td>
                                     <div class="input-group margin">
@@ -105,11 +118,11 @@
                                                 <span class="fa fa-caret-down"></span>
                                             </button>
                                             <ul class="dropdown-menu">
-                                                <li><a href="#">Detail User</a></li>
-                                                <li><a href="{{ route('user.edit',
-                                                    ['id'=>$user->id]) }}">Edit User</a></li>
+                                                <li><a href="#">Detail Pegawai</a></li>
+                                                <li><a href="{{ route('pegawai.edit',
+                                                    ['id'=>$user->id]) }}">Edit Pegawai</a></li>
                                                 <li><a href="{{ route('user.delete',
-                                                    ['id'=>$user->id]) }}">Hapus User</a></li>
+                                                    ['id'=>$user->id]) }}">Hapus Pegawai</a></li>
                                             </ul>
                                         </div>
                                     </div>

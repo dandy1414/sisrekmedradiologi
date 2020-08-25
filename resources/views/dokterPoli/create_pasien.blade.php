@@ -116,7 +116,7 @@
                                 <div class="form-group {{ $errors->first('jenisAsuransi') ? "has-error": "" }}">
                                     <label>Jenis Asuransi :</label>
                                     <select onchange="yesnoSelectAsuransi()" class="form-control select2" name="jenisAsuransi" style="width: 100%;">
-                                        <option selected>Silahkan pilih salah satu</option>
+                                        <option selected disabled>Silahkan pilih salah satu</option>
                                         <option id="noSelectAsuransi" value="umum"
                                             {{ old('jenisAsuransi') == 'umum' ? "selected" : "" }}>
                                             Umum</option>

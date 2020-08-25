@@ -36,6 +36,11 @@
                     <h3 class="box-title">Data Pasien</h3>
                 </div>
                 <div class="box-body">
+                    <strong><i class="fa fa-book margin-r-5"></i> Nomor Rekam Medis : </strong>
+                    <p class="text-muted">
+                        {{ $pasien->nomor_rm }}
+                    </p>
+
                     <strong><i class="fa fa-book margin-r-5"></i> Nama : </strong>
                     <p class="text-muted">
                         {{ $pasien->nama }}
@@ -106,13 +111,20 @@
                         </div>
 
                         <div class="form-group {{ $errors->first('layanan') ? "has-error": "" }}">
-                            <label>Layanan :</label>
+                            <label>Layanan Kategori Rontgen :</label>
                             <select class="form-control select2" name="layanan" style="width: 100%;">
+                                <option selected disabled>Silahkan pilih salah satu</option>
                                 @foreach ($layanan_rontgen as $lr)
                                 <option value="{{ $lr->id }}" {{ old('layanan') == $lr->id ? "selected" : "" }}>
                                     {{ $lr->nama }}</option>
                                 @endforeach
-
+                            </select>
+                            <span class="help-block">{{ $errors->first('layanan') }}</span>
+                        </div>
+                        <div class="form-group {{ $errors->first('layanan') ? "has-error": "" }}">
+                            <label>Layanan Kategori USG :</label>
+                            <select class="form-control select2" name="layanan" style="width: 100%;">
+                                <option selected disabled>Silahkan pilih salah satu</option>
                                 @foreach ($layanan_usg as $lu)
                                 <option value="{{ $lu->id }}" {{ old('layanan') == $lu->id ? "selected" : "" }}>
                                     {{ $lu->nama }}</option>

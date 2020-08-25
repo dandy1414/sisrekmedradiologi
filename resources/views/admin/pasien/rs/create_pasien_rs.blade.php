@@ -1,11 +1,11 @@
 @extends('layouts.global')
 
-@section('title')Tambah Pasien Baru @endsection
+@section('title')Tambah Pasien Rumah Sakit Baru @endsection
 
 @section('content')
 <section class="content-header" style="margin-top: 50px;">
     <h1>
-        Tambah Pasien Baru
+        Tambah Pasien Rumah Sakit Baru
     </h1>
     <ol class="breadcrumb">
         <li><a href="{{ route('pasien.index-pasien-rs') }}"><i class="fa fa-users"></i> Pasien RS</a></li>
@@ -37,11 +37,11 @@
                     <div class="box-body">
                         <div class="row">
                             <div class="col-md-6">
-                                <div class="form-group {{ $errors->first('noRm') ? "has-error": "" }}">
+                                <div class="form-group {{ $errors->first('nomorRm') ? "has-error": "" }}">
                                     <label>Nomor Rekam Medis :</label>
-                                    <input value="{{ old('noRm') }}" type="text" name="noRm" class="form-control"
+                                    <input value="{{ old('nomorRm') }}" type="text" name="nomorRm" class="form-control"
                                         placeholder="Nomor Rekam Medis ...">
-                                    <span class="help-block">{{ $errors->first('noRm') }}</span>
+                                    <span class="help-block">{{ $errors->first('nomorRm') }}</span>
                                 </div>
 
                                 <div class="form-group {{ $errors->first('nomorKtp') ? "has-error": "" }}">
@@ -87,7 +87,7 @@
                                 <div class="form-group {{ $errors->first('asalRuangan') ? "has-error": "" }}">
                                     <label>Asal Ruangan :</label>
                                     <select class="form-control select2" name="asalRuangan" style="width: 100%;">
-                                        <option selected>Silahkan pilih salah satu</option>
+                                        <option selected disabled>Silahkan pilih salah satu</option>
                                         @foreach ($ruangan as $r)
                                         <option value="{{ $r->id_ruangan }}"
                                             {{ old('asalRuangan') == $r->id_ruangan ? "selected" : "" }}>
@@ -115,7 +115,7 @@
                                 <div class="form-group {{ $errors->first('jenisAsuransi') ? "has-error": "" }}">
                                     <label>Jenis Asuransi :</label>
                                     <select onchange="yesnoSelectAsuransi()" class="form-control select2" name="jenisAsuransi" style="width: 100%;">
-                                        <option selected>Silahkan pilih salah satu</option>
+                                        <option selected disabled>Silahkan pilih salah satu</option>
                                         <option id="noSelectAsuransi" value="umum"
                                             {{ old('jenisAsuransi') == 'umum' ? "selected" : "" }}>
                                             Umum</option>

@@ -90,6 +90,7 @@ class RujukanController extends Controller
 
     public function updatePasien(Request $request, $id){
         $validator = Validator::make($request->all(),[
+            "noRm" => "required|unique:trans_pasien,nomor_rm",
             "nama" => "required|min:3|max:100",
             "nomorKtp" => "required|digits_between:10,12",
             "umur" => "required|numeric",
