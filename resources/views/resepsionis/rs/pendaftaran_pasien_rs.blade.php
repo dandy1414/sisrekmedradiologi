@@ -9,7 +9,7 @@
     </h1>
     <ol class="breadcrumb">
         <li><a href="{{ route('resepsionis.pasien.index-pasien-rs') }}"><i class="fa fa-users"></i> Pasien RS</a>
-        <li><a href="#"><i class="fa fa-users"></i> Pendaftaran Pemeriksaan Pasien Umum</a>
+        <li><a href="#"> Pendaftaran Pemeriksaan Pasien Umum</a>
     </ol>
 </section>
 
@@ -36,61 +36,53 @@
                     <h3 class="box-title">Data Pasien</h3>
                 </div>
                 <div class="box-body">
-                    <strong><i class="fa fa-book margin-r-5"></i> Nomor Rekam Medis : </strong>
-                    <p class="text-muted">
-                        {{ $pasien->nomor_rm }}
-                    </p>
+                    <strong><i class="fa fa-medkit"></i> Nomor Rekam Medis :</strong>
 
-                    <strong><i class="fa fa-book margin-r-5"></i> Nama : </strong>
-                    <p class="text-muted">
-                        {{ $pasien->nama }}
-                    </p>
+                    <p class="text-muted">{{ $pasien->nomor_rm }}</p>
 
-                    <strong><i class="fa fa-book margin-r-5"></i> Nomor KTP : </strong>
-                    <p class="text-muted">
-                        {{ $pasien->nomor_ktp }}
-                    </p>
+                    <strong><i class="fa fa-credit-card"></i> Nomor KTP :</strong>
 
-                    <strong><i class="fa fa-book margin-r-5"></i> Umur : </strong>
-                    <p class="text-muted">
-                        {{ $pasien->umur }} Tahun
-                    </p>
+                    <p class="text-muted">{{ $pasien->nomor_ktp }}</p>
 
-                    <strong><i class="fa fa-book margin-r-5"></i> Jenis Kelamin : </strong>
-                    <p class="text-muted">
-                        {{ $pasien->jenis_kelamin }}
-                    </p>
+                    <strong><i class="fa fa-user"></i> Nama :</strong>
 
-                    <strong><i class="fa fa-book margin-r-5"></i> Alamat : </strong>
-                    <p class="text-muted">
-                        {{ ucfirst($pasien->alamat) }}
-                    </p>
+                    <p class="text-muted">{{ $pasien->nama }}</p>
 
-                    <strong><i class="fa fa-book margin-r-5"></i> Nomor Telepon : </strong>
-                    <p class="text-muted">
-                        {{ $pasien->jenis_kelamin }}
-                    </p>
+                    <strong><i class="fa fa-user"></i> Jenis Kelamin :</strong>
 
-                    <strong><i class="fa fa-book margin-r-5"></i> Asal Ruangan : </strong>
-                    <p class="text-muted">
-                        {{ $pasien->ruangan->nama_ruangan }}
-                    </p>
+                    <p class="text-muted">{{ ucfirst($pasien->jenis_kelamin) }}</p>
 
-                    <strong><i class="fa fa-book margin-r-5"></i> Jenis Asuransi : </strong>
-                    <p class="text-muted">
-                        {{ ucfirst($pasien->jenis_asuransi) }}
-                    </p>
+                    <strong><i class="fa fa-user"></i> Umur :</strong>
 
-                    <strong><i class="fa fa-book margin-r-5"></i> Nomor BPJS : </strong>
+                    <p class="text-muted">{{ $pasien->umur }} tahun</p>
+
+                    <strong><i class="fa fa-home"></i> Alamat :</strong>
+
+                    <p class="text-muted">{{ ucfirst($pasien->alamat) }}</p>
+
+                    <strong><i class="fa fa-phone"></i> Nomor telepon :</strong>
+
+                    <p class="text-muted">{{ $pasien->nomor_telepon }}</p>
+
+                    <strong><i class="fa fa-hospital-o"></i> Asal Ruangan / Kelas :</strong>
+
+                    <p class="text-muted">{{ $pasien->ruangan->nama_ruangan }} / {{ $pasien->ruangan->kelas }}</p>
+
+                    <strong><i class="fa fa-institution"></i> Jenis Asuransi :</strong>
+
+                    <p class="text-muted">{{ ucfirst($pasien->jenis_asuransi) }}</p>
+
+                    <strong><i class="fa fa-bars"></i> Nomor BPJS :</strong>
+
                     <p class="text-muted">
-                        {{ ($pasien->jenis_asuransi) != 'bpjs' ? "-" : ucfirst($pasien->nomor_bpjs) }}
-                    </p>
+                        {{ ($pasien->nomor_bpjs) != null ? $pasien->nomor_bpjs : "-" }}</p>
                 </div>
             </div>
         </div>
 
         <div class="col-md-6">
-            <form method="POST" action="{{ route('resepsionis.pasien.store.pendaftaran.pasien-rs', ['id' => $pasien->id]) }}"
+            <form method="POST"
+                action="{{ route('resepsionis.pasien.store.pendaftaran.pasien-rs', ['id' => $pasien->id]) }}"
                 enctype="multipart/form-data">
                 @csrf
                 <div class="box box-success" style="position: relative;">
@@ -116,103 +108,103 @@
                         </div>
 
                         {{--  <div class="form-group {{ $errors->first('cito') ? "has-error" : "" }}">
-                            <label>CITO :</label>
-                            <div class="radio">
-                                <label>
-                                    <input type="radio" name="cito" id="ya" value="iya"
-                                        {{ old('cito') == 'iya' ? "checked" : "" }}>
-                                    Ya
-                                </label>
-                                <label>
-                                    <input type="radio" name="cito" id="tidak" value="tidak"
-                                        {{ old('cito') == 'tidak' ? "checked" : "" }}>
-                                    Tidak
-                                </label>
-                                <span class="help-block">{{ $errors->first('cito') }}</span>
-                            </div>
-                        </div>  --}}
+                        <label>CITO :</label>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="cito" id="ya" value="iya"
+                                    {{ old('cito') == 'iya' ? "checked" : "" }}>
+                                Ya
+                            </label>
+                            <label>
+                                <input type="radio" name="cito" id="tidak" value="tidak"
+                                    {{ old('cito') == 'tidak' ? "checked" : "" }}>
+                                Tidak
+                            </label>
+                            <span class="help-block">{{ $errors->first('cito') }}</span>
+                        </div>
+                    </div> --}}
 
-                        <div class="form-group {{ $errors->first('layanan') ? "has-error": "" }}">
-                            <label>Layanan Kategori Rontgen :</label>
-                            <select class="form-control select2" name="layanan" style="width: 100%;">
-                                <option selected disabled>Silahkan pilih salah satu</option>
-                                @foreach ($layanan_rontgen as $lr)
-                                <option value="{{ $lr->id }}" {{ old('layanan') == $lr->id ? "selected" : "" }}>
-                                    {{ $lr->nama }}</option>
-                                @endforeach
-                            </select>
-                            <span class="help-block">{{ $errors->first('layanan') }}</span>
-                        </div>
-                        <div class="form-group {{ $errors->first('layanan') ? "has-error": "" }}">
-                            <label>Layanan Kategori USG :</label>
-                            <select class="form-control select2" name="layanan" style="width: 100%;">
-                                <option selected disabled>Silahkan pilih salah satu</option>
-                                @foreach ($layanan_usg as $lu)
-                                <option value="{{ $lu->id }}" {{ old('layanan') == $lu->id ? "selected" : "" }}>
-                                    {{ $lu->nama }}</option>
-                                @endforeach
-                            </select>
-                            <span class="help-block">{{ $errors->first('layanan') }}</span>
-                        </div>
-
-                        <div class="form-group {{ $errors->first('jadwal') ? "has-error" : "" }}">
-                            <label>Jadwal :</label>
-                            <select class="form-control select2" name="jadwal" style="width: 100%;">
-                                <option selected disabled>Silahkan pilih salah satu</option>
-                                @foreach ($jadwal as $j)
-                                <option value="{{ $j->id }}" {{ old('jadwal') == $j->id ? "selected" : "" }}>
-                                    {{ $j->waktu_mulai }} - {{ $j->waktu_selesai }}</option>
-                                @endforeach
-                            </select>
-                            <span class="help-block">{{ $errors->first('jadwal') }}</span>
-                        </div>
-
-                        <div class="form-group {{ $errors->first('dokterPerujuk') ? "has-error" : "" }}">
-                            <label>Dokter Perujuk :</label>
-                            <select class="form-control select2" name="dokterPerujuk" style="width: 100%;">
-                                <option selected disabled>Silahkan pilih salah satu</option>
-                                @foreach ($dokter_poli as $dp)
-                                <option value="{{ $dp->id }}" {{ old('dokterPerujuk') == $dp->id ? "selected" : "" }}>
-                                    {{ $dp->nama }}</option>
-                                @endforeach
-                            </select>
-                            <span class="help-block">{{ $errors->first('dokterPerujuk') }}</span>
-                        </div>
-
-                        <div class="form-group {{ $errors->first('dokterRujukan') ? "has-error": "" }}">
-                            <label>Dokter Rujukan :</label>
-                            <select class="form-control select2" name="dokterRujukan" style="width: 100%;">
-                                <option selected disabled>Silahkan pilih salah satu</option>
-                                @foreach ($dokter_radiologi as $dr)
-                                <option value="{{ $dr->id }}" {{ old('dokterRujukan') == $dr->id ? "selected" : "" }}>
-                                    {{ $dr->nama }}</option>
-                                @endforeach
-                            </select>
-                            <span class="help-block">{{ $errors->first('dokterRujukan') }}</span>
-                        </div>
-
-                        <div class="form-group {{ $errors->first('keluhan') ? "has-error": "" }}">
-                            <label>Keluhan :</label>
-                            <input value="{{ old('nama') }}" type="text" name="keluhan" class="form-control"
-                                placeholder="Keluhan ...">
-                            <span class="help-block">{{ $errors->first('keluhan') }}</span>
-                        </div>
-
-                        <div class="form-group {{ $errors->first('permintaan') ? "has-error": "" }}">
-                            <label>Informasi Tambahan/Permintaan Tambahan :</label>
-                            <input value="{{ old('permintaan') }}" type="text" name="permintaan" class="form-control"
-                                placeholder="Informasi tambahan  ...">
-                            <span class="help-block">{{ $errors->first('permintaan') }}</span>
-                        </div>
+                    <div class="form-group {{ $errors->first('layanan') ? "has-error": "" }}">
+                        <label>Layanan Kategori Rontgen :</label>
+                        <select class="form-control select2" name="layanan" style="width: 100%;">
+                            <option selected disabled>Silahkan pilih salah satu</option>
+                            @foreach ($layanan_rontgen as $lr)
+                            <option value="{{ $lr->id }}" {{ old('layanan') == $lr->id ? "selected" : "" }}>
+                                {{ $lr->nama }}</option>
+                            @endforeach
+                        </select>
+                        <span class="help-block">{{ $errors->first('layanan') }}</span>
                     </div>
-                    <div class="box-footer">
-                        <div class="form-group">
-                            <button type="submit" class="btn btn-success">Daftarkan Pasien</button>
-                        </div>
+                    <div class="form-group {{ $errors->first('layanan') ? "has-error": "" }}">
+                        <label>Layanan Kategori USG :</label>
+                        <select class="form-control select2" name="layanan" style="width: 100%;">
+                            <option selected disabled>Silahkan pilih salah satu</option>
+                            @foreach ($layanan_usg as $lu)
+                            <option value="{{ $lu->id }}" {{ old('layanan') == $lu->id ? "selected" : "" }}>
+                                {{ $lu->nama }}</option>
+                            @endforeach
+                        </select>
+                        <span class="help-block">{{ $errors->first('layanan') }}</span>
+                    </div>
+
+                    <div class="form-group {{ $errors->first('jadwal') ? "has-error" : "" }}">
+                        <label>Jadwal :</label>
+                        <select class="form-control select2" name="jadwal" style="width: 100%;">
+                            <option selected disabled>Silahkan pilih salah satu</option>
+                            @foreach ($jadwal as $j)
+                            <option value="{{ $j->id }}" {{ old('jadwal') == $j->id ? "selected" : "" }}>
+                                {{ $j->waktu_mulai }} WIB - {{ $j->waktu_selesai }} WIB</option>
+                            @endforeach
+                        </select>
+                        <span class="help-block">{{ $errors->first('jadwal') }}</span>
+                    </div>
+
+                    <div class="form-group {{ $errors->first('dokterPerujuk') ? "has-error" : "" }}">
+                        <label>Dokter Perujuk :</label>
+                        <select class="form-control select2" name="dokterPerujuk" style="width: 100%;">
+                            <option selected disabled>Silahkan pilih salah satu</option>
+                            @foreach ($dokter_poli as $dp)
+                            <option value="{{ $dp->id }}" {{ old('dokterPerujuk') == $dp->id ? "selected" : "" }}>
+                                {{ $dp->nama }}</option>
+                            @endforeach
+                        </select>
+                        <span class="help-block">{{ $errors->first('dokterPerujuk') }}</span>
+                    </div>
+
+                    <div class="form-group {{ $errors->first('dokterRujukan') ? "has-error": "" }}">
+                        <label>Dokter Rujukan :</label>
+                        <select class="form-control select2" name="dokterRujukan" style="width: 100%;">
+                            <option selected disabled>Silahkan pilih salah satu</option>
+                            @foreach ($dokter_radiologi as $dr)
+                            <option value="{{ $dr->id }}" {{ old('dokterRujukan') == $dr->id ? "selected" : "" }}>
+                                {{ $dr->nama }}</option>
+                            @endforeach
+                        </select>
+                        <span class="help-block">{{ $errors->first('dokterRujukan') }}</span>
+                    </div>
+
+                    <div class="form-group {{ $errors->first('keluhan') ? "has-error": "" }}">
+                        <label>Keluhan :</label>
+                        <input value="{{ old('nama') }}" type="text" name="keluhan" class="form-control"
+                            placeholder="Keluhan ...">
+                        <span class="help-block">{{ $errors->first('keluhan') }}</span>
+                    </div>
+
+                    <div class="form-group {{ $errors->first('permintaan') ? "has-error": "" }}">
+                        <label>Informasi Tambahan/Permintaan Tambahan :</label>
+                        <input value="{{ old('permintaan') }}" type="text" name="permintaan" class="form-control"
+                            placeholder="Informasi tambahan  ...">
+                        <span class="help-block">{{ $errors->first('permintaan') }}</span>
                     </div>
                 </div>
-            </form>
+                <div class="box-footer">
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-success">Daftarkan Pasien</button>
+                    </div>
+                </div>
         </div>
+        </form>
+    </div>
     </div>
 </section>
 @endsection

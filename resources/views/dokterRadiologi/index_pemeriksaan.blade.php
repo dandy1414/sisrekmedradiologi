@@ -66,12 +66,11 @@
                                 <th>Nomor KTP</th>
                                 <th>Jenis Pasien</th>
                                 <th>Jenis Pemeriksaan</th>
-                                <th>CITO</th>
+                                {{-- <th>CITO</th> --}}
                                 <th>Layanan</th>
                                 <th>Jadwal</th>
                                 <th>Tanggal Pendaftaran</th>
                                 <th>Dokter Perujuk</th>
-                                <th>Dokter Rujukan</th>
                                 <th>Keluhan</th>
                                 <th>Catatan Radiografer</th>
                                 <th>Aksi</th>
@@ -87,12 +86,11 @@
                                 <td>{{ $b->pasien->nomor_ktp }}</td>
                                 <td>{{ ($b->pasien->jenis_pasien) == 'umum' ? "Umum" : "Rumah Sakit" }}</td>
                                 <td>{{ ucfirst($b->jenis_pemeriksaan) }}</td>
-                                <td>{{ ucfirst($b->cito) }}</td>
+                                {{-- <td>{{ ucfirst($b->cito) }}</td> --}}
                                 <td>{{ ucfirst($b->layanan->nama) }}</td>
                                 <td>{{ $b->jadwal->waktu_mulai }} - {{ $b->jadwal->waktu_selesai }}</td>
                                 <td>{{ $b->created_at->toDateString() }}</td>
                                 <td>{{ ($b->id_dokterPoli) != null ? $b->dokterPoli->nama : "-" }}</td>
-                                <td>{{ ($b->id_dokterRadiologi) != null ? $b->dokterRadiologi->nama : "-" }}</td>
                                 <td>{{ ($b->keluhan) != null ? ucfirst($b->keluhan) : "Tidak ada" }}</td>
                                 <td>{{ ($b->catatan) != null ? ucfirst($b->catatan) : "Tidak ada" }}</td>
                                 <td>
@@ -132,7 +130,7 @@
                                 <th>Nomor KTP</th>
                                 <th>Jenis Pasien</th>
                                 <th>Jenis Pemeriksaan</th>
-                                <th>CITO</th>
+                                {{-- <th>CITO</th> --}}
                                 <th>Layanan</th>
                                 <th>Jadwal</th>
                                 <th>Waktu Kirim</th>
@@ -140,7 +138,6 @@
                                 <th>Durasi</th>
                                 <th>Tanggal Pendaftaran</th>
                                 <th>Dokter Perujuk</th>
-                                <th>Dokter Rujukan</th>
                                 <th>Radiografer</th>
                                 <th>Keluhan</th>
                                 <th>Catatan</th>
@@ -157,7 +154,7 @@
                                 <td>{{ $s->pasien->nomor_ktp }}</td>
                                 <td>{{ ($s->pasien->jenis_pasien) == 'umum' ? "Umum" : "Rumah Sakit" }}</td>
                                 <td>{{ ucfirst($s->jenis_pemeriksaan) }}</td>
-                                <td>{{ $s->cito }}</td>
+                                {{-- <td>{{ $s->cito }}</td> --}}
                                 <td>{{ ucfirst($s->layanan->nama) }}</td>
                                 <td>{{ $s->jadwal->waktu_mulai }} - {{ $s->jadwal->waktu_selesai }}</td>
                                 <td>{{ $s->waktu_kirim }}</td>
@@ -165,7 +162,6 @@
                                 <td>{{ $s->durasi }}</td>
                                 <td>{{ $s->created_at->toDateString() }}</td>
                                 <td>{{ ($s->id_dokterPoli) != null ? $s->dokterPoli->nama : "-" }}</td>
-                                <td>{{ ($s->id_dokterRadiologi) != null ? $s->dokterRadiologi->nama : "-" }}</td>
                                 <td>{{ $s->radiografer->nama }}</td>
                                 <td>{{ ($s->keluhan) != null ? ucfirst($s->keluhan) : "Tidak ada" }}</td>
                                 <td>{{ ($s->catatan) != null ? $s->catatan : "-" }}</td>

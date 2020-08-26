@@ -9,7 +9,7 @@
     </h1>
     <ol class="breadcrumb">
         <li><a href="{{ route('resepsionis.pasien.index-pasien-umum') }}"><i class="fa fa-users"></i> Pasien Umum</a>
-        <li><a href="#"><i class="fa fa-users"></i> Pendaftaran Pemeriksaan Pasien Umum</a>
+        <li><a href="#"> Pendaftaran Pemeriksaan Pasien Umum</a>
     </ol>
 </section>
 
@@ -36,56 +36,49 @@
                     <h3 class="box-title">Data Pasien</h3>
                 </div>
                 <div class="box-body">
-                    <strong><i class="fa fa-book margin-r-5"></i> Nomor Rekam Medis : </strong>
-                    <p class="text-muted">
-                        {{ $pasien->nomor_rm }}
-                    </p>
+                    <strong><i class="fa fa-medkit"></i> Nomor Rekam Medis :</strong>
 
-                    <strong><i class="fa fa-book margin-r-5"></i> Nama : </strong>
-                    <p class="text-muted">
-                        {{ $pasien->nama }}
-                    </p>
+                    <p class="text-muted">{{ $pasien->nomor_rm }}</p>
 
-                    <strong><i class="fa fa-book margin-r-5"></i> Nomor KTP : </strong>
-                    <p class="text-muted">
-                        {{ $pasien->nomor_ktp }}
-                    </p>
+                    <strong><i class="fa fa-credit-card"></i> Nomor KTP :</strong>
 
-                    <strong><i class="fa fa-book margin-r-5"></i> Umur : </strong>
-                    <p class="text-muted">
-                        {{ $pasien->umur }} Tahun
-                    </p>
+                    <p class="text-muted">{{ $pasien->nomor_ktp }}</p>
 
-                    <strong><i class="fa fa-book margin-r-5"></i> Jenis Kelamin : </strong>
-                    <p class="text-muted">
-                        {{ $pasien->jenis_kelamin }}
-                    </p>
+                    <strong><i class="fa fa-user"></i> Nama :</strong>
 
-                    <strong><i class="fa fa-book margin-r-5"></i> Alamat : </strong>
-                    <p class="text-muted">
-                        {{ ucfirst($pasien->alamat) }}
-                    </p>
+                    <p class="text-muted">{{ $pasien->nama }}</p>
 
-                    <strong><i class="fa fa-book margin-r-5"></i> Nomor Telepon : </strong>
-                    <p class="text-muted">
-                        {{ $pasien->jenis_kelamin }}
-                    </p>
+                    <strong><i class="fa fa-user"></i> Jenis Kelamin :</strong>
 
-                    <strong><i class="fa fa-book margin-r-5"></i> Jenis Asuransi : </strong>
-                    <p class="text-muted">
-                        {{ ucfirst($pasien->jenis_asuransi) }}
-                    </p>
+                    <p class="text-muted">{{ ucfirst($pasien->jenis_kelamin) }}</p>
 
-                    <strong><i class="fa fa-book margin-r-5"></i> Nomor BPJS : </strong>
+                    <strong><i class="fa fa-user"></i> Umur :</strong>
+
+                    <p class="text-muted">{{ $pasien->umur }} tahun</p>
+
+                    <strong><i class="fa fa-home"></i> Alamat :</strong>
+
+                    <p class="text-muted">{{ ucfirst($pasien->alamat) }}</p>
+
+                    <strong><i class="fa fa-phone"></i> Nomor telepon :</strong>
+
+                    <p class="text-muted">{{ $pasien->nomor_telepon }}</p>
+
+                    <strong><i class="fa fa-institution"></i> Jenis Asuransi :</strong>
+
+                    <p class="text-muted">{{ ucfirst($pasien->jenis_asuransi) }}</p>
+
+                    <strong><i class="fa fa-bars"></i> Nomor BPJS :</strong>
+
                     <p class="text-muted">
-                        {{ ($pasien->jenis_asuransi) != 'bpjs' ? "-" : ucfirst($pasien->nomor_bpjs) }}
-                    </p>
+                        {{ ($pasien->nomor_bpjs) != null ? $pasien->nomor_bpjs : "-" }}</p>
                 </div>
             </div>
         </div>
 
         <div class="col-md-6">
-            <form method="POST" action="{{ route('resepsionis.pasien.store.pendaftaran.pasien-umum', ['id' => $pasien->id]) }}"
+            <form method="POST"
+                action="{{ route('resepsionis.pasien.store.pendaftaran.pasien-umum', ['id' => $pasien->id]) }}"
                 enctype="multipart/form-data">
                 @csrf
                 <div class="box box-success" style="position: relative;">
@@ -139,7 +132,7 @@
                                 <option selected disabled>Silahkan pilih salah satu</option>
                                 @foreach ($jadwal as $j)
                                 <option value="{{ $j->id }}" {{ old('jadwal') == $j->id ? "selected" : "" }}>
-                                    {{ $j->waktu_mulai }} - {{ $j->waktu_selesai }}</option>
+                                    {{ $j->waktu_mulai }} WIB - {{ $j->waktu_selesai }} WIB</option>
                                 @endforeach
                             </select>
                             <span class="help-block">{{ $errors->first('jadwal') }}</span>
@@ -172,19 +165,19 @@
                         </div>
 
                         {{--  <div class="form-group {{ $errors->first('suratRujukan') ? "has-error": "" }}">
-                            <label for="foto">Surat Rujukan</label>
-                            <input id="avatar" name="suratRujukan" class="form-control" type="file" id="suratRujukan">
-                            <span class="help-block">{{ $errors->first('suratRujukan') }}</span>
-                        </div>  --}}
-                    </div>
-                    <div class="box-footer">
-                        <div class="form-group">
-                            <button type="submit" class="btn btn-success">Daftarkan Pasien</button>
-                        </div>
+                        <label for="foto">Surat Rujukan</label>
+                        <input id="avatar" name="suratRujukan" class="form-control" type="file" id="suratRujukan">
+                        <span class="help-block">{{ $errors->first('suratRujukan') }}</span>
+                    </div> --}}
+                </div>
+                <div class="box-footer">
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-success">Daftarkan Pasien</button>
                     </div>
                 </div>
-            </form>
         </div>
+        </form>
+    </div>
     </div>
 </section>
 @endsection
@@ -210,4 +203,3 @@
 
 </script>
 @endpush
-

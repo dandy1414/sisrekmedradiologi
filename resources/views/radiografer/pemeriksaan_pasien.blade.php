@@ -37,56 +37,51 @@
                 </div>
                 <div class="box-body">
                     <div class="col-md-7">
-                        <strong><i class="fa fa-book margin-r-5"></i> Jenis Pasien : </strong>
+                        <strong><i class="fa fa-bars"></i> Jenis Pasien : </strong>
                         <p class="text-muted">
                             {{ ($pemeriksaan->pasien->jenis_pasien) == 'umum' ? "Umum" : "Rumah Sakit" }}
                         </p>
 
-                        <strong><i class="fa fa-book margin-r-5"></i> Jenis Pemeriksaan : </strong>
+                        <strong><i class="fa fa-bars"></i> Jenis Pemeriksaan : </strong>
                         <p class="text-muted">
                             {{ ucfirst($pemeriksaan->jenis_pemeriksaan) }}
                         </p>
 
-                        <strong><i class="fa fa-book margin-r-5"></i> Nomor Rekam Medis : </strong>
-                        <p class="text-muted">
-                            {{ $pemeriksaan->pasien->nomor_rm }}
-                        </p>
+                        <strong><i class="fa fa-medkit"></i> Nomor Rekam Medis :</strong>
 
-                        <strong><i class="fa fa-book margin-r-5"></i> Nomor KTP : </strong>
-                        <p class="text-muted">
-                            {{ $pemeriksaan->pasien->nomor_ktp }}
-                        </p>
+                        <p class="text-muted">{{ $pemeriksaan->pasien->nomor_rm }}</p>
 
-                        <strong><i class="fa fa-book margin-r-5"></i> Nama : </strong>
-                        <p class="text-muted">
-                            {{ $pemeriksaan->pasien->nama }}
-                        </p>
+                        <strong><i class="fa fa-credit-card"></i> Nomor KTP :</strong>
 
-                        <strong><i class="fa fa-book margin-r-5"></i> Umur : </strong>
-                        <p class="text-muted">
-                            {{ $pemeriksaan->pasien->umur }} Tahun
-                        </p>
+                        <p class="text-muted">{{ $pemeriksaan->pasien->nomor_ktp }}</p>
 
-                        <strong><i class="fa fa-book margin-r-5"></i> Jenis Kelamin : </strong>
-                        <p class="text-muted">
-                            {{ $pemeriksaan->pasien->jenis_kelamin }}
-                        </p>
+                        <strong><i class="fa fa-user"></i> Nama :</strong>
+
+                        <p class="text-muted">{{ $pemeriksaan->pasien->nama }}</p>
+
+                        <strong><i class="fa fa-user"></i> Jenis Kelamin :</strong>
+
+                        <p class="text-muted">{{ ucfirst($pemeriksaan->pasien->jenis_kelamin) }}</p>
+
+                        <strong><i class="fa fa-user"></i> Umur :</strong>
+
+                        <p class="text-muted">{{ $pemeriksaan->pasien->umur }} tahun</p>
                     </div>
 
                     <div class="col-md-5">
-                        <strong><i class="fa fa-book margin-r-5"></i> Nomor Telepon : </strong>
+                        <strong><i class="fa fa-phone"></i> Nomor telepon :</strong>
                         <p class="text-muted">
-                            {{ $pemeriksaan->pasien->jenis_kelamin }}
+                            {{ $pemeriksaan->pasien->nomor_telepon }}
                         </p>
 
-                        <strong><i class="fa fa-book margin-r-5"></i> Alamat : </strong>
+                        <strong><i class="fa fa-home"></i> Alamat :</strong>
                         <p class="text-muted">
                             {{ ucfirst($pemeriksaan->pasien->alamat) }}
                         </p>
 
-                        <strong><i class="fa fa-book margin-r-5"></i> Asal Ruangan : </strong>
+                        <strong><i class="fa fa-hospital-o"></i> Asal Ruangan / Kelas :</strong>
                         <p class="text-muted">
-                            {{ ($pemeriksaan->pasien->id_ruangan) != null ? $pemeriksaan->pasien->ruangan->nama_ruangan : "-" }}
+                            {{ ($pemeriksaan->pasien->id_ruangan) != null ? $pemeriksaan->pasien->ruangan->nama_ruangan ." / ". $pemeriksaan->pasien->ruangan->kelas : "-" }}
                         </p>
 
                         <strong><i class="fa fa-book margin-r-5"></i> Layanan : </strong>
@@ -94,21 +89,24 @@
                             {{ ($pemeriksaan->layanan->nama) }}
                         </p>
 
-                        <strong><i class="fa fa-book margin-r-5"></i> Dokter Perujuk : </strong>
+                        <strong><i class="fa fa-user-md"></i> Dokter Perujuk : </strong>
                         <p class="text-muted">
                             {{ ($pemeriksaan->id_dokterPoli) != null ? $pemeriksaan->dokterPoli->nama : "-" }}
                         </p>
 
-                        <strong><i class="fa fa-book margin-r-5"></i> Dokter Rujukan : </strong>
+                        <strong><i class="fa fa-user-md"></i> Dokter Rujukan : </strong>
                         <p class="text-muted">
                             {{ ($pemeriksaan->id_dokterRadiologi) != null ? $pemeriksaan->dokterRadiologi->nama : "-" }}
                         </p>
 
-                        <strong><i class="fa fa-book margin-r-5"></i> Permintaan Tambahan : </strong>
+                        <strong><i class="fa fa-sticky-note"></i> Permintaan Tambahan : </strong>
                         <p class="text-muted">
                             {{ ($pemeriksaan->permintaan_tambahan) != null ? $pemeriksaan->permintaan_tambahan : "Tidak ada" }}
                         </p>
 
+                        <strong><i class="fa fa-ambulance"></i> Keluhan : </strong>
+                        <p class="text-muted">
+                            {{ ($pemeriksaan->keluhan) != null ? $pemeriksaan->keluhan : "Tidak ada" }}
                         </p>
                     </div>
                 </div>
