@@ -18,6 +18,12 @@ class Pasien extends Model
         'umur', 'jenis_kelamin', 'alamat', 'nomor_telepon', 'jenis_asuransi', 'nomor_bpjs',
     ];
 
+    public function getCreatedAtAttribute()
+    {
+        return \Carbon\Carbon::parse($this->attributes['created_at'])
+        ->format('d, F Y H:i');
+    }
+
     public function ruangan(){
         return $this->belongsTo("App\Models\Ruangan", "id_ruangan", "id");
     }

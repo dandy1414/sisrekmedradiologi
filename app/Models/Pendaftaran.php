@@ -14,6 +14,12 @@ class Pendaftaran extends Model
         'pasien_id', 'id_layanan', 'id_jadwal', 'id_resepsionis', 'id_dokterPoli', 'id_dokterRadiologi', 'nomor_pendaftaran', 'jenis_pemeriksaan', 'keluhan', 'surat_rujukan',
     ];
 
+    public function getCreatedAtAttribute()
+    {
+        return \Carbon\Carbon::parse($this->attributes['created_at'])
+        ->format('d, F Y H:i');
+    }
+
     public function getAutoNumberOptions()
     {
         return [

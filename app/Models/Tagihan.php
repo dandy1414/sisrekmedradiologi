@@ -14,6 +14,18 @@ class Tagihan extends Model
         'pasien_id', 'id_kasir', 'id_film', 'id_layanan', 'id_pemeriksaan', 'nomor_tagihan', 'status_pembayaran', 'tarif_dokter', 'tarif_jasa', 'tanggal', 'total_harga'
     ];
 
+    public function getCreatedAtAttribute()
+    {
+        return \Carbon\Carbon::parse($this->attributes['created_at'])
+        ->format('d, F Y H:i');
+    }
+
+    public function getTanggalAttribute()
+    {
+        return \Carbon\Carbon::parse($this->attributes['tanggal'])
+        ->format('d, F Y H:i');
+    }
+
     public function getAutoNumberOptions()
     {
         return [

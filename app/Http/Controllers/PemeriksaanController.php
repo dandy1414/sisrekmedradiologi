@@ -59,6 +59,13 @@ class PemeriksaanController extends Controller
         return view('radiografer.index_pemeriksaan', ['belum'=> $belum, 'pending'=>$pending, 'selesai'=>$selesai]);
     }
 
+    public function detailPemeriksaan($id){
+        $pemeriksaan = Pemeriksaan::findOrFail($id);
+
+        return view('radiografer.detail_pemeriksaan', ['pemeriksaan'=> $pemeriksaan]);
+    }
+
+
     public function pemeriksaanPasien($id){
         $pemeriksaan = Pemeriksaan::where('id', $id)->firstOrFail();
         $film = Film::all();
@@ -99,6 +106,7 @@ class PemeriksaanController extends Controller
                 }
             }
             $new_pemeriksaan->id_radiografer = Auth::user()->id;
+            $new_pemeriksaan->waktu_selesai = $timestamp;
             $new_pemeriksaan->id_film = $request->film;
             $new_pemeriksaan->catatan = $request->catatan;
             $new_pemeriksaan->arus_listrik = $request->arus;
@@ -111,21 +119,21 @@ class PemeriksaanController extends Controller
             $new_pemeriksaan->total_tarif = $total_tarif;
             $new_pemeriksaan->save();
 
-                $new_tagihan = new Tagihan;
-                $new_tagihan->pasien_id = $pasien_id;
-                $new_tagihan->id_pemeriksaan = $id;
-                $new_tagihan->id_layanan = $id_layanan;
-                $new_tagihan->id_jadwal = $id_jadwal;
-                $new_tagihan->id_film = $id_film;
-                $new_tagihan->status_pembayaran = "belum";
-                $new_tagihan->tarif_dokter = (30/100)*$tarif_layanan;
-                $new_tagihan->tarif_jasa = (10/100)*$tarif_layanan;
-                $new_tagihan->total_harga = $total_tarif;
-                $new_tagihan->save();
+            $new_tagihan = new Tagihan;
+            $new_tagihan->pasien_id = $pasien_id;
+            $new_tagihan->id_pemeriksaan = $id;
+            $new_tagihan->id_layanan = $id_layanan;
+            $new_tagihan->id_jadwal = $id_jadwal;
+            $new_tagihan->id_film = $id_film;
+            $new_tagihan->status_pembayaran = "belum";
+            $new_tagihan->tarif_dokter = (30/100)*$tarif_layanan;
+            $new_tagihan->tarif_jasa = (10/100)*$tarif_layanan;
+            $new_tagihan->total_harga = $total_tarif;
+            $new_tagihan->save();
 
-                DB::commit();
+            DB::commit();
 
-                return redirect()->route('radiografer.pasien.index-pemeriksaan')->with(['success' => 'Data Pemeriksaan berhasil diunggah']);
+            return redirect()->route('radiografer.pasien.index-pemeriksaan')->with(['success' => 'Data Pemeriksaan berhasil diunggah']);
 
             } catch (QueryException $x)
             {
@@ -161,21 +169,21 @@ class PemeriksaanController extends Controller
             $new_pemeriksaan->total_tarif = $total_tarif;
             $new_pemeriksaan->save();
 
-                $new_tagihan = new Tagihan;
-                $new_tagihan->pasien_id = $pasien_id;
-                $new_tagihan->id_pemeriksaan = $id;
-                $new_tagihan->id_layanan = $id_layanan;
-                $new_tagihan->id_jadwal = $id_jadwal;
-                $new_tagihan->id_film = $id_film;
-                $new_tagihan->status_pembayaran = "belum";
-                $new_tagihan->tarif_dokter = (30/100)*$tarif_layanan;
-                $new_tagihan->tarif_jasa = (10/100)*$tarif_layanan;
-                $new_tagihan->total_harga = $total_tarif;
-                $new_tagihan->save();
+            $new_tagihan = new Tagihan;
+            $new_tagihan->pasien_id = $pasien_id;
+            $new_tagihan->id_pemeriksaan = $id;
+            $new_tagihan->id_layanan = $id_layanan;
+            $new_tagihan->id_jadwal = $id_jadwal;
+            $new_tagihan->id_film = $id_film;
+            $new_tagihan->status_pembayaran = "belum";
+            $new_tagihan->tarif_dokter = (30/100)*$tarif_layanan;
+            $new_tagihan->tarif_jasa = (10/100)*$tarif_layanan;
+            $new_tagihan->total_harga = $total_tarif;
+            $new_tagihan->save();
 
-                DB::commit();
+            DB::commit();
 
-                return redirect()->route('radiografer.pasien.index-pemeriksaan')->with(['success' => 'Data Pemeriksaan berhasil diunggah']);
+            return redirect()->route('radiografer.pasien.index-pemeriksaan')->with(['success' => 'Data Pemeriksaan berhasil diunggah']);
 
             } catch (QueryException $x)
             {

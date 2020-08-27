@@ -40,14 +40,14 @@ class ExpertiseController extends Controller
         $pasien = Pasien::findOrFail($id);
         $pemeriksaan = Pemeriksaan::where('pasien_id', $id)->where('status_pemeriksaan', 'selesai')->orderBy('created_at', 'desc')->get();
 
-        return view('radiografer.umum.detail_pasien_umum', ['pasien'=> $pasien, 'pemeriksaan'=> $pemeriksaan]);
+        return view('dokterRadiologi.umum.detail_pasien_umum', ['pasien'=> $pasien, 'pemeriksaan'=> $pemeriksaan]);
     }
 
     public function detailPasienRs($id){
         $pasien = Pasien::findOrFail($id);
         $pemeriksaan = Pemeriksaan::where('pasien_id', $id)->where('status_pemeriksaan', 'selesai')->orderBy('created_at', 'desc')->get();
 
-        return view('radiografer.rs.detail_pasien_rs', ['pasien'=> $pasien, 'pemeriksaan'=> $pemeriksaan]);
+        return view('dokterRadiologi.rs.detail_pasien_rs', ['pasien'=> $pasien, 'pemeriksaan'=> $pemeriksaan]);
     }
 
     public function indexPemeriksaan(){
@@ -56,6 +56,12 @@ class ExpertiseController extends Controller
         $selesai = Pemeriksaan::where('status_pemeriksaan', 'selesai')->where('id_dokterRadiologi', $id_dokterRadiologi)->orderBy('created_at', 'desc')->get();
 
         return view('dokterRadiologi.index_pemeriksaan', ['belum'=> $belum, 'selesai'=>$selesai]);
+    }
+
+    public function detailPemeriksaan($id){
+        $pemeriksaan = Pemeriksaan::findOrFail($id);
+
+        return view('dokterRadiologi.detail_pemeriksaan', ['pemeriksaan'=> $pemeriksaan]);
     }
 
     public function expertisePasien($id){
@@ -96,7 +102,7 @@ class ExpertiseController extends Controller
     public function detailSuratRujukan($id){
         $pendaftaran = Pendaftaran::findOrFail($id);
 
-        return view('suratRujukan.surat', compact('pendaftaran'));
+        return view('suratRujukan.surat_rujukan', compact('pendaftaran'));
     }
 
     public function detailHasilExpertise($id){

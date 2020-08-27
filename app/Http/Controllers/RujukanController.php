@@ -143,6 +143,12 @@ class RujukanController extends Controller
         return view('dokterPoli.index_pemeriksaan', ['pemeriksaan'=> $pemeriksaan]);
     }
 
+    public function detailPemeriksaan($id){
+        $pemeriksaan = Pemeriksaan::findOrFail($id);
+
+        return view('dokterPoli.detail_pemeriksaan', ['pemeriksaan'=> $pemeriksaan]);
+    }
+
     public function rujukPasien($id){
         $pasien = Pasien::where('id', $id)->firstOrFail();
         $layanan_rontgen = Layanan::where('id', '2')->get();
