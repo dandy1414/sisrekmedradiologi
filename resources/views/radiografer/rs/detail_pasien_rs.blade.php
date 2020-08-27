@@ -19,7 +19,7 @@
         <div class="col-md-12">
             <div class="box box-info">
                 <div class="box-header with-border">
-                    <h3 class="box-title" style="text-align: center">Data Pasien</h3>
+                    <h3 class="box-title" style="text-align: center">Detail Pasien</h3>
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body">
@@ -27,7 +27,7 @@
                         <div class="col-md-7">
                             <strong><i class="fa fa-calendar"></i> Tanggal Pendaftaran :</strong>
 
-                            <p class="text-muted">{{ $pasien->created_at->toDateString() }}</p>
+                            <p class="text-muted">{{ $pasien->created_at }}</p>
 
                             <strong><i class="fa fa-medkit"></i> Nomor Rekam Medis :</strong>
 
@@ -135,6 +135,7 @@
                                                 <span class="fa fa-caret-down"></span>
                                             </button>
                                             <ul class="dropdown-menu">
+                                                <li><a href="{{ route('radiografer.pasien.detail-pemeriksaan', ['id' => $s->id]) }}">Detail Pemeriksaan</a></li>
                                                 @if ($p->jenis_pemeriksaan == 'penuh')
                                                 <li><a href="{{ route('radiografer.pasien.pendaftaran.surat-rujukan', ['id'=>$p->pendaftaran_id]) }}" target="_blank">Lihat Surat Rujukan </a></li>
                                                 <li><a href="{{ route('radiografer.pasien.pemeriksaan.hasil-expertise', ['id'=>$p->id]) }}" target="_blank">Lihat Hasil Expertise </a></li>

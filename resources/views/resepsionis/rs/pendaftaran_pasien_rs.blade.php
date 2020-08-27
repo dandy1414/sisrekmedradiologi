@@ -33,7 +33,7 @@
         <div class="col-md-6">
             <div class="box box-info" style="position: relative;">
                 <div class="box-header">
-                    <h3 class="box-title">Data Pasien</h3>
+                    <h3 class="box-title">Detail Pasien</h3>
                 </div>
                 <div class="box-body">
                     <strong><i class="fa fa-medkit"></i> Nomor Rekam Medis :</strong>

@@ -93,7 +93,7 @@
                                 <td>{{ $b->cito }}</td>
                                 <td>{{ ucfirst($b->layanan->nama) }}</td>
                                 <td>{{ $b->jadwal->waktu_mulai }} - {{ $b->jadwal->waktu_selesai }}</td>
-                                <td>{{ $b->created_at->toDateString() }}</td>
+                                <td>{{ $b->created_at }}</td>
                                 <td>{{ ($b->id_dokterPoli) != null ? $b->dokterPoli->nama : "-" }}</td>
                                 <td>{{ ($b->id_dokterRadiologi) != null ? $b->dokterRadiologi->nama : "-" }}</td>
                                 <td>{{ ($b->keluhan) != null ? ucfirst($b->keluhan) : "Tidak ada" }}</td>
@@ -170,7 +170,7 @@
                                 <td>{{ ucfirst($p->layanan->nama) }}</td>
                                 <td>{{ $p->jadwal->waktu_mulai }} - {{ $p->jadwal->waktu_selesai }}</td>
                                 <td>{{ $p->waktu_kirim }}</td>
-                                <td>{{ $p->created_at->toDateString() }}</td>
+                                <td>{{ $p->created_at }}</td>
                                 <td>{{ ($p->id_dokterPoli) != null ? $p->dokterPoli->nama : "-" }}</td>
                                 <td>{{ ($p->id_dokterRadiologi) != null ? $p->dokterRadiologi->nama : "-" }}</td>
                                 <td>{{ $p->radiografer->nama }}</td>
@@ -191,8 +191,7 @@
                                                 <span class="fa fa-caret-down"></span>
                                             </button>
                                             <ul class="dropdown-menu">
-                                                <li><a href="#">Detail Pemeriksaan</a></li>
-                                                <li><a href="#">Lihat Hasil Foto</a></li>
+                                                <li><a href="{{ route('radiografer.pasien.detail-pemeriksaan', ['id' => $p->id]) }}">Detail Pemeriksaan</a></li>
                                                 @if ($p->jenis_pemeriksaan == 'penuh')
                                                 <li><a href="{{ route('radiografer.pasien.pendaftaran.surat-rujukan', ['id'=>$p->pendaftaran_id]) }}" target="_blank">Lihat Surat Rujukan </a></li>
                                                 @endif
@@ -260,7 +259,7 @@
                                 <td>{{ $s->waktu_kirim }}</td>
                                 <td>{{ $s->waktu_selesai }}</td>
                                 <td>{{ $s->durasi }}</td>
-                                <td>{{ $s->created_at->toDateString() }}</td>
+                                <td>{{ $s->created_at }}</td>
                                 <td>{{ ($s->id_dokterPoli) != null ? $s->dokterPoli->nama : "-" }}</td>
                                 <td>{{ ($s->id_dokterRadiologi) != null ? $s->dokterRadiologi->nama : "-" }}</td>
                                 <td>{{ $s->radiografer->nama }}</td>
@@ -282,12 +281,11 @@
                                                 <span class="fa fa-caret-down"></span>
                                             </button>
                                             <ul class="dropdown-menu">
-                                                <li><a href="#">Detail Pemeriksaan</a></li>
+                                                <li><a href="{{ route('radiografer.pasien.detail-pemeriksaan', ['id' => $s->id]) }}">Detail Pemeriksaan</a></li>
                                                 @if ($s->jenis_pemeriksaan == 'penuh')
                                                 <li><a href="{{ route('radiografer.pasien.pendaftaran.surat-rujukan', ['id'=>$s->pendaftaran_id]) }}" target="_blank">Lihat Surat Rujukan </a></li>
                                                 <li><a href="{{ route('radiografer.pasien.pemeriksaan.hasil-expertise', ['id'=>$s->id]) }}" target="_blank">Lihat Hasil Expertise </a></li>
                                                 @endif
-                                                <li><a href="#">Cetak Expertise</a></li>
                                             </ul>
                                         </div>
                                     </div>

@@ -44,29 +44,29 @@
                     <div class="col-md-6">
                         <strong> Arus Listrik : </strong>
                         <p class="text-muted">
-                            {{ $pemeriksaan->arus_listrik }}
+                            {{ ($pemeriksaan->arus_listrik) != null ? $pemeriksaan->arus_listrik : "-"  }}
                         </p>
 
                         <strong> FFD : </strong>
                         <p class="text-muted">
-                            {{ ucfirst($pemeriksaan->ffd) }}
+                            {{ ($pemeriksaan->ffd) != null ? $pemeriksaan->ffd : "-" }}
                         </p>
 
                         <strong> BSF : </strong>
                         <p class="text-muted">
-                            {{ $pemeriksaan->bsf }}
+                            {{ ($pemeriksaan->bsf) != null ? $pemeriksaan->bsf : "-" }}
                         </p>
                     </div>
 
                     <div class="col-md-6">
                         <strong> Jumlah Penyinaran : </strong>
                         <p class="text-muted">
-                            {{ $pemeriksaan->jumlah_penyinaran }}
+                            {{ ($pemeriksaan->jumlah_penyinaran) != null ? $pemeriksaan->jumlah_penyinaran : "-"  }}
                         </p>
 
                         <strong> Dosis Penyinaran : </strong>
                         <p class="text-muted">
-                            {{ $pemeriksaan->dosis_penyinaran }}
+                            {{ ($pemeriksaan->dosis_penyinaran) != null ? $pemeriksaan->dosis_penyinaran : "-" }}
                         </p>
                     </div>
                 </div>
@@ -75,11 +75,11 @@
         <div class="col-md-8">
             <div class="box box-info" style="position: relative;">
                 <div class="box-header">
-                    <h3 class="box-title">Data Pasien</h3>
+                    <h3 class="box-title">Detail Pasien</h3>
                 </div>
                 <div class="box-body">
                     <div class="col-md-7">
-                        <strong><i class="fa fa-bars"></i> Jenis Pasien : </strong>
+                        <strong><i class="glyphicon glyphicon-list-alt"></i> Jenis Pasien : </strong>
                         <p class="text-muted">
                             {{ ($pemeriksaan->pasien->jenis_pasien) == 'umum' ? "Umum" : "Rumah Sakit" }}
                         </p>
@@ -131,6 +131,11 @@
                 </div>
                 <div class="box-body">
                     <div class="col-md-7">
+                        <strong><i class="glyphicon glyphicon-th-list"></i> Nomor Pemeriksaan : </strong>
+                        <p class="text-muted">
+                            {{ ucfirst($pemeriksaan->nomor_pemeriksaan) }}
+                        </p>
+
                         <strong><i class="fa fa-bars"></i> Jenis Pemeriksaan : </strong>
                         <p class="text-muted">
                             {{ ucfirst($pemeriksaan->jenis_pemeriksaan) }}
@@ -140,15 +145,15 @@
                         <p class="text-muted">
                             {{ ucfirst($pemeriksaan->layanan->kategori->nama) }} / {{ ($pemeriksaan->layanan->nama) }}
                         </p>
+                    </div>
 
+                    <div class="col-md-5">
                         <strong><i class="fa fa-user-md"></i> Dokter Perujuk : </strong>
                         <p class="text-muted">
                             {{ ($pemeriksaan->id_dokterPoli) != null ? $pemeriksaan->dokterPoli->nama : "-" }}
                         </p>
-                    </div>
 
-                    <div class="col-md-5">
-                        <strong><i class="fa fa-sticky-note"></i> Permintaan Tambahan : </strong>
+                        <strong><i class="glyphicon glyphicon-file"></i> Permintaan Tambahan : </strong>
                         <p class="text-muted">
                             {{ ($pemeriksaan->permintaan_tambahan) != null ? $pemeriksaan->permintaan_tambahan : "Tidak ada" }}
                         </p>

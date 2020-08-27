@@ -26,7 +26,7 @@
                     <div class="row">
                         <div class="col-md-7">
                             <strong><i class="fa fa-map-marker margin-r-5"></i> Tanggal Pendaftaran :</strong>
-                            <p class="text-muted">{{ $pasien->created_at->toDateString() }}</p>
+                            <p class="text-muted">{{ $pasien->created_at }}</p>
 
                             <strong><i class="fa fa-book margin-r-5"></i> Nomor Rekam Medis :</strong>
                             <p class="text-muted">{{ $pasien->nomor_rm }}</p>
@@ -108,7 +108,7 @@
                                 <td>{{ $t->pasien->nomor_rm }}</td>
                                 <td>{{ $t->pasien->nomor_ktp }}</td>
                                 <td>{{ ($t->pasien->jenis_pasien) == 'umum' ? "Umum" : "Rumah Sakit" }}</td>
-                                <td>{{ ucfirst($t->jenis_pemeriksaan) }}</td>
+                                <td>{{ ucfirst($t->pemeriksaan->jenis_pemeriksaan) }}</td>
                                 <td>{{ ucfirst($t->layanan->nama) }}</td>
                                 <td>{{ $t->jadwal->waktu_mulai }} - {{ $t->jadwal->waktu_selesai }}</td>
                                 <td>@currency($t->tarif_dokter)</td>

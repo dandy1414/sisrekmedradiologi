@@ -24,6 +24,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        config(['app.locale' => 'id']);
+        \Carbon\Carbon::setLocale('id');
+        
         Blade::directive('currency', function($expression) {
             return "Rp, <?php echo number_format($expression, 0, ',', '.'); ?>";
         });

@@ -46,7 +46,7 @@
                 <strong> Nama Pasien</strong><br>
                 {{ ucfirst($pendaftaran->pasien->nama) }} <br>
                 <strong> No. Rekam Medis</strong><br>
-                {{ $pendaftaran->pasien->no_rm }} <br>
+                {{ $pendaftaran->pasien->nomor_rm }} <br>
                 <strong> No. Rujukan</strong><br>
                 {{ $pendaftaran->nomor_pendaftaran }}<br>
                 <strong> Jenis Kelamin / Umur</strong><br>
@@ -66,7 +66,7 @@
                 <strong>Dokter Rujukan</strong><br>
                 {{ ucfirst($pendaftaran->dokterRadiologi->nama) }} <br>
                 <strong>Waktu Rujukan</strong><br>
-                {{ $pendaftaran->created_at }} <br>
+                {{ $pendaftaran->created_at }} WIB <br>
                 <strong>Asal Ruangan</strong><br>
                 {{ ($pendaftaran->pasien->jenis_pasien) != 'umum' ? ucfirst($pendaftaran->pasien->ruangan->nama_ruangan) : "-" }}
             </div>
@@ -125,34 +125,38 @@
                 @endif
 
 
-                @if (request()->is('{resepsionis/*/pendaftaran/detail/surat-rujukan'))
+                @if (request()->is('resepsionis/*/pendaftaran/detail/surat-rujukan'))
                 <a class="btn btn-danger btn"
                     href="{{ route('dokterPoli.pasien.pendaftaran.print.surat-rujukan', ['id'=>$pendaftaran->id]) }}"
                     target="_blank"><i class="fa fa-print"></i> Export PDF</a>
                 @endif
-                @if (request()->is('{dokter-poli/*/rujuk/detail/surat-rujukan'))
+
+                @if (request()->is('dokter-poli/*/rujuk/detail/surat-rujukan'))
                 <a class="btn btn-danger btn"
                     href="{{ route('dokterPoli.pasien.pendaftaran.print.surat-rujukan', ['id'=>$pendaftaran->id]) }}"
                     target="_blank"><i class="fa fa-print"></i> Export PDF</a>
                 @endif
-                @if (request()->is('{dokter-radiologi/*/rujuk/detail/surat-rujukan'))
+
+                @if (request()->is('dokter-radiologi/*/pemeriksaan/detail/surat-rujukan'))
                 <a class="btn btn-danger btn"
                     href="{{ route('dokterRadiologi.pasien.pendaftaran.print.surat-rujukan', ['id'=>$pendaftaran->id]) }}"
                     target="_blank"><i class="fa fa-print"></i> Export PDF</a>
                 @endif
-                @if (request()->is('{radiografer/*/pemeriksaan/detail/surat-rujukan'))
+
+                @if (request()->is('radiografer/*/pemeriksaan/detail/surat-rujukan'))
                 <a class="btn btn-danger btn"
                     href="{{ route('dokterPoli.pasien.pendaftaran.print.surat-rujukan', ['id'=>$pendaftaran->id]) }}"
                     target="_blank"><i class="fa fa-print"></i> Export PDF</a>
                 @endif
-                @if (request()->is('{admin/*/pasien/detail/surat-rujukan'))
+
+                @if (request()->is('admin/*/pasien/detail/surat-rujukan'))
                 <a class="btn btn-danger btn"
                     href="{{ route('pasien.pendaftaran.surat-rujukan', ['id'=>$pendaftaran->id]) }}"
                     target="_blank"><i class="fa fa-print"></i> Export PDF</a>
                 @endif
             </div>
             <div class="col-xs-3">
-                Tanggal cetak &nbsp;: {{ date('Y-m-d H:i:s') }}<br>
+                Tanggal cetak &nbsp;: {{ $pendaftaran->created_at }} WIB<br>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Dokter Perujuk <br>
                 <br><br>
 

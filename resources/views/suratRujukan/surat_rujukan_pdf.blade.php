@@ -66,7 +66,7 @@
                 <strong>Dokter Rujukan</strong><br>
                 {{ ucfirst($pendaftaran->dokterRadiologi->nama) }} <br>
                 <strong>Waktu Rujukan</strong><br>
-                {{ $pendaftaran->created_at }} <br>
+                {{ $pendaftaran->created_at }} WIB <br>
                 <strong>Asal Ruangan</strong><br>
                 {{ ($pendaftaran->pasien->jenis_pasien) != 'umum' ? ucfirst($pendaftaran->pasien->ruangan->nama_ruangan) : "-" }}
             </div>
@@ -112,7 +112,7 @@
 
         <div class="row">
             <div style="margin-left: 400px">
-                Tanggal cetak &nbsp;: {{ date('Y-m-d H:i:s') }}<br>
+                Tanggal cetak &nbsp;: {{ $pendaftaran->created_at }} WIB<br>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Dokter Perujuk <br>
                 <br><br>
 

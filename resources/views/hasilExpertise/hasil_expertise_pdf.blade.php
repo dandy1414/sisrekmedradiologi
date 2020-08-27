@@ -66,7 +66,7 @@
                 <strong>Radiografer</strong> <br>
                 {{ ucfirst($pemeriksaan->radiografer->nama) }} <br>
                 <strong>Waktu Pemeriksaan</strong><br>
-                {{ $pemeriksaan->waktu_kirim }} <br>
+                {{ \Carbon\Carbon::parse($pemeriksaan->waktu_kirim)->format('d, F Y H:i') }} WIB <br>
                 <strong>Asal Ruangan</strong><br>
                 {{ ($pemeriksaan->pasien->jenis_pasien) != 'umum' ? ucfirst($pemeriksaan->pasien->ruangan->nama_ruangan) : "-" }}
                 {{-- <strong>Poli</strong><br>
@@ -104,16 +104,16 @@
         <div class="row">
             <div class="col-xs-7">
                 <br>
-                &nbsp;Petugas Radiografer <br><br><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Petugas Radiografer <br><br><br>
 
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ ($pemeriksaan->id_radiografer != null ? ucfirst($pemeriksaan->radiografer->nama) : "-") }}
+                {{ ($pemeriksaan->id_radiografer != null ? ucfirst($pemeriksaan->radiografer->nama) : "-") }}
             </div>
             <div class="col-xs-5">
-                Tanggal cetak &nbsp;: {{ date('Y-m-d H:i:s') }}<br>
+                Tanggal cetak : {{ \Carbon\Carbon::parse($pemeriksaan->waktu_selesai)->format('d, F Y H:i') }} WIB<br>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Salam sejawat <br>
                 <br><br>
 
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ ($pemeriksaan->id_dokterRadiologi != null ? ucfirst($pemeriksaan->dokterRadiologi->nama) : "-") }}
+                &nbsp;&nbsp;&nbsp;&nbsp;{{ ($pemeriksaan->id_dokterRadiologi != null ? ucfirst($pemeriksaan->dokterRadiologi->nama) : "-") }}
             </div>
         </div>
     </div>

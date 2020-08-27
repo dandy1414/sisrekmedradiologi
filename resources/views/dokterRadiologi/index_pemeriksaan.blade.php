@@ -89,7 +89,7 @@
                                 {{-- <td>{{ ucfirst($b->cito) }}</td> --}}
                                 <td>{{ ucfirst($b->layanan->nama) }}</td>
                                 <td>{{ $b->jadwal->waktu_mulai }} - {{ $b->jadwal->waktu_selesai }}</td>
-                                <td>{{ $b->created_at->toDateString() }}</td>
+                                <td>{{ $b->created_at }}</td>
                                 <td>{{ ($b->id_dokterPoli) != null ? $b->dokterPoli->nama : "-" }}</td>
                                 <td>{{ ($b->keluhan) != null ? ucfirst($b->keluhan) : "Tidak ada" }}</td>
                                 <td>{{ ($b->catatan) != null ? ucfirst($b->catatan) : "Tidak ada" }}</td>
@@ -102,7 +102,6 @@
                                             </button>
                                             <ul class="dropdown-menu">
                                                 <li><a href="{{ route('dokterRadiologi.pasien.pendaftaran.surat-rujukan', ['id'=>$b->pendaftaran_id]) }}" target="_blank">Lihat Surat Rujukan </a></li>
-                                                <li><a href="#">Detail Pemeriksaan</a></li>
                                                 <li><a href="{{ route('dokterRadiologi.pasien.expertise-pasien', ['id'=>$b->id]) }}">Lakukan Expertise</a></li>
                                             </ul>
                                         </div>
@@ -160,7 +159,7 @@
                                 <td>{{ $s->waktu_kirim }}</td>
                                 <td>{{ $s->waktu_selesai }}</td>
                                 <td>{{ $s->durasi }}</td>
-                                <td>{{ $s->created_at->toDateString() }}</td>
+                                <td>{{ $s->created_at }}</td>
                                 <td>{{ ($s->id_dokterPoli) != null ? $s->dokterPoli->nama : "-" }}</td>
                                 <td>{{ $s->radiografer->nama }}</td>
                                 <td>{{ ($s->keluhan) != null ? ucfirst($s->keluhan) : "Tidak ada" }}</td>
@@ -174,7 +173,7 @@
                                             </button>
                                             <ul class="dropdown-menu">
                                                 <li><a href="{{ route('dokterRadiologi.pasien.pendaftaran.surat-rujukan', ['id'=>$s->pendaftaran_id]) }}" target="_blank">Lihat Surat Rujukan </a></li>
-                                                <li><a href="#">Detail Pemeriksaan</a></li>
+                                                <li><a href="{{ route('dokterRadiologi.pasien.detail-pemeriksaan', ['id' => $s->id]) }}">Detail Pemeriksaan</a></li>
                                                 <li><a href="#">Lihat Hasil Foto</a></li>
                                                 <li><a href="#">Cetak Expertise</a></li>
                                                 <li><a href="{{ route('dokterRadiologi.pasien.pemeriksaan.hasil-expertise', ['id'=>$s->id]) }}" target="_blank">Lihat Hasil Expertise </a></li>

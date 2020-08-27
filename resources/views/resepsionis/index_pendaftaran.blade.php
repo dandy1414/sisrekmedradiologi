@@ -78,7 +78,7 @@
                                 <td>{{ ucfirst($p->jenis_pemeriksaan) }}</td>
                                 <td>{{ ucfirst($p->layanan->nama) }}</td>
                                 <td>{{ $p->jadwal->waktu_mulai }} - {{ $p->jadwal->waktu_selesai }}</td>
-                                <td>{{ $p->created_at->toDateString() }}</td>
+                                <td>{{ $p->created_at }}</td>
                                 <td>{{ ($p->id_dokterPoli) != null ? $p->dokterPoli->nama : "-" }}</td>
                                 <td>{{ ($p->id_dokterRadiologi) != null ? $p->dokterRadiologi->nama : "-" }}</td>
                                 <td>{{ ($p->id_resepsionis) != null ? $p->resepsionis->nama : "-" }}</td>

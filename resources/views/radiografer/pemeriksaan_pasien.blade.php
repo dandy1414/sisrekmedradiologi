@@ -8,7 +8,8 @@
         Unggah Hasil Pemeriksaan Pasien
     </h1>
     <ol class="breadcrumb">
-        <li><a href="{{ route('radiografer.pasien.index-pemeriksaan') }}"><i class="fa fa-users"></i> Pemeriksaan</a>
+        <li><a href="{{ route('radiografer.pasien.index-pemeriksaan') }}"><i class="fa fa-stethoscope"></i>
+                Pemeriksaan</a>
         <li class="active">Unggah Hasil Pemeriksaan</li>
     </ol>
 </section>
@@ -30,21 +31,16 @@
     </div>
 
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-6">
             <div class="box box-info" style="position: relative;">
                 <div class="box-header">
-                    <h3 class="box-title">Data Pasien</h3>
+                    <h3 class="box-title">Detail Pasien</h3>
                 </div>
                 <div class="box-body">
                     <div class="col-md-7">
-                        <strong><i class="fa fa-bars"></i> Jenis Pasien : </strong>
+                        <strong><i class="glyphicon glyphicon-list-alt"></i> Jenis Pasien : </strong>
                         <p class="text-muted">
                             {{ ($pemeriksaan->pasien->jenis_pasien) == 'umum' ? "Umum" : "Rumah Sakit" }}
-                        </p>
-
-                        <strong><i class="fa fa-bars"></i> Jenis Pemeriksaan : </strong>
-                        <p class="text-muted">
-                            {{ ucfirst($pemeriksaan->jenis_pemeriksaan) }}
                         </p>
 
                         <strong><i class="fa fa-medkit"></i> Nomor Rekam Medis :</strong>
@@ -62,13 +58,14 @@
                         <strong><i class="fa fa-user"></i> Jenis Kelamin :</strong>
 
                         <p class="text-muted">{{ ucfirst($pemeriksaan->pasien->jenis_kelamin) }}</p>
-
-                        <strong><i class="fa fa-user"></i> Umur :</strong>
-
-                        <p class="text-muted">{{ $pemeriksaan->pasien->umur }} tahun</p>
                     </div>
 
                     <div class="col-md-5">
+                        <strong><i class="fa fa-user"></i> Umur :</strong>
+
+                        <p class="text-muted">{{ $pemeriksaan->pasien->umur }} tahun</p>
+
+
                         <strong><i class="fa fa-phone"></i> Nomor telepon :</strong>
                         <p class="text-muted">
                             {{ $pemeriksaan->pasien->nomor_telepon }}
@@ -83,10 +80,31 @@
                         <p class="text-muted">
                             {{ ($pemeriksaan->pasien->id_ruangan) != null ? $pemeriksaan->pasien->ruangan->nama_ruangan ." / ". $pemeriksaan->pasien->ruangan->kelas : "-" }}
                         </p>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-                        <strong><i class="fa fa-book margin-r-5"></i> Layanan : </strong>
+        <div class="col-md-6">
+            <div class="box box-primary" style="position: relative;">
+                <div class="box-header">
+                    <h3 class="box-title">Detail Pemeriksaan</h3>
+                </div>
+                <div class="box-body">
+                    <div class="col-md-7">
+                        <strong><i class="glyphicon glyphicon-th-list"></i> Nomor Pemeriksaan : </strong>
                         <p class="text-muted">
-                            {{ ($pemeriksaan->layanan->nama) }}
+                            {{ ucfirst($pemeriksaan->nomor_pemeriksaan) }}
+                        </p>
+
+                        <strong><i class="fa fa-bars"></i> Jenis Pemeriksaan : </strong>
+                        <p class="text-muted">
+                            {{ ucfirst($pemeriksaan->jenis_pemeriksaan) }}
+                        </p>
+
+                        <strong><i class="fa fa-book"></i> Kategori / Layanan : </strong>
+                        <p class="text-muted">
+                            {{ ucfirst($pemeriksaan->layanan->kategori->nama) }} / {{ ($pemeriksaan->layanan->nama) }}
                         </p>
 
                         <strong><i class="fa fa-user-md"></i> Dokter Perujuk : </strong>
@@ -98,8 +116,10 @@
                         <p class="text-muted">
                             {{ ($pemeriksaan->id_dokterRadiologi) != null ? $pemeriksaan->dokterRadiologi->nama : "-" }}
                         </p>
+                    </div>
 
-                        <strong><i class="fa fa-sticky-note"></i> Permintaan Tambahan : </strong>
+                    <div class="col-md-5">
+                        <strong><i class="glyphicon glyphicon-file"></i> Permintaan Tambahan : </strong>
                         <p class="text-muted">
                             {{ ($pemeriksaan->permintaan_tambahan) != null ? $pemeriksaan->permintaan_tambahan : "Tidak ada" }}
                         </p>
@@ -148,7 +168,8 @@
 
                             <div class="form-group">
                                 <label>Catatan</label>
-                                <textarea name="catatan" id="catatan" cols="10" rows="2" class="form-control"></textarea>
+                                <textarea name="catatan" id="catatan" cols="10" rows="2"
+                                    class="form-control"></textarea>
                             </div>
 
                             <div class="form-group {{ $errors->first('arus') ? "has-error": "" }}">

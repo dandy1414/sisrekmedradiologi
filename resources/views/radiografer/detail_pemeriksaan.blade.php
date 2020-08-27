@@ -8,7 +8,7 @@
         Detail Pemeriksaan
     </h1>
     <ol class="breadcrumb">
-        <li class="active">Detail Pemeriksaan</li>
+        <li class="active">Expertise Pasien</li>
     </ol>
 </section>
 
@@ -80,11 +80,11 @@
         <div class="col-md-8">
             <div class="box box-info" style="position: relative;">
                 <div class="box-header">
-                    <h3 class="box-title">Data Pasien</h3>
+                    <h3 class="box-title">Detail Pasien</h3>
                 </div>
                 <div class="box-body">
                     <div class="col-md-7">
-                        <strong><i class="glyphicon glyphicon-list-alt"></i> Jenis Pasien : </strong>
+                        <strong><i class="fa fa-bars"></i> Jenis Pasien : </strong>
                         <p class="text-muted">
                             {{ ($pemeriksaan->pasien->jenis_pasien) == 'umum' ? "Umum" : "Rumah Sakit" }}
                         </p>
@@ -102,10 +102,10 @@
                         <p class="text-muted">{{ $pemeriksaan->pasien->nama }}</p>
 
                         <strong><i class="fa fa-user"></i> Jenis Kelamin :</strong>
+                        <p class="text-muted">{{ ucfirst($pemeriksaan->pasien->jenis_kelamin) }}</p>
                     </div>
 
                     <div class="col-md-5">
-                        <p class="text-muted">{{ ucfirst($pemeriksaan->pasien->jenis_kelamin) }}</p>
                         <strong><i class="fa fa-user"></i> Umur :</strong>
 
                         <p class="text-muted">{{ $pemeriksaan->pasien->umur }} tahun</p>
@@ -138,7 +138,7 @@
                         @if ($pemeriksaan->status_pemeriksaan == 'selesai')
                         <span class="badge bg-green" style="margin-bottom: 5px">SELESAI</span><br>
                         @elseif($pemeriksaan->status_pemeriksaan == 'pending')
-                        <span class="badge bg-info" style="margin-bottom: 5px">BELUM EXPERTISE</span><br>
+                        <span class="badge bg-warning" style="margin-bottom: 5px">PENDING</span><br>
                         @else
 
                         @endif
@@ -158,15 +158,19 @@
                             {{ ucfirst($pemeriksaan->layanan->kategori->nama) }} / {{ ($pemeriksaan->layanan->nama) }}
                         </p>
 
+                        @if ($pemeriksaan->jenis_pemeriksaan == 'penuh' || $pemeriksaan->pasien->jenis_pasien == 'rs')
                         <strong><i class="fa fa-user-md"></i> Dokter Perujuk : </strong>
                         <p class="text-muted">
                             {{ ($pemeriksaan->id_dokterPoli) != null ? $pemeriksaan->dokterPoli->nama : "-" }}
                         </p>
+                        @endif
 
-                        <strong><i class="glyphicon glyphicon-file"></i> Permintaan Tambahan : </strong>
+                        @if ($pemeriksaan->jenis_pemeriksaan == 'penuh')
+                        <strong><i class="fa fa-user-md"></i> Dokter Rujukan : </strong>
                         <p class="text-muted">
-                            {{ ($pemeriksaan->permintaan_tambahan) != null ? $pemeriksaan->permintaan_tambahan : "Tidak ada" }}
+                            {{ ($pemeriksaan->id_dokterRadiologi) != null ? $pemeriksaan->dokterRadiologi->nama : "-" }}
                         </p>
+                        @endif
                     </div>
 
                     <div class="col-md-5">
@@ -175,6 +179,14 @@
                             {{ ($pemeriksaan->keluhan) != null ? $pemeriksaan->keluhan : "Tidak ada" }}
                         </p>
 
+                        @if ($pemeriksaan->jenis_pemeriksaan == 'penuh' || $pemeriksaan->pasien->jenis_pasien == 'rs')
+                        <strong><i class="glyphicon glyphicon-file"></i> Permintaan Tambahan : </strong>
+                        <p class="text-muted">
+                            {{ ($pemeriksaan->permintaan_tambahan) != null ? $pemeriksaan->permintaan_tambahan : "Tidak ada" }}
+                        </p>
+                        @endif
+
+                        @if ($pemeriksaan->jenis_pemeriksaan == 'penuh')
                         <strong><i class="fa fa-clock-o"></i> Waktu Kirim : </strong>
                         <p class="text-muted">
                             {{ ($pemeriksaan->waktu_kirim) }} WIB
@@ -189,17 +201,20 @@
                         <p class="text-muted">
                             {{ ($pemeriksaan->durasi) }} menit
                         </p>
+                        @endif
                     </div>
                 </div>
                 <div class="box-footer">
+                    @if ($pemeriksaan->jenis_pemeriksaan == 'penuh')
                     <a class="btn btn-primary btn"
-                    href="{{ route('dokterRadiologi.pasien.pendaftaran.surat-rujukan', ['id'=>$pemeriksaan->pendaftaran_id]) }}"
+                    href="{{ route('radiografer.pasien.pendaftaran.surat-rujukan', ['id'=>$pemeriksaan->pendaftaran_id]) }}"
                     target="_blank"><i class="
                     glyphicon glyphicon-envelope"></i> Surat Rujukan</a>
 
                     <a class="btn btn-success btn"
-                    href="{{ route('dokterRadiologi.pasien.pemeriksaan.hasil-expertise', ['id'=>$pemeriksaan->id]) }}"
+                    href="{{ route('radiografer.pasien.pemeriksaan.hasil-expertise', ['id'=>$pemeriksaan->id]) }}"
                     target="_blank" style="margin-left: 5px"><i class="fa fa-print"></i> Hasil Expertise</a>
+                    @endif
                 </div>
             </div>
         </div>
