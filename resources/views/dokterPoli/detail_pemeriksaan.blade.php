@@ -30,7 +30,7 @@
 
     <div class="row">
         <div class="col-md-4">
-            <div class="box box-warning" style="position: relative; height:653px">
+            <div class="box box-warning" style="position: relative;">
                 <div class="box-header">
                     <h3 class="box-title">Hasil Foto</h3>
                 </div>
@@ -83,47 +83,59 @@
                     <h3 class="box-title">Detail Pasien</h3>
                 </div>
                 <div class="box-body">
-                    <div class="col-md-7">
-                        <strong><i class="fa fa-bars"></i> Jenis Pasien : </strong>
-                        <p class="text-muted">
-                            {{ ($pemeriksaan->pasien->jenis_pasien) == 'umum' ? "Umum" : "Rumah Sakit" }}
-                        </p>
-
-                        <strong><i class="fa fa-medkit"></i> Nomor Rekam Medis :</strong>
-
-                        <p class="text-muted">{{ $pemeriksaan->pasien->nomor_rm }}</p>
-
-                        <strong><i class="fa fa-credit-card"></i> Nomor KTP :</strong>
-
-                        <p class="text-muted">{{ $pemeriksaan->pasien->nomor_ktp }}</p>
-
-                        <strong><i class="fa fa-user"></i> Nama :</strong>
-
-                        <p class="text-muted">{{ $pemeriksaan->pasien->nama }}</p>
-
-                        <strong><i class="fa fa-user"></i> Jenis Kelamin :</strong>
-                        <p class="text-muted">{{ ucfirst($pemeriksaan->pasien->jenis_kelamin) }}</p>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <img src="{{ asset('storage/hasil_foto/'. $pemeriksaan->hasil_foto) }}" alt="Hasil Foto"
+                            class="responsive" height="100%" width="100%">
+                        <hr>
+                        </div>
                     </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <strong> Arus Listrik : </strong>
+                            <p class="text-muted">
+                                {{ ($pemeriksaan->arus_listrik) != null ? $pemeriksaan->arus_listrik : "-"  }}
+                            </p>
 
-                    <div class="col-md-5">
-                        <strong><i class="fa fa-user"></i> Umur :</strong>
+                            <strong> FFD : </strong>
+                            <p class="text-muted">
+                                {{ ($pemeriksaan->ffd) != null ? $pemeriksaan->ffd : "-" }}
+                            </p>
 
-                        <p class="text-muted">{{ $pemeriksaan->pasien->umur }} tahun</p>
+                            <strong> BSF : </strong>
+                            <p class="text-muted">
+                                {{ ($pemeriksaan->bsf) != null ? $pemeriksaan->bsf : "-" }}
+                            </p>
+                        </div>
 
-                        <strong><i class="fa fa-phone"></i> Nomor telepon :</strong>
-                        <p class="text-muted">
-                            {{ $pemeriksaan->pasien->nomor_telepon }}
-                        </p>
+                        <div class="col-md-6">
+                            <strong> Jumlah Penyinaran : </strong>
+                            <p class="text-muted">
+                                {{ ($pemeriksaan->jumlah_penyinaran) != null ? $pemeriksaan->jumlah_penyinaran : "-"  }}
+                            </p>
 
-                        <strong><i class="fa fa-home"></i> Alamat :</strong>
-                        <p class="text-muted">
-                            {{ ucfirst($pemeriksaan->pasien->alamat) }}
-                        </p>
+                            <strong> Dosis Penyinaran : </strong>
+                            <p class="text-muted">
+                                {{ ($pemeriksaan->dosis_penyinaran) != null ? $pemeriksaan->dosis_penyinaran : "-" }}
+                            </p>
 
-                        <strong><i class="fa fa-hospital-o"></i> Asal Ruangan / Kelas :</strong>
-                        <p class="text-muted">
-                            {{ ($pemeriksaan->pasien->id_ruangan) != null ? $pemeriksaan->pasien->ruangan->nama_ruangan ." / ". $pemeriksaan->pasien->ruangan->kelas : "-" }}
-                        </p>
+                            @if ($pemeriksaan->status_pemeriksaan == 'selesai' || $pemeriksaan->status_pemeriksaan ==
+                            'pending')
+                            <strong> Tipe Film : </strong>
+                            <p class="text-muted">
+                                {{ $pemeriksaan->film->nama }}
+                            </p>
+                            @endif
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <strong> Catatan : </strong>
+                            <p class="text-muted">
+                                {{ ($pemeriksaan->catatan) != null ? ucfirst($pemeriksaan->jumlah_penyinaran) : "Tidak ada"  }}
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -137,10 +149,6 @@
                         <strong><i class="fa fa-stethoscope"></i> Status Pemeriksaan : </strong><br>
                         @if ($pemeriksaan->status_pemeriksaan == 'selesai')
                         <span class="badge bg-green" style="margin-bottom: 5px">SELESAI</span><br>
-                        @elseif($pemeriksaan->status_pemeriksaan == 'pending')
-                        <span class="badge bg-warning" style="margin-bottom: 5px">PENDING</span><br>
-                        @else
-
                         @endif
 
                         <strong><i class="glyphicon glyphicon-th-list"></i> Nomor Pemeriksaan : </strong>
@@ -200,12 +208,12 @@
                 <div class="box-footer">
                     @if ($pemeriksaan->jenis_pemeriksaan == 'penuh')
                     <a class="btn btn-primary btn"
-                    href="{{ route('radiografer.pasien.pendaftaran.surat-rujukan', ['id'=>$pemeriksaan->pendaftaran_id]) }}"
+                    href="{{ route('dokterPoli.pasien.pendaftaran.surat-rujukan', ['id'=>$pemeriksaan->pendaftaran_id]) }}"
                     target="_blank"><i class="
                     glyphicon glyphicon-envelope"></i> Surat Rujukan</a>
 
                     <a class="btn btn-success btn"
-                    href="{{ route('radiografer.pasien.pemeriksaan.hasil-expertise', ['id'=>$pemeriksaan->id]) }}"
+                    href="{{ route('dokterPoli.pasien.pemeriksaan.hasil-expertise', ['id'=>$pemeriksaan->id]) }}"
                     target="_blank" style="margin-left: 5px"><i class="fa fa-print"></i> Hasil Expertise</a>
                     @endif
                 </div>

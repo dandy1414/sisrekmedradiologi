@@ -1,15 +1,13 @@
 @extends('layouts.global')
 
-@section('title')Expertise Pasien @endsection
+@section('title')Detail Pemeriksaan @endsection
 
 @section('content')
 <section class="content-header" style="margin-top: 50px;">
     <h1>
-        Expertise Pasien
+        Detail Pemeriksaan
     </h1>
     <ol class="breadcrumb">
-        <li><a href="{{ route('dokterRadiologi.pasien.index-pemeriksaan') }}"><i class="fa fa-users"></i>
-                Pemeriksaan</a>
         <li class="active">Expertise Pasien</li>
     </ol>
 </section>
@@ -101,7 +99,7 @@
                 </div>
                 <div class="box-body">
                     <div class="col-md-7">
-                        <strong><i class="glyphicon glyphicon-list-alt"></i> Jenis Pasien : </strong>
+                        <strong><i class="fa fa-bars"></i> Jenis Pasien : </strong>
                         <p class="text-muted">
                             {{ ($pemeriksaan->pasien->jenis_pasien) == 'umum' ? "Umum" : "Rumah Sakit" }}
                         </p>
@@ -119,14 +117,14 @@
                         <p class="text-muted">{{ $pemeriksaan->pasien->nama }}</p>
 
                         <strong><i class="fa fa-user"></i> Jenis Kelamin :</strong>
-
                         <p class="text-muted">{{ ucfirst($pemeriksaan->pasien->jenis_kelamin) }}</p>
-                        <strong><i class="fa fa-user"></i> Umur :</strong>
-
-                        <p class="text-muted">{{ $pemeriksaan->pasien->umur }} tahun</p>
                     </div>
 
                     <div class="col-md-5">
+                        <strong><i class="fa fa-user"></i> Umur :</strong>
+
+                        <p class="text-muted">{{ $pemeriksaan->pasien->umur }} tahun</p>
+
                         <strong><i class="fa fa-phone"></i> Nomor telepon :</strong>
                         <p class="text-muted">
                             {{ $pemeriksaan->pasien->nomor_telepon }}
@@ -151,6 +149,15 @@
                 </div>
                 <div class="box-body">
                     <div class="col-md-7">
+                        <strong><i class="fa fa-stethoscope"></i> Status Pemeriksaan : </strong><br>
+                        @if ($pemeriksaan->status_pemeriksaan == 'selesai')
+                        <span class="badge bg-green" style="margin-bottom: 5px">SELESAI</span><br>
+                        @elseif($pemeriksaan->status_pemeriksaan == 'pending')
+                        <span class="badge bg-yellow" style="margin-bottom: 5px">PENDING</span><br>
+                        @else
+
+                        @endif
+
                         <strong><i class="glyphicon glyphicon-th-list"></i> Nomor Pemeriksaan : </strong>
                         <p class="text-muted">
                             {{ ucfirst($pemeriksaan->nomor_pemeriksaan) }}
@@ -166,10 +173,19 @@
                             {{ ucfirst($pemeriksaan->layanan->kategori->nama) }} / {{ ($pemeriksaan->layanan->nama) }}
                         </p>
 
+                        @if ($pemeriksaan->jenis_pemeriksaan == 'penuh' || $pemeriksaan->pasien->jenis_pasien == 'rs')
                         <strong><i class="fa fa-user-md"></i> Dokter Perujuk : </strong>
                         <p class="text-muted">
                             {{ ($pemeriksaan->id_dokterPoli) != null ? $pemeriksaan->dokterPoli->nama : "-" }}
                         </p>
+                        @endif
+
+                        @if ($pemeriksaan->jenis_pemeriksaan == 'penuh')
+                        <strong><i class="fa fa-user-md"></i> Dokter Rujukan : </strong>
+                        <p class="text-muted">
+                            {{ ($pemeriksaan->id_dokterRadiologi) != null ? $pemeriksaan->dokterRadiologi->nama : "-" }}
+                        </p>
+                        @endif
                     </div>
 
                     <div class="col-md-5">
@@ -178,58 +194,58 @@
                             {{ ($pemeriksaan->id_radiografer) != null ? $pemeriksaan->radiografer->nama : "-" }}
                         </p>
 
-                        <strong><i class="glyphicon glyphicon-file"></i> Permintaan Tambahan : </strong>
-                        <p class="text-muted">
-                            {{ ($pemeriksaan->permintaan_tambahan) != null ? $pemeriksaan->permintaan_tambahan : "Tidak ada" }}
-                        </p>
-
                         <strong><i class="fa fa-ambulance"></i> Keluhan : </strong>
                         <p class="text-muted">
                             {{ ($pemeriksaan->keluhan) != null ? $pemeriksaan->keluhan : "Tidak ada" }}
                         </p>
+
+                        @if ($pemeriksaan->jenis_pemeriksaan == 'penuh' || $pemeriksaan->pasien->jenis_pasien == 'rs')
+                        <strong><i class="glyphicon glyphicon-file"></i> Permintaan Tambahan : </strong>
+                        <p class="text-muted">
+                            {{ ($pemeriksaan->permintaan_tambahan) != null ? $pemeriksaan->permintaan_tambahan : "Tidak ada" }}
+                        </p>
+                        @endif
+
+                        @if ($pemeriksaan->jenis_pemeriksaan == 'penuh')
+                        <strong><i class="fa fa-clock-o"></i> Waktu Kirim : </strong>
+                        <p class="text-muted">
+                            {{ ($pemeriksaan->waktu_kirim) }} WIB
+                        </p>
+
+                        <strong><i class="fa fa-clock-o"></i> Waktu Selesai : </strong>
+                        <p class="text-muted">
+                            {{ ($pemeriksaan->waktu_selesai) }} WIB
+                        </p>
+
+                        <strong><i class="fa fa-clock-o"></i> Durasi : </strong>
+                        <p class="text-muted">
+                            {{ ($pemeriksaan->durasi) }} menit
+                        </p>
+                        @endif
                     </div>
+                </div>
+                <div class="box-footer">
+                    @if ($pemeriksaan->jenis_pemeriksaan == 'penuh')
+                    <a class="btn btn-primary btn"
+                        href="{{ route('pasien.pendaftaran.surat-rujukan', ['id'=>$pemeriksaan->pendaftaran_id]) }}"
+                        target="_blank"><i class="
+                    glyphicon glyphicon-envelope"></i> Surat Rujukan</a>
+
+                    @if($pemeriksaan->expertise != null)
+                    <a class="btn btn-success btn"
+                        href="{{ route('pasien.pemeriksaan.hasil-expertise', ['id'=>$pemeriksaan->id]) }}"
+                        target="_blank" style="margin-left: 5px"><i class="fa fa-print"></i> Hasil Expertise</a>
+                    @endif
+                    @endif
                 </div>
             </div>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-md-12">
-            <form method="POST"
-                action="{{ route('dokterRadiologi.pasien.store.expertise-pasien', ['id' => $pemeriksaan->id]) }}"
-                enctype="multipart/form-data">
-                @csrf
-                {{ method_field('PUT') }}
-                <div class="box box-success">
-                    <div class="box-header">
-                        <h3 class="box-title">Form Expertise</h3>
-                    </div>
-                    <div class="box-body">
-                        <textarea id="expertisePasien" class="form-control" name="expertise" rows="10"
-                            cols="50"></textarea>
-                    </div>
-                    <div class="box-footer">
-                        <div class="form-group">
-                            <button type="submit" class="btn btn-success">Unggah</button>
-                        </div>
-                    </div>
-                </div>
-            </form>
         </div>
     </div>
 </section>
 @endsection
 @push('scripts')
-<!-- CKeditor -->
-<script src="{{ asset('adminlte/bower_components/ckeditor/ckeditor.js') }}"></script>
 <script>
-    $(function () {
-        // var expertise = document.getElementById("expertise");
-        CKEDITOR.replace('expertisePasien', {
-            language: 'en-gb',
-        });
-        CKEDITOR.config.allowedContent = true;
-    })
+
 
 </script>
 @endpush

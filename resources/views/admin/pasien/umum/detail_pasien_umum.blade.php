@@ -97,7 +97,6 @@
                                 <th>Dokter Rujukan</th>
                                 <th>Resepsionis</th>
                                 <th>Keluhan</th>
-                                <th>Surat Rujukan</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -108,13 +107,12 @@
                                 <td>{{ $pen->nomor_pendaftaran }}</td>
                                 <td>{{ ucfirst($pen->jenis_pemeriksaan) }}</td>
                                 <td>{{ ucfirst($pen->layanan->nama) }}</td>
-                                <td>{{ $pen->jadwal->waktu_mulai }} - {{ $pen->jadwal->waktu_selesai }}</td>
-                                <td>{{ $pen->created_at->toDateString() }}</td>
+                                <td>{{ $pen->jadwal->waktu_mulai }} WIB - {{ $pen->jadwal->waktu_selesai }} WIB</td>
+                                <td>{{ $pen->created_at }}</td>
                                 <td>{{ ($pen->id_dokterPoli) != null ? $pen->dokterPoli->nama : "-" }}</td>
                                 <td>{{ ($pen->id_dokterRadiologi) != null ? $pen->dokterRadiologi->nama : "-" }}</td>
                                 <td>{{ ($pen->id_resepsionis) != null ? $pen->resepsionis->nama : "-" }}</td>
                                 <td>{{ ($pen->keluhan) != null ? ucfirst($pen->keluhan) : "Tidak ada" }}</td>
-                                <td>{{ ($pen->surat_rujukan) != null ? 'Ada' : 'Tidak ada' }}</td>
                                 <td>
                                     <div class="input-group margin">
                                         <div class="input-group-btn">
@@ -154,7 +152,6 @@
                                 <th>No.</th>
                                 <th>Nomor Pemeriksaan</th>
                                 <th>Jenis Pemeriksaan</th>
-                                <th>CITO</th>
                                 <th>Layanan</th>
                                 <th>Jadwal</th>
                                 <th>Tanggal Pendaftaran</th>
@@ -171,9 +168,8 @@
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $pem->nomor_pemeriksaan }}</td>
                                 <td>{{ ucfirst($pem->jenis_pemeriksaan) }}</td>
-                                <td>{{ $pem->cito }}</td>
                                 <td>{{ ucfirst($pem->layanan->nama) }}</td>
-                                <td>{{ $pem->jadwal->waktu_mulai }} - {{ $pem->jadwal->waktu_selesai }}</td>
+                                <td>{{ $pem->jadwal->waktu_mulai }} WIB - {{ $pem->jadwal->waktu_selesai }} WIB</td>
                                 <td>{{ $pem->created_at }}</td>
                                 <td>{{ ($pem->id_dokterPoli) != null ? $pem->dokterPoli->nama : "-" }}</td>
                                 <td>{{ ($pem->id_dokterRadiologi) != null ? $pem->dokterRadiologi->nama : "-" }}</td>
@@ -183,12 +179,12 @@
                                 <td>
                                     <div class="input-group margin">
                                         <div class="input-group-btn">
-                                            <button type="button" class="btn btn-default dropdown-toggle"
-                                                data-toggle="dropdown">
-                                                <span class="fa fa-gears"></span>
+                                            <button type="button" class="btn btn-success dropdown-toggle"
+                                                data-toggle="dropdown">Aksi
                                                 <span class="fa fa-caret-down"></span>
                                             </button>
                                             <ul class="dropdown-menu">
+                                                <li><a href="{{ route('pasien.detail-pemeriksaan', ['id' => $pem->id]) }}">Detail Pemeriksaan</a></li>
                                                 @if ($pem->jenis_pemeriksaan == 'penuh')
                                                 <li><a href="{{ route('pasien.pendaftaran.surat-rujukan', ['id'=>$pem->pendaftaran_id]) }}"
                                                         target="_blank">Lihat Surat Rujukan </a></li>
@@ -235,10 +231,6 @@
                                 <th>No.</th>
                                 <th>Tanggal Pembayaran</th>
                                 <th>Nomor Tagihan</th>
-                                <th>Nama</th>
-                                <th>Nomor RM</th>
-                                <th>Nomor KTP</th>
-                                <th>Jenis Pasien</th>
                                 <th>Jenis Pemeriksaan</th>
                                 <th>Layanan</th>
                                 <th>Jadwal</th>
@@ -256,13 +248,9 @@
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $t->tanggal }}</td>
                                 <td>{{ $t->nomor_tagihan }}</td>
-                                <td>{{ $t->pasien->nama }}</td>
-                                <td>{{ $t->pasien->nomor_rm }}</td>
-                                <td>{{ $t->pasien->nomor_ktp }}</td>
-                                <td>{{ ($t->pasien->jenis_pasien) == 'umum' ? "Umum" : "Rumah Sakit" }}</td>
                                 <td>{{ ucfirst($t->pemeriksaan->jenis_pemeriksaan) }}</td>
                                 <td>{{ ucfirst($t->layanan->nama) }}</td>
-                                <td>{{ $t->jadwal->waktu_mulai }} - {{ $t->jadwal->waktu_selesai }}</td>
+                                <td>{{ $t->jadwal->waktu_mulai }} WIB - {{ $t->jadwal->waktu_selesai }} WIB</td>
                                 <td>@currency($t->tarif_dokter)</td>
                                 <td>@currency($t->tarif_jasa)</td>
                                 <td>{{ ucfirst($t->kasir->nama) }}</td>

@@ -48,20 +48,18 @@
                         <thead>
                             <tr>
                                 <th>No.</th>
-                                <th>Nomor Rujuk</th>
-                                <th>Nama</th>
+                                <th width="18%">Nomor Rujukan</th>
+                                <th>Tanggal Rujukan</th>
                                 <th>Nomor RM</th>
                                 <th>Nomor KTP</th>
-                                <th>Jenis Pasien</th>
-                                <th>Jenis Pemeriksaan</th>
+                                <th width="30%">Nama</th>
+                                <th width="5%">Jenis Pemeriksaan</th>
                                 <th>Layanan</th>
-                                <th>Jadwal</th>
-                                <th>Tanggal Pendaftaran</th>
-                                <th>Dokter Perujuk</th>
-                                <th>Dokter Rujukan</th>
+                                <th width="5%">Jadwal</th>
+                                <th width="40%">Dokter Rujukan</th>
                                 <th>Keluhan</th>
-                                <th>Surat Rujukan</th>
-                                <th>Aksi</th>
+                                <th>Permintaan Tambahan</th>
+                                <th width="30%">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -69,18 +67,16 @@
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $r->nomor_pendaftaran }}</td>
-                                <td>{{ $r->pasien->nama }}</td>
+                                <td>{{ $r->created_at }}</td>
                                 <td>{{ $r->pasien->nomor_rm }}</td>
                                 <td>{{ $r->pasien->nomor_ktp }}</td>
-                                <td>{{ ucfirst($r->pasien->jenis_pasien) }}</td>
+                                <td>{{ $r->pasien->nama }}</td>
                                 <td>{{ ucfirst($r->jenis_pemeriksaan) }}</td>
                                 <td>{{ ucfirst($r->layanan->nama) }}</td>
-                                <td>{{ $r->jadwal->waktu_mulai }} - {{ $r->jadwal->waktu_selesai }}</td>
-                                <td>{{ $r->created_at) }}</td>
-                                <td>{{ ($r->id_dokterPoli) != null ? $r->dokterPoli->nama : "-" }}</td>
+                                <td>{{ $r->jadwal->waktu_mulai }} WIB - {{ $r->jadwal->waktu_selesai }} WIB</td>
                                 <td>{{ ($r->id_dokterRadiologi) != null ? $r->dokterRadiologi->nama : "-" }}</td>
                                 <td>{{ ($r->keluhan) != null ? ucfirst($r->keluhan) : "Tidak ada" }}</td>
-                                <td>{{ ($r->surat_rujukan) != null ? 'Ada' : 'Tidak ada' }}</td>
+                                <td>{{ ($r->permintaan_tambahan) != null ? ucfirst($r->permintaan_tambahan) : "Tidak ada" }}</td>
                                 <td>
                                     <div class="input-group margin">
                                         <div class="input-group-btn">

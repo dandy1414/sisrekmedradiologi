@@ -144,6 +144,12 @@ class PasienController extends Controller
         }
     }
 
+    public function detailPemeriksaan($id){
+        $pemeriksaan = Pemeriksaan::findOrFail($id);
+
+        return view('admin.pasien.detail_pemeriksaan', ['pemeriksaan'=> $pemeriksaan]);
+    }
+
     public function editPasienUmum($id){
         $ruangan = Ruangan::all();
         $pasien = Pasien::findOrFail($id);

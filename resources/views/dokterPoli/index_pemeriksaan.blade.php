@@ -48,18 +48,16 @@
                         <thead>
                             <tr>
                                 <th>No.</th>
-                                <th>Nomor Rujuk</th>
-                                <th>Nama</th>
+                                <th width="30%">Nomor Pemeriksaan</th>
                                 <th>Nomor RM</th>
-                                <th>Nomor KTP</th>
-                                <th>Jenis Pemeriksaan</th>
-                                <th>CITO</th>
+                                <th width="20%">Nama</th>
+                                <th width="15%">Jenis Pasien</th>
+                                <th width="2%">Jenis Pemeriksaan</th>
                                 <th>Layanan</th>
                                 <th>Jadwal</th>
-                                <th>Tanggal Pendaftaran</th>
-                                <th>Dokter Rujukan</th>
+                                <th width="5%">Waktu Selesai</th>
+                                <th width="15%">Dokter Rujukan</th>
                                 <th>Keluhan</th>
-                                <th>Permintaan Tambahan</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -70,15 +68,12 @@
                                 <td>{{ $p->nomor_pemeriksaan }}</td>
                                 <td>{{ $p->pasien->nama }}</td>
                                 <td>{{ $p->pasien->nomor_rm }}</td>
-                                <td>{{ $p->pasien->nomor_ktp }}</td>
                                 <td>{{ ucfirst($p->jenis_pemeriksaan) }}</td>
-                                <td>{{ ucfirst($p->cito) }}</td>
                                 <td>{{ ucfirst($p->layanan->nama) }}</td>
-                                <td>{{ $p->jadwal->waktu_mulai }} - {{ $p->jadwal->waktu_selesai }}</td>
-                                <td>{{ $p->created_at }}</td>
+                                <td>{{ $p->jadwal->waktu_mulai }} WIB - {{ $p->jadwal->waktu_selesai }} WIB</td>
+                                <td>{{ $s->waktu_selesai }}</td>
                                 <td>{{ ($p->id_dokterRadiologi) != null ? $p->dokterRadiologi->nama : "-" }}</td>
                                 <td>{{ ($p->keluhan) != null ? ucfirst($p->keluhan) : "Tidak ada" }}</td>
-                                <td>{{ ($p->permintaan_tambahan) != null ? ucfirst($p->permintaan_tambahan) : "Tidak ada" }}</td>
                                 <td>
                                     <div class="input-group margin">
                                         <div class="input-group-btn">

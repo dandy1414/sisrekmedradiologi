@@ -30,49 +30,64 @@
 
     <div class="row">
         <div class="col-md-4">
-            <div class="box box-warning" style="position: relative; height:653px">
+            <div class="box box-warning" style="position: relative;">
                 <div class="box-header">
                     <h3 class="box-title">Hasil Foto</h3>
                 </div>
                 <div class="box-body">
-                    <img src="{{ asset('storage/hasil_foto/'. $pemeriksaan->hasil_foto) }}" alt="Hasil Foto"
-                        class="responsive" height="100%" width="100%">
-                    <hr>
-
-                    <div class="col-md-6">
-                        <strong> Arus Listrik : </strong>
-                        <p class="text-muted">
-                            {{ ($pemeriksaan->arus_listrik) != null ? $pemeriksaan->arus_listrik : "-"  }}
-                        </p>
-
-                        <strong> FFD : </strong>
-                        <p class="text-muted">
-                            {{ ($pemeriksaan->ffd) != null ? $pemeriksaan->ffd : "-" }}
-                        </p>
-
-                        <strong> BSF : </strong>
-                        <p class="text-muted">
-                            {{ ($pemeriksaan->bsf) != null ? $pemeriksaan->bsf : "-" }}
-                        </p>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <img src="{{ asset('storage/hasil_foto/'. $pemeriksaan->hasil_foto) }}" alt="Hasil Foto"
+                            class="responsive" height="100%" width="100%">
+                        <hr>
+                        </div>
                     </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <strong> Arus Listrik : </strong>
+                            <p class="text-muted">
+                                {{ ($pemeriksaan->arus_listrik) != null ? $pemeriksaan->arus_listrik : "-"  }}
+                            </p>
 
-                    <div class="col-md-6">
-                        <strong> Jumlah Penyinaran : </strong>
-                        <p class="text-muted">
-                            {{ ($pemeriksaan->jumlah_penyinaran) != null ? $pemeriksaan->jumlah_penyinaran : "-"  }}
-                        </p>
+                            <strong> FFD : </strong>
+                            <p class="text-muted">
+                                {{ ($pemeriksaan->ffd) != null ? $pemeriksaan->ffd : "-" }}
+                            </p>
 
-                        <strong> Dosis Penyinaran : </strong>
-                        <p class="text-muted">
-                            {{ ($pemeriksaan->dosis_penyinaran) != null ? $pemeriksaan->dosis_penyinaran : "-" }}
-                        </p>
+                            <strong> BSF : </strong>
+                            <p class="text-muted">
+                                {{ ($pemeriksaan->bsf) != null ? $pemeriksaan->bsf : "-" }}
+                            </p>
+                        </div>
 
-                        @if ($pemeriksaan->status_pemeriksaan == 'selesai' || $pemeriksaan->status_pemeriksaan == 'pending')
-                        <strong> Tipe Film : </strong>
-                        <p class="text-muted">
-                            {{ $pemeriksaan->film->nama }}
-                        </p>
-                        @endif
+                        <div class="col-md-6">
+                            <strong> Jumlah Penyinaran : </strong>
+                            <p class="text-muted">
+                                {{ ($pemeriksaan->jumlah_penyinaran) != null ? $pemeriksaan->jumlah_penyinaran : "-"  }}
+                            </p>
+
+                            <strong> Dosis Penyinaran : </strong>
+                            <p class="text-muted">
+                                {{ ($pemeriksaan->dosis_penyinaran) != null ? $pemeriksaan->dosis_penyinaran : "-" }}
+                            </p>
+
+                            @if ($pemeriksaan->status_pemeriksaan == 'selesai' || $pemeriksaan->status_pemeriksaan ==
+                            'pending')
+                            <strong> Tipe Film : </strong>
+                            <p class="text-muted">
+                                {{ $pemeriksaan->film->nama }}
+                            </p>
+                            @endif
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <strong> Catatan : </strong>
+                            <p class="text-muted">
+                                {{ ($pemeriksaan->catatan) != null ? ucfirst($pemeriksaan->jumlah_penyinaran) : "Tidak ada"  }}
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -102,10 +117,11 @@
                         <p class="text-muted">{{ $pemeriksaan->pasien->nama }}</p>
 
                         <strong><i class="fa fa-user"></i> Jenis Kelamin :</strong>
+                        <p class="text-muted">{{ ucfirst($pemeriksaan->pasien->jenis_kelamin) }}</p>
                     </div>
 
                     <div class="col-md-5">
-                        <p class="text-muted">{{ ucfirst($pemeriksaan->pasien->jenis_kelamin) }}</p>
+
                         <strong><i class="fa fa-user"></i> Umur :</strong>
 
                         <p class="text-muted">{{ $pemeriksaan->pasien->umur }} tahun</p>

@@ -60,19 +60,16 @@
                         <thead>
                             <tr>
                                 <th>No.</th>
-                                <th>Nomor Pemeriksaan</th>
-                                <th>Nama</th>
+                                <th width="30%">Nomor Pemeriksaan</th>
                                 <th>Nomor RM</th>
-                                <th>Nomor KTP</th>
-                                <th>Jenis Pasien</th>
-                                <th>Jenis Pemeriksaan</th>
-                                {{-- <th>CITO</th> --}}
+                                <th width="20%">Nama</th>
+                                <th width="10%">Jenis Pasien</th>
+                                <th width="1%">Jenis Pemeriksaan</th>
                                 <th>Layanan</th>
                                 <th>Jadwal</th>
-                                <th>Tanggal Pendaftaran</th>
-                                <th>Dokter Perujuk</th>
+                                <th width="5%">Waktu Kirim</th>
+                                <th width="20%">Dokter Perujuk</th>
                                 <th>Keluhan</th>
-                                <th>Catatan Radiografer</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -81,18 +78,15 @@
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $b->nomor_pemeriksaan }}</td>
-                                <td>{{ $b->pasien->nama }}</td>
                                 <td>{{ $b->pasien->nomor_rm }}</td>
-                                <td>{{ $b->pasien->nomor_ktp }}</td>
+                                <td>{{ $b->pasien->nama }}</td>
                                 <td>{{ ($b->pasien->jenis_pasien) == 'umum' ? "Umum" : "Rumah Sakit" }}</td>
                                 <td>{{ ucfirst($b->jenis_pemeriksaan) }}</td>
-                                {{-- <td>{{ ucfirst($b->cito) }}</td> --}}
                                 <td>{{ ucfirst($b->layanan->nama) }}</td>
-                                <td>{{ $b->jadwal->waktu_mulai }} - {{ $b->jadwal->waktu_selesai }}</td>
-                                <td>{{ $b->created_at }}</td>
+                                <td>{{ $b->waktu_kirim }}</td>
+                                <td>{{ $b->jadwal->waktu_mulai }} WIB - {{ $b->jadwal->waktu_selesai }} WIB</td>
                                 <td>{{ ($b->id_dokterPoli) != null ? $b->dokterPoli->nama : "-" }}</td>
                                 <td>{{ ($b->keluhan) != null ? ucfirst($b->keluhan) : "Tidak ada" }}</td>
-                                <td>{{ ($b->catatan) != null ? ucfirst($b->catatan) : "Tidak ada" }}</td>
                                 <td>
                                     <div class="input-group margin">
                                         <div class="input-group-btn">
@@ -101,6 +95,12 @@
                                                 <span class="fa fa-caret-down"></span>
                                             </button>
                                             <ul class="dropdown-menu">
+                                                <li><a id="modal-detail" href="#" data-toggle="modal"
+                                                    data-target="#detail-pemeriksaan"
+                                                    data-ktp="{{ $b->pasien->nomor_ktp }}"
+                                                    data-tanggal="{{ $b->created_at }}"
+                                                    data-permintaantambahan="{{ ($b->permintaan_tambahan) != null ? ucfirst($b->permintaan_tambahan) : "Tidak ada" }}"
+                                                    data-namaradiografer="{{ $b->radiografer->nama }}">Detail</a>
                                                 <li><a href="{{ route('dokterRadiologi.pasien.pendaftaran.surat-rujukan', ['id'=>$b->pendaftaran_id]) }}" target="_blank">Lihat Surat Rujukan </a></li>
                                                 <li><a href="{{ route('dokterRadiologi.pasien.expertise-pasien', ['id'=>$b->id]) }}">Lakukan Expertise</a></li>
                                             </ul>
@@ -123,23 +123,16 @@
                         <thead>
                             <tr>
                                 <th>No.</th>
-                                <th>Nomor Pemeriksaan</th>
-                                <th>Nama</th>
+                                <th width="50%">Nomor Pemeriksaan</th>
                                 <th>Nomor RM</th>
-                                <th>Nomor KTP</th>
-                                <th>Jenis Pasien</th>
+                                <th width="20%">Nama</th>
+                                <th width="10%">Jenis Pasien</th>
                                 <th>Jenis Pemeriksaan</th>
-                                {{-- <th>CITO</th> --}}
                                 <th>Layanan</th>
-                                <th>Jadwal</th>
-                                <th>Waktu Kirim</th>
-                                <th>Waktu Selesai</th>
-                                <th>Durasi</th>
-                                <th>Tanggal Pendaftaran</th>
-                                <th>Dokter Perujuk</th>
-                                <th>Radiografer</th>
+                                <th width=2%>Jadwal</th>
+                                <th width="5%">Selesai Expertise</th>
+                                <th width="20%">Dokter Perujuk</th>
                                 <th>Keluhan</th>
-                                <th>Catatan</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -148,22 +141,15 @@
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $s->nomor_pemeriksaan }}</td>
-                                <td>{{ $s->pasien->nama }}</td>
                                 <td>{{ $s->pasien->nomor_rm }}</td>
-                                <td>{{ $s->pasien->nomor_ktp }}</td>
+                                <td>{{ $s->pasien->nama }}</td>
                                 <td>{{ ($s->pasien->jenis_pasien) == 'umum' ? "Umum" : "Rumah Sakit" }}</td>
                                 <td>{{ ucfirst($s->jenis_pemeriksaan) }}</td>
-                                {{-- <td>{{ $s->cito }}</td> --}}
                                 <td>{{ ucfirst($s->layanan->nama) }}</td>
-                                <td>{{ $s->jadwal->waktu_mulai }} - {{ $s->jadwal->waktu_selesai }}</td>
-                                <td>{{ $s->waktu_kirim }}</td>
+                                <td>{{ $s->jadwal->waktu_mulai }} WIB - {{ $s->jadwal->waktu_selesai }} WIB</td>
                                 <td>{{ $s->waktu_selesai }}</td>
-                                <td>{{ $s->durasi }}</td>
-                                <td>{{ $s->created_at }}</td>
                                 <td>{{ ($s->id_dokterPoli) != null ? $s->dokterPoli->nama : "-" }}</td>
-                                <td>{{ $s->radiografer->nama }}</td>
                                 <td>{{ ($s->keluhan) != null ? ucfirst($s->keluhan) : "Tidak ada" }}</td>
-                                <td>{{ ($s->catatan) != null ? $s->catatan : "-" }}</td>
                                 <td>
                                     <div class="input-group margin">
                                         <div class="input-group-btn">
@@ -174,8 +160,6 @@
                                             <ul class="dropdown-menu">
                                                 <li><a href="{{ route('dokterRadiologi.pasien.pendaftaran.surat-rujukan', ['id'=>$s->pendaftaran_id]) }}" target="_blank">Lihat Surat Rujukan </a></li>
                                                 <li><a href="{{ route('dokterRadiologi.pasien.detail-pemeriksaan', ['id' => $s->id]) }}">Detail Pemeriksaan</a></li>
-                                                <li><a href="#">Lihat Hasil Foto</a></li>
-                                                <li><a href="#">Cetak Expertise</a></li>
                                                 <li><a href="{{ route('dokterRadiologi.pasien.pemeriksaan.hasil-expertise', ['id'=>$s->id]) }}" target="_blank">Lihat Hasil Expertise </a></li>
                                             </ul>
                                         </div>
@@ -190,12 +174,73 @@
         </div>
         <!-- /.row -->
     </div>
-
 </section>
+
+<div class="modal fade" id="detail-pemeriksaan">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="text-align: center">Detail Pemeriksaan</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <table class="table table-bordered">
+                            <tbody>
+                                <tr>
+                                    <th>Tanggal Pendaftaran</th>
+                                    <td><span id="tanggal"></span></td>
+                                </tr>
+
+                                <tr>
+                                    <th>Nomor KTP</th>
+                                    <td><span id="nomor-ktp"></span></td>
+                                </tr>
+
+                                <tr>
+                                    <th>Radiografer</th>
+                                    <td><span id="nama-radiografer"></span></td>
+                                </tr>
+
+                                <tr>
+                                    <th>Permintaan Tambahan</th>
+                                    <td><span id="permintaan-tambahan"></span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Kembali</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+</div>
 
 @endsection
 @push('scripts')
 <script>
+    $(document).ready(function () {
+        $(document).on('click', '#modal-detail', function() {
+            var tanggal = $(this).data('tanggal');
+            var ktp_pasien = $(this).data('ktp');
+            var nama_radiografer = $(this).data('namaradiografer');
+            var keluhan_pasien = $(this).data('keluhanpasien');
+            var permintaan_tambahan = $(this).data('permintaantambahan');
+            $('#tanggal').text(tanggal);
+            $('#nomor-ktp').text(ktp_pasien);
+            $('#nama-radiografer').text(nama_radiografer);
+            $('#keluhan-pasien').text(keluhan_pasien);
+            $('#permintaan-tambahan').text(permintaan_tambahan);
+        })
+    })
+
 $("#tombol-satu").click(function () {
             // $(this).css("background", "#3c8dbc");
             // $(this).css("color", "white");
