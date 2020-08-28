@@ -64,6 +64,11 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'role.admin' => \App\Http\Middleware\RoleAdmin::class,
+        'role.resepsionis' => \App\Http\Middleware\RoleResepsionis::class,
+        'role.dokterpoli' => \App\Http\Middleware\RoleDokterPoli::class,
+        'role.dokterradiologi' => \App\Http\Middleware\RoleDokterRadiologi::class,
+        'role.radiografer' => \App\Http\Middleware\RoleRadiografer::class,
+        'role.kasir' => \App\Http\Middleware\Kasir::class,
         'prevent.login' => \App\Http\Middleware\PreventLogin::class,
     ];
 }
