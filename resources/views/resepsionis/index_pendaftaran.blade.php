@@ -8,7 +8,7 @@
         List Pendaftaran
     </h1>
     <ol class="breadcrumb">
-        <li><a href="#"><i class="fa fa-list"></i> List Pendaftaran</a></li>
+        <li><a href="#"> List Pendaftaran</a></li>
     </ol>
 </section>
 

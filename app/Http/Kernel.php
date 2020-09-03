@@ -68,7 +68,7 @@ class Kernel extends HttpKernel
         'role.dokterpoli' => \App\Http\Middleware\RoleDokterPoli::class,
         'role.dokterradiologi' => \App\Http\Middleware\RoleDokterRadiologi::class,
         'role.radiografer' => \App\Http\Middleware\RoleRadiografer::class,
-        'role.kasir' => \App\Http\Middleware\Kasir::class,
+        'role.kasir' => \App\Http\Middleware\RoleKasir::class,
         'prevent.login' => \App\Http\Middleware\PreventLogin::class,
     ];
 }

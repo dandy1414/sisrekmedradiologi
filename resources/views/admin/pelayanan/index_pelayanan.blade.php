@@ -8,7 +8,7 @@
         Data Pelayanan
     </h1>
     <ol class="breadcrumb" style="margin-top: 58px">
-        <li><a href="{{ route('pelayanan.index') }}"><i class="fa fa-list-ul"></i> Data Pelayanan</a></li>
+        <li><a href="{{ route('pelayanan.index') }}"> Data Pelayanan</a></li>
     </ol>
 </section>
 
@@ -216,7 +216,7 @@
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-default pull-left"
                                     data-dismiss="modal">Kembali</button>
-                                <button type="submit" class="btn btn-success">Tambah</button>
+                                <button type="submit" class="btn btn-success">Simpan</button>
                             </div>
                         </div>
                         <!-- /.modal-content -->
@@ -310,7 +310,7 @@
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-default pull-left"
                                     data-dismiss="modal">Kembali</button>
-                                <button type="submit" class="btn btn-success">Edit</button>
+                                <button type="submit" class="btn btn-success">Simpan</button>
                             </div>
                         </div>
                     </form>
@@ -357,7 +357,7 @@
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default pull-left"
                                 data-dismiss="modal">Kembali</button>
-                            <button type="submit" class="btn btn-success">Tambah</button>
+                            <button type="submit" class="btn btn-success">Simpan</button>
                         </div>
                     </div>
                     <!-- /.modal-content -->

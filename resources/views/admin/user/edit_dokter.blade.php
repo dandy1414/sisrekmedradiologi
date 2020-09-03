@@ -68,12 +68,6 @@
                                     <span class="help-block">{{ $errors->first('email') }}</span>
                                 </div>
 
-                                <div class="form-group {{ $errors->first('password') ? "has-error": "" }}">
-                                    <label>Password Baru :</label>
-                                    <input type="password" name="password" class="form-control" placeholder="Password ...">
-                                    <span class="help-block">{{ $errors->first('password') }}</span>
-                                </div>
-
                                 <div class="form-group {{ $errors->first('role') ? "has-error": "" }}">
                                     <label>Role :</label>
                                     <select class="form-control select2" name="role" style="width: 100%;">
@@ -91,26 +85,48 @@
                                     <span class="help-block">{{ $errors->first('role') }}</span>
                                 </div>
 
-                                {{--  <div class="form-group {{ $errors->first('jabatan') ? "has-error": "" }}">
-                                    <label>Jabatan :</label>
-                                    <select class="form-control select2" name="jabatan" style="width: 100%;">
+                                <div class="form-group {{ $errors->first('spesialis') ? "has-error": "" }}">
+                                    <label>Spesialis :</label>
+                                    <select class="form-control select2" name="spesialis" style="width: 100%;">
                                         <option selected disabled>Silahkan pilih salah satu</option>
-                                        <option value="resepsionis"
-                                            {{ old('jabatan') == 'resepsionis' ? "selected" : "" }}>
-                                            Resepsionis</option>
-                                        <option value="radiografer"
-                                            {{ old('jabatan') == 'radiografer' ? "selected" : "" }}>
-                                            Radiografer</option>
-                                        <option value="dokterPoli" {{ old('jabatan') == 'dokterPoli' ? "selected" : "" }}>
-                                            Dokter Poli</option>
-                                        <option value="dokterRadiologi"
-                                            {{ old('jabatan') == 'dokterRadiologi' ? "selected" : "" }}>Dokter Radiologi
+                                        <option value="umum"
+                                            {{ $user->spesialis == 'umum' ? "selected" : "" }}>
+                                            Dokter Umum</option>
+                                        <option value="obgyn"
+                                            {{ $user->spesialis == 'obgyn' ? "selected" : "" }}>
+                                            Spesialis Obgyn</option>
+                                        <option value="syaraf" {{ $user->spesialis == 'syaraf' ? "selected" : "" }}>
+                                            Spesialis Syaraf</option>
+                                        <option value="jiwa"
+                                            {{ $user->spesialis == 'jiwa' ? "selected" : "" }}>Spesialis Jiwa
                                         </option>
-                                        <option value="kasir" {{ old('jabatan') == 'kasir' ? "selected" : "" }}>Kasir
+                                        <option value="gigi" {{ $user->spesialis == 'gigi' ? "selected" : "" }}>Dokter Gigi
+                                        </option>
+                                        <option value="penyakit_dalam" {{ $user->spesialis == 'penyakit_dalam' ? "selected" : "" }}>Spesialis Penyakit Dalam
+                                        </option>
+                                        <option value="bedah" {{ $user->spesialis == 'bedah' ? "selected" : "" }}>Spesialis Bedah
+                                        </option>
+                                        <option value="penyakit_mulut" {{ $user->spesialis == 'penyakit_mulut' ? "selected" : "" }}>Spesialis Penyakit Mulut
+                                        </option>
+                                        <option value="anak" {{ $user->spesialis == 'anak' ? "selected" : "" }}>Spesialis Anak
+                                        </option>
+                                        <option value="mata" {{ $user->spesialis == 'mata' ? "selected" : "" }}>Spesialis Mata
+                                        </option>
+                                        <option value="anasthesi" {{ $user->spesialis == 'anasthesi' ? "selected" : "" }}>Spesialis Anasthesi
+                                        </option>
+                                        <option value="radiologi" {{ $user->spesialis == 'radiologi' ? "selected" : "" }}>Dokter Radiologi
                                         </option>
                                     </select>
-                                    <span class="help-block">{{ $errors->first('jabatan') }}</span>
-                                </div>  --}}
+                                    <span class="help-block">{{ $errors->first('spesialis') }}</span>
+                                </div>
+
+                                <div class="form-group {{ $errors->first('sip') ? "has-error": "" }}">
+                                    <label>SIP :</label>
+                                    <input value="{{ $user->sip }}" type="text" name="sip"
+                                        class="form-control {{$errors->first('sip') ? "is-invalid" : ""}}"
+                                        placeholder="SIP ...">
+                                    <span class="help-block">{{ $errors->first('sip') }}</span>
+                                </div>
 
                                 <div class="form-group {{ $errors->first('nama') ? "has-error": "" }}">
                                     <label>Nama :</label>
@@ -122,14 +138,6 @@
                             </div>
 
                             <div class="col-md-6">
-                                <div class="form-group {{ $errors->first('sip') ? "has-error": "" }}">
-                                    <label>SIP :</label>
-                                    <input value="{{ old('sip') }}" type="text" name="sip"
-                                        class="form-control {{$errors->first('sip') ? "is-invalid" : ""}}"
-                                        placeholder="SIP ...">
-                                    <span class="help-block">{{ $errors->first('sip') }}</span>
-                                </div>
-
                                 <div class="form-group {{ $errors->first('jenisKelamin') ? "has-error": "" }}">
                                     <label>Jenis Kelamin :</label>
                                     <div class="radio">
@@ -172,7 +180,7 @@
                     </div>
                     <div class="box-footer">
                         <div class="form-group">
-                            <button type="submit" class="btn btn-success">Edit User</button>
+                            <button type="submit" class="btn btn-success">Simpan</button>
                         </div>
                     </div>
                 </div>

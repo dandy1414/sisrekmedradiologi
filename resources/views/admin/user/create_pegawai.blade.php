@@ -9,7 +9,7 @@
     </h1>
     <ol class="breadcrumb">
         <li><a href="{{ route('pegawai.index') }}"><i class="fa fa-users"></i> Pegawai</a></li>
-        <li class="active">Tambah User</li>
+        <li class="active">Tambah Pegawai</li>
     </ol>
 </section>
 
@@ -171,7 +171,7 @@
                     </div>
                     <div class="box-footer">
                         <div class="form-group">
-                            <button type="submit" class="btn btn-success">Tambah User</button>
+                            <button type="submit" class="btn btn-success">Simpan</button>
                         </div>
                     </div>
                 </div>

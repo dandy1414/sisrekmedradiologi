@@ -144,7 +144,7 @@
                     </div>
                     <div class="box-footer">
                         <div class="form-group">
-                            <button type="submit" class="btn btn-success">Edit Pasien</button>
+                            <button type="submit" class="btn btn-success">Simpan</button>
                         </div>
                     </div>
                 </div>

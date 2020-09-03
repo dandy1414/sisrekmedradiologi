@@ -8,8 +8,7 @@
         Edit Pasien Rumah Sakit
     </h1>
     <ol class="breadcrumb">
-        <li><a href="{{ route('resepsionis.pasien.index-pasien-umum') }}"><i class="fa fa-users"></i> Pasien Umum</a> |
-            <a href="{{ route('resepsionis.pasien.index-pasien-rs') }}"><i class="fa fa-users"></i> Pasien RS</a></li>
+        <li><a href="{{ route('resepsionis.pasien.index-pasien-rs') }}"><i class="fa fa-users"></i> Pasien RS</></li>
         <li class="active">Edit Pasien</li>
     </ol>
 </section>
@@ -144,7 +143,7 @@
                     </div>
                     <div class="box-footer">
                         <div class="form-group">
-                            <button type="submit" class="btn btn-success">Edit Pasien</button>
+                            <button type="submit" class="btn btn-success">Simpan</button>
                         </div>
                     </div>
                 </div>

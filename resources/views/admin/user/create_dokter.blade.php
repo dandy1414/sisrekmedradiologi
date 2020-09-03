@@ -9,7 +9,7 @@
     </h1>
     <ol class="breadcrumb">
         <li><a href="{{ route('dokter.index') }}"><i class="fa fa-user-md"></i> Dokter</a>
-        <li class="active">Tambah User</li>
+        <li class="active">Tambah Dokter</li>
     </ol>
 </section>
 
@@ -187,7 +187,7 @@
                     </div>
                     <div class="box-footer">
                         <div class="form-group">
-                            <button type="submit" class="btn btn-success">Tambah Dokter</button>
+                            <button type="submit" class="btn btn-success">Simpan</button>
                         </div>
                     </div>
                 </div>

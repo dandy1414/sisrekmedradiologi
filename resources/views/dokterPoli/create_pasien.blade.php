@@ -7,11 +7,10 @@
     <h1>
         Tambah Pasien Baru
     </h1>
-    {{-- <ol class="breadcrumb">
-        <li><a href="{{ route('resepsionis.pasien.index-pasien-umum') }}"><i class="fa fa-users"></i> Pasien Umum</a> |
-            <a href="{{ route('resepsionis.pasien.index-pasien-rs') }}"><i class="fa fa-users"></i> Pasien RS</a></li>
+    <ol class="breadcrumb">
+        <li><a href="{{ route('dokterPoli.pasien.index-pasien') }}"><i class="fa fa-users"></i> Pasien RS</a></li>
         <li class="active">Tambah Pasien</li>
-    </ol> --}}
+    </ol>
 </section>
 
 <section class="content">
@@ -145,7 +144,7 @@
                     </div>
                     <div class="box-footer">
                         <div class="form-group">
-                            <button type="submit" class="btn btn-success">Tambah Pasien</button>
+                            <button type="submit" class="btn btn-success">Simpan</button>
                         </div>
                     </div>
                 </div>

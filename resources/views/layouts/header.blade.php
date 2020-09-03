@@ -89,10 +89,27 @@
                         <!-- Menu Footer-->
                         <li class="user-footer">
                             <div class="pull-left">
-                                <a href="#" class="btn btn-default btn-flat">Profile</a>
+                                @if (Auth::user()->role == 'admin')
+                                <a href="{{ route('profil.show', ['id' => Auth::user()->id]) }}" class="btn btn-primary btn-flat">Profil</a>
+                                @endif
+                                @if (Auth::user()->role == 'resepsionis')
+                                <a href="{{ route('profil.show.resepsionis', ['id' => Auth::user()->id]) }}" class="btn btn-primary btn-flat">Profil</a>
+                                @endif
+                                @if (Auth::user()->role == 'radiografer')
+                                <a href="{{ route('profil.show.radiografer', ['id' => Auth::user()->id]) }}" class="btn btn-primary btn-flat">Profil</a>
+                                @endif
+                                @if (Auth::user()->role == 'dokterPoli')
+                                <a href="{{ route('profil.show.dokterPoli', ['id' => Auth::user()->id]) }}" class="btn btn-primary btn-flat">Profil</a>
+                                @endif
+                                @if (Auth::user()->role == 'dokterRadiologi')
+                                <a href="{{ route('profil.show.dokterRadiologi', ['id' => Auth::user()->id]) }}" class="btn btn-primary btn-flat">Profil</a>
+                                @endif
+                                @if (Auth::user()->role == 'kasir')
+                                <a href="{{ route('profil.show.kasir', ['id' => Auth::user()->id]) }}" class="btn btn-primary btn-flat">Profil</a>
+                                @endif
                             </div>
                             <div class="pull-right">
-                                <a href="{ route('logout') }}" onclick="event.preventDefault();
+                                <a href="{{  route('logout')  }}" onclick="event.preventDefault();
                                 document.getElementById('logout-form').submit();" class="btn btn-danger btn-flat">Log
                                     out</a>
                                 <form id="logout-form" action="{{ route('logout') }}" method="POST"

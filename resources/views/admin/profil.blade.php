@@ -1,23 +1,32 @@
 @extends('layouts.global')
 
-@section('title')Edit User @endsection
+@section('title')Profil Saya @endsection
 
 @section('content')
 <section class="content-header" style="margin-top: 50px;">
     <h1>
-        Edit User
+        Profil Saya
     </h1>
     <ol class="breadcrumb">
-        <li><a href="{{ route('pegawai.index') }}"><i class="fa fa-users"></i> Pegawai</a></li>
-        <li class="active">Edit User</li>
+        <li class="active">Profil</li>
     </ol>
 </section>
-
 <section class="content">
     <div class="row">
         <div class="col-xs-12">
-            @if ($message = Session::get('error'))
-            <div class="alert alert-error alert-dismissable">
+            @if ($message = Session::get('success'))
+            <div class="alert alert-success alert-dismissable">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
+                <h4>
+                    <i class="icon fa fa-check"></i>
+                    Berhasil
+                </h4>
+                    {{ $message }}
+            </div>
+            @endif
+
+            @if ($message = Session::get('warning'))
+            <div class="alert alert-warning alert-dismissable">
                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
                 <h4>
                     <i class="icon fa fa-check"></i>
@@ -30,27 +39,57 @@
     </div>
 
     <div class="row">
-        <div class="col-xs-12">
-            <div class="alert alert-info alert-dismissable">
-                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
-                <h4>
-                    <i class="icon fa fa-info"></i>
-                    Aturan
-                </h4>
-                - Username harus kombinasi angka dan huruf <br>
-                - Password harus berisi 6 karakter <br>
-                - Password harus kombinasi angka dan huruf <br>
-            </div>
-        </div>
-    </div>
+        <div class="col-md-4">
+            <div class="box box-primary">
+                <div class="box-body box-profile">
+                  <img class="profile-user-img img-responsive img-circle" src="{{ asset('adminlte/dist/img/user4-128x128.jpg') }}" alt="User profile picture">
 
-    <div class="row">
-        <div class="col-xs-12">
-            <form method="POST" action="{{ route('pegawai.update', ['id' => $user->id]) }}" enctype="multipart/form-data">
+                  <h3 class="profile-username text-center">{{ $user->nama }}</h3>
+
+                  <p class="text-muted text-center">
+                    Administrator
+                  </p>
+
+                  <hr>
+
+              <strong><i class="fa fa-book margin-r-5"></i> NIP</strong>
+
+              <p class="text-muted">
+                {{ $user->nip }}
+              </p>
+
+              <hr>
+
+              <strong><i class="fa fa-map-marker margin-r-5"></i> Nomor Telepon</strong>
+
+              <p class="text-muted">{{ $user->nomor_telepon }}</p>
+
+              <hr>
+
+              <strong><i class="fa fa-map-marker margin-r-5"></i> Email</strong>
+
+              <p class="text-muted">{{ $user->email }}</p>
+
+              <hr>
+
+              <strong><i class="fa fa-map-marker margin-r-5"></i> Alamat</strong>
+
+              <p class="text-muted">{{ $user->alamat }}</p>
+
+                </div>
+                <!-- /.box-body -->
+              </div>
+        </div>
+
+        <div class="col-md-8">
+            <form method="POST" action="{{ route('profil.update.pegawai', ['id' => $user->id]) }}" enctype="multipart/form-data">
                 @csrf
 
                 {{ method_field('PUT') }}
                 <div class="box box-success" style="position: relative;">
+                    <div class="box-header">
+                        <h3 class="box-title">Edit Profil</h3>
+                    </div>
                     <div class="box-body">
                         <div class="row">
                             <div class="col-md-6">
@@ -68,48 +107,18 @@
                                     <span class="help-block">{{ $errors->first('email') }}</span>
                                 </div>
 
-                                <div class="form-group {{ $errors->first('role') ? "has-error": "" }}">
-                                    <label>Role :</label>
-                                    <select class="form-control select2" name="role" style="width: 100%;">
-                                        <option value="admin"
-                                            {{ $user->role  == 'admin' ? "selected" : "" }}>Admin</option>
-                                        <option value="resepsionis"
-                                            {{ $user->role  == 'resepsionis' ? "selected" : "" }}>Resepsionis</option>
-                                        <option value="radiografer"
-                                            {{ $user->role == 'radiografer' ? "selected" : "" }}>Radiografer</option>
-                                        <option value="dokterPoli" {{ $user->role == 'dokterPoli' ? "selected" : "" }}>Dokter Poli</option>
-                                        <option value="dokterRadiologi" {{ $user->role == 'dokterRadiologi' ? "selected" : "" }}>Dokter Radiologi
-                                        </option>
-                                        <option value="kasir" {{ $user->name == 'kasir' ? "selected" : "" }}>Kasir</option>
-                                    </select>
-                                    <span class="help-block">{{ $errors->first('role') }}</span>
-                                </div>
-
-                                <div class="form-group {{ $errors->first('jabatan') ? "has-error": "" }}">
-                                    <label>Jabatan :</label>
-                                    <select class="form-control select2" name="jabatan" style="width: 100%;">
-                                        <option selected disabled>Silahkan pilih salah satu</option>
-                                        <option value="pendaftaran_ri"
-                                            {{ $user->jabatan == 'pendaftaran_ri' ? "selected" : "" }}>
-                                            Resepsionis Pendaftaran Rawat Inap</option>
-                                        <option value="pendaftaran_ri"
-                                            {{ $user->jabatan == 'pendaftaran_rj' ? "selected" : "" }}>
-                                            Resepsionis Pendaftaran Rawat Jalan</option>
-                                        <option value="radiografer" {{ $user->jabatan == 'radiografer' ? "selected" : "" }}>
-                                            Radiografer</option>
-                                        <option value="kasir"
-                                            {{ $user->jabatan == 'kasir' ? "selected" : "" }}>Kasir
-                                        </option>
-                                    </select>
-                                    <span class="help-block">{{ $errors->first('jabatan') }}</span>
-                                </div>
-
                                 <div class="form-group {{ $errors->first('nip') ? "has-error": "" }}">
                                     <label>NIP :</label>
                                     <input value="{{ $user->nip }}" type="text" name="nip"
                                         class="form-control {{$errors->first('nip') ? "is-invalid" : ""}}"
                                         placeholder="NIP ...">
                                     <span class="help-block">{{ $errors->first('nip') }}</span>
+                                </div>
+
+                                <div class="form-group {{ $errors->first('password') ? "has-error": "" }}">
+                                    <label>Password Baru :</label>
+                                    <input type="password" name="password" class="form-control" placeholder="Password ...">
+                                    <span class="help-block">{{ $errors->first('password') }}</span>
                                 </div>
 
                                 <div class="form-group {{ $errors->first('nama') ? "has-error": "" }}">
@@ -127,12 +136,12 @@
                                     <div class="radio">
                                         <label>
                                             <input type="radio" name="jenisKelamin" id="pria" value="pria"
-                                                {{ $user->jenis_kelamin == 'pria' ? "checked" : "" }}>
+                                                {{ $user->jenis_kelamin == 'pria' ? "checked" : "" }} disabled>
                                             Pria
                                         </label>
                                         <label>
                                             <input type="radio" name="jenisKelamin" id="wanita" value="wanita"
-                                                {{ $user->jenis_kelamin == 'wanita' ? "checked" : "" }}>
+                                                {{ $user->jenis_kelamin == 'wanita' ? "checked" : "" }} disabled>
                                             Wanita
                                         </label>
                                         <span class="help-block">{{ $errors->first('jenisKelamin') }}</span>
@@ -164,7 +173,7 @@
                     </div>
                     <div class="box-footer">
                         <div class="form-group">
-                            <button type="submit" class="btn btn-success">Simpan</button>
+                            <button type="submit" class="btn btn-success">Edit Profil</button>
                         </div>
                     </div>
                 </div>

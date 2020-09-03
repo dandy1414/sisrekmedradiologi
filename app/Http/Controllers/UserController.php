@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
+use App\Models\Pendaftaran;
+use App\Models\Pemeriksaan;
+use App\Models\Tagihan;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\QueryException;
@@ -20,6 +23,177 @@ class UserController extends Controller
         $this->middleware('auth');
     }
 
+    public function profil($id){
+        $user = User::findOrFail($id);
+
+        switch ($user->role) {
+            case 'admin':
+                return view('admin.profil', ['user'=> $user]);
+                break;
+            case 'resepsionis':
+                $pendaftaran = Pendaftaran::where('id_resepsionis', $id)->get();
+                return view('resepsionis.profil', ['user'=> $user, 'pendaftaran' => $pendaftaran]);
+                break;
+            case 'dokterPoli':
+                $rujukan = Pendaftaran::where('id_dokterPoli', $id)->get();
+                return view('dokterPoli.profil', ['user'=> $user, 'rujukan' => $rujukan]);
+                break;
+            case 'radiografer':
+                $pemeriksaan = Pemeriksaan::where('id_radiografer', $id)->get();
+                return view('radiografer.profil', ['user'=> $user, 'pemeriksaan' => $pemeriksaan]);
+                break;
+            case 'dokterRadiologi':
+                $pemeriksaan = Pemeriksaan::where('id_dokterRadiologi', $id)->get();
+                return view('dokterRadiologi.profil', ['user'=> $user, 'pemeriksaan' => $pemeriksaan]);
+                break;
+            case 'kasir':
+                $tagihan = Tagihan::where('id_kasir', $id)->get();
+                return view('kasir.profil', ['user'=> $user, 'tagihan' => $tagihan]);
+                break;
+            default:
+                break;
+        }
+    }
+
+    public function updateProfilPegawai(Request $request, $id){
+        $validator = Validator::make($request->all(),[
+            "name" => "required|min:5|max:100|unique:users,name,". $id,
+            "email" => "required|email|unique:users,email,". $id,
+            "password" => "required|min:6|regex:/^(?=.*[a-zA-Z])(?=.*\d).+$/",
+            "nama" => "required|min:5|max:100",
+            "nip" => "required|digits_between:8,9|unique:users,nip,". $id,
+            "alamat" => "required|min:10|max:200",
+            "nomorTelepon" => "required|digits_between:10,12|unique:users,nomor_telepon,". $id,
+        ])->validate();
+
+        DB::beginTransaction();
+
+        try{
+            $user = User::findOrFail($id);
+            $user->name = $request->name;
+            $user->email = $request->email;
+            $user->nip = $request->nip;
+            $user->password = Hash::make($request->password);
+            $user->nama = $request->nama;
+            $user->alamat = $request->alamat;
+            $user->nomor_telepon = $request->nomorTelepon;
+
+            if($user->avatar != null && $request->hasFile('avatar') ){
+                $image_path = \base_path() ."/public/storage/avatars/".$user->avatar;
+                if(File::exists($image_path)){
+                    File::delete($image_path);
+                }
+                $resource = $request->avatar;
+                $name = Str::slug($request->name."_".time()).".".$resource->getClientOriginalExtension();
+                $resource->move(\base_path() ."/public/storage/avatars", $name);
+                $user->avatar = $name;
+            }
+            $user->save();
+
+            DB::commit();
+            switch ($user->role) {
+                case 'admin':
+                    return redirect()->route('profil.show', ['id' => $id])->with(['success' => 'Profil berhasil diedit']);
+                    break;
+                case 'resepsionis':
+                    return redirect()->route('profil.show.resepsionis', ['id' => $id])->with(['success' => 'Profil berhasil diedit']);
+                    break;
+                case 'radiografer':
+                    return redirect()->route('profil.show.resepsionis', ['id' => $id])->with(['success' => 'Profil berhasil diedit']);
+                    break;
+                case 'kasir':
+                    return redirect()->route('profil.show.resepsionis', ['id' => $id])->with(['success' => 'Profil berhasil diedit']);
+                    break;
+                default:
+                    break;
+            }
+        } catch (QueryException $x)
+        {
+            DB::rollBack();
+            dd($x->getMessage());
+            switch ($user->role) {
+                case 'admin':
+                    return redirect()->route('profil.show', ['id' => $id])->with(['success' => 'Profil gagal diedit']);
+                    break;
+                case 'resepsionis':
+                    return redirect()->route('profil.show.resepsionis', ['id' => $id])->with(['success' => 'Profil gagal diedit']);
+                    break;
+                case 'radiografer':
+                    return redirect()->route('profil.show.resepsionis', ['id' => $id])->with(['success' => 'Profil gagal diedit']);
+                    break;
+                case 'kasir':
+                    return redirect()->route('profil.show.resepsionis', ['id' => $id])->with(['success' => 'Profil gagal diedit']);
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+    public function updateProfilDokter(Request $request, $id){
+        $validator = Validator::make($request->all(),[
+            "name" => "required|min:5|max:100|unique:users,name,". $id,
+            "email" => "required|email|unique:users,email,". $id,
+            "password" => "required|min:6|regex:/^(?=.*[a-zA-Z])(?=.*\d).+$/",
+            "nama" => "required|min:5|max:100",
+            "sip" => "required|max:50|unique:users,sip,". $id,
+            "alamat" => "required|min:10|max:200",
+            "nomorTelepon" => "required|digits_between:10,12|unique:users,nomor_telepon,". $id,
+        ])->validate();
+
+
+        DB::beginTransaction();
+
+        try{
+            $user = User::findOrFail($id);
+            $user->name = $request->name;
+            $user->email = $request->email;
+            $user->password = Hash::make($request->password);
+            $user->sip = $request->sip;
+            $user->nama = $request->nama;
+            $user->alamat = $request->alamat;
+            $user->nomor_telepon = $request->nomorTelepon;
+
+            if($user->avatar != null && $request->hasFile('avatar') ){
+                $image_path = \base_path() ."/public/storage/avatars/".$user->avatar;
+                if(File::exists($image_path)){
+                    File::delete($image_path);
+                }
+                $resource = $request->avatar;
+                $name = Str::slug($request->name."_".time()).".".$resource->getClientOriginalExtension();
+                $resource->move(\base_path() ."/public/storage/avatars", $name);
+                $user->avatar = $name;
+            }
+            $user->save();
+
+            DB::commit();
+            switch ($user->role) {
+                case 'dokterPoli':
+                    return redirect()->route('profil.show.dokterPoli', ['id' => $id])->with(['success' => 'Profil berhasil diedit']);
+                    break;
+                case 'dokterRadiologi':
+                    return redirect()->route('profil.show.resepsionis', ['id' => $id])->with(['success' => 'Profil berhasil diedit']);
+                    break;
+                default:
+                    break;
+            }
+        } catch (QueryException $x)
+        {
+            DB::rollBack();
+            dd($x->getMessage());
+            switch ($user->role) {
+                case 'dokterPoli':
+                    return redirect()->route('profil.show.dokterPoli', ['id' => $id])->with(['success' => 'Profil gagal diedit']);
+                    break;
+                case 'dokterRadiologi':
+                    return redirect()->route('profil.show.resepsionis', ['id' => $id])->with(['success' => 'Profil gagal diedit']);
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
     public function indexDokter(User $user){
         $users = User::whereIn('role', ['dokterPoli', 'dokterRadiologi'])->orderBy('created_at', 'desc')->get();
 
@@ -30,7 +204,6 @@ class UserController extends Controller
         $users = User::whereIn('role',
         ['kasir',
         'radiografer',
-        'admin',
         'resepsionis',
         ])->orderBy('created_at', 'desc')->get();
 
@@ -53,10 +226,10 @@ class UserController extends Controller
             "role" => "required",
             "spesialis" => "required",
             "nama" => "required|min:5|max:100",
-            "sip" => "required|unique:users,sip",
+            "sip" => "required|max:50|unique:users,sip",
             "jenisKelamin" => "required",
             "alamat" => "required|min:10|max:200",
-            "nomorTelepon" => "required|digits_between:10,12|unique:users, nomor_telepon",
+            "nomorTelepon" => "required|digits_between:10,12|unique:users,nomor_telepon",
             "avatar" => 'file|image|mimes:jpeg,png,gif,webp|max:2048'
         ])->validate();
 
@@ -98,11 +271,10 @@ class UserController extends Controller
         $validator = Validator::make($request->all(),[
             "name" => "required|min:5|max:100|unique:users,name",
             "email" => "required|email|unique:users,email",
-            "password" => "required|min:6|regex:/^(?=.*[a-zA-Z])(?=.*\d).+$/",
             "role" => "required",
-             "jabatan" => "required",
+            "jabatan" => "required",
             "nama" => "required|min:5|max:100",
-            "nip" => "required|unique:users,nip",
+            "nip" => "required|unique:users,nip|digits_between:8,9",
             "jenisKelamin" => "required",
             "alamat" => "required|min:10|max:200",
             "nomorTelepon" => "required|digits_between:10,12|unique:users,nomor_telepon",
@@ -115,7 +287,6 @@ class UserController extends Controller
             $new_user = new User;
             $new_user->name = $request->name;
             $new_user->email = $request->email;
-            $new_user->password = Hash::make($request->password);
             $new_user->role = $request->role;
             $new_user->jabatan = $request->jabatan;
             $new_user->nip = $request->nip;
@@ -159,11 +330,10 @@ class UserController extends Controller
         $validator = Validator::make($request->all(),[
             "name" => "required|min:5|max:100|unique:users,name,". $id,
             "email" => "required|email|unique:users,email,". $id,
-            "password" => "required|min:6|regex:/^(?=.*[a-zA-Z])(?=.*\d).+$/",
             "role" => "required",
-            // "jabatan" => "required",
+            "spesialis" => "required",
             "nama" => "required|min:5|max:100",
-            "sip" => "required|digits_between:10,12|unique:users,sip,". $id,
+            "sip" => "required|max:50|unique:users,sip,". $id,
             "jenisKelamin" => "required",
             "alamat" => "required|min:10|max:200",
             "nomorTelepon" => "required|digits_between:10,12|unique:users,nomor_telepon,". $id,
@@ -175,8 +345,8 @@ class UserController extends Controller
             $user = User::findOrFail($id);
             $user->name = $request->name;
             $user->email = $request->email;
-            $user->password = Hash::make($request->password);
             $user->role = $request->role;
+            $user->spesialis = $request->spesialis;
             $user->sip = $request->sip;
             $user->nama = $request->nama;
             $user->alamat = $request->alamat;
@@ -209,11 +379,10 @@ class UserController extends Controller
         $validator = Validator::make($request->all(),[
             "name" => "required|min:5|max:100|unique:users,name,". $id,
             "email" => "required|email|unique:users,email,". $id,
-            "password" => "required|min:6|regex:/^(?=.*[a-zA-Z])(?=.*\d).+$/",
             "role" => "required",
-            // "jabatan" => "required",
+            "jabatan" => "required",
             "nama" => "required|min:5|max:100",
-            "nip" => "required|digits_between:10,12|unique:users,nip,". $id,
+            "nip" => "required|digits_between:8,9|unique:users,nip,". $id,
             "jenisKelamin" => "required",
             "alamat" => "required|min:10|max:200",
             "nomorTelepon" => "required|digits_between:10,12|unique:users,nomor_telepon,". $id,
@@ -223,12 +392,12 @@ class UserController extends Controller
 
         try{
             $user = User::findOrFail($id);
-            $user->name = $request->username;
+            $user->name = $request->name;
             $user->email = $request->email;
-            $user->password = Hash::make($request->password);
             $user->role = $request->role;
-            $user->nip = $request->nomorInduk;
+            $user->nip = $request->nip;
             $user->nama = $request->nama;
+            $user->jabatan = $request->jabatan;
             $user->alamat = $request->alamat;
             $user->jenis_kelamin = $request->jenisKelamin;
             $user->nomor_telepon = $request->nomorTelepon;

@@ -16,7 +16,7 @@ class RoleResepsionis
      */
     public function handle($request, Closure $next)
     {
-        if(Auth::user()->role == 'admin'){
+        if(Auth::user()->role == 'resepsionis'){
             return $next($request);
         }
         return abort(403);

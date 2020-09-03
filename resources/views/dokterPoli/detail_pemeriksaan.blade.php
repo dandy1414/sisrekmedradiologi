@@ -8,7 +8,7 @@
         Detail Pemeriksaan
     </h1>
     <ol class="breadcrumb">
-        <li class="active">Expertise Pasien</li>
+        <li class="active">Detail Pemeriksaan</li>
     </ol>
 </section>
 

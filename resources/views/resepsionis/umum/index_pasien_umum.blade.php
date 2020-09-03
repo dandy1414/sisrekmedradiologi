@@ -8,7 +8,7 @@
         List Pasien Umum
     </h1>
     <ol class="breadcrumb" style="margin-top: 58px">
-        <li><a href="#"><i class="fa fa-users"></i> Pasien Umum</a></li>
+        <li><a href="#"> Pasien Umum</a></li>
     </ol>
 </section>
 
