@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Alert;
 use App\Models\Pasien;
 use App\Models\Jadwal;
 use App\Models\Layanan;
@@ -53,10 +54,14 @@ class TagihanController extends Controller
     }
 
     public function indexTagihan(){
+        $tgl_hari_ini = date('Y-m-d').'%';
+        $total_belum = Tagihan::where('status_pembayaran', 'pending')->where('created_at', 'like', $tgl_hari_ini)->count();
+        $total_sudah = Tagihan::where('status_pembayaran', 'selesai')->where('updated_at', 'like', $tgl_hari_ini)->count();
+
         $belum = Tagihan::where('status_pembayaran', 'belum')->orderBy('created_at', 'desc')->get();
         $sudah = Tagihan::where('status_pembayaran', 'sudah')->orderBy('created_at', 'desc')->get();
 
-        return view('kasir.index_tagihan', ['belum'=> $belum, 'sudah'=>$sudah]);
+        return view('kasir.index_tagihan', ['belum'=> $belum, 'sudah'=>$sudah, 'total_belum'=>$total_belum, 'total_sudah'=> $total_sudah]);
     }
 
     public function pembayaranPasien($id){

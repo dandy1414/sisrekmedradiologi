@@ -8,6 +8,7 @@ use App\Models\Layanan;
 use App\Models\Pendaftaran;
 use App\Models\Pemeriksaan;
 use App\User;
+use Alert;
 use App\Models\Ruangan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -235,9 +236,10 @@ class PendaftaranController extends Controller
 
     public function indexPendaftaran(){
         $pendaftaran = Pendaftaran::orderBy('created_at', 'desc')->get();
-        // dd($pendaftaran);
-
-        return view('resepsionis.index_pendaftaran', ['pendaftaran'=> $pendaftaran]);
+        $tgl_hari_ini = date('Y-m-d').'%';
+        $total_pasien = Pendaftaran::where('created_at', 'like', $tgl_hari_ini)->count();
+        
+        return view('resepsionis.index_pendaftaran', ['pendaftaran'=> $pendaftaran, 'total_pasien' => $total_pasien]);
     }
 
     public function pendaftaranPasienUmum($id){

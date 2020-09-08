@@ -53,6 +53,50 @@
     </div>
 
     <div class="row">
+        <div class="col-xs-3 col-xs-4">
+            <!-- small box -->
+            <div class="small-box bg-aqua">
+                <div class="inner">
+                    <h3>{{ $total_belum }}</h3>
+
+                    <p>Pasien belum diperiksa</p>
+                </div>
+                <div class="icon">
+                    <i class="ion ion-person"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xs-3 col-xs-4">
+            <!-- small box -->
+            <div class="small-box bg-yellow">
+                <div class="inner">
+                    <h3>{{ $total_pending }}</h3>
+
+                    <p>Pasien pending</p>
+                </div>
+                <div class="icon">
+                    <i class="ion ion-person"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xs-3 col-xs-4">
+            <!-- small box -->
+            <div class="small-box bg-green">
+                <div class="inner">
+                    <h3>{{ $total_selesai }}</h3>
+
+                    <p>Pasien selesai diperiksa</p>
+                </div>
+                <div class="icon">
+                    <i class="ion ion-person"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
         <div class="col-xs-12">
             <div class="box box-info" id="tabelbelum" style="position: relative;" >
                 <div class="box-header">

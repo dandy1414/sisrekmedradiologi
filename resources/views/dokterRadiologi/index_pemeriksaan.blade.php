@@ -50,6 +50,36 @@
     </div>
 
     <div class="row">
+        <div class="col-xs-3 col-xs-4">
+            <!-- small box -->
+            <div class="small-box bg-aqua">
+                <div class="inner">
+                    <h3>{{ $total_belum }}</h3>
+
+                    <p>Pasien belum expertise</p>
+                </div>
+                <div class="icon">
+                    <i class="ion ion-person"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xs-3 col-xs-4">
+            <!-- small box -->
+            <div class="small-box bg-green">
+                <div class="inner">
+                    <h3>{{ $total_selesai }}</h3>
+
+                    <p>Pasien selesai expertise</p>
+                </div>
+                <div class="icon">
+                    <i class="ion ion-person"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
         <div class="col-xs-12">
             <div class="box box-info" id="tabel-belum-expertise" style="position: relative;" >
                 <div class="box-header">

@@ -8,6 +8,7 @@ use App\Models\Layanan;
 use App\Models\Pendaftaran;
 use App\Models\Pemeriksaan;
 use App\User;
+use Alert;
 use App\Models\Ruangan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -131,16 +132,20 @@ class RujukanController extends Controller
 
     public function indexRujuk(){
         $id_dokter = Auth::user()->id;
+        $tgl_hari_ini = date('Y-m-d').'%';
         $rujuk = Pendaftaran::where('id_dokterPoli', $id_dokter)->orderBy('created_at', 'desc')->get();
+        $total_pasien = Pendaftaran::where('id_dokterPoli', $id_dokter)->where('created_at', 'like', $tgl_hari_ini)->count();
 
-        return view('dokterPoli.index_rujuk', ['rujuk'=> $rujuk]);
+        return view('dokterPoli.index_rujuk', ['rujuk'=> $rujuk, 'total_pasien' => $total_pasien]);
     }
 
     public function indexPemeriksaan(){
         $id_dokter = Auth::user()->id;
+        $tgl_hari_ini = date('Y-m-d').'%';
         $pemeriksaan = Pemeriksaan::where('id_dokterPoli', $id_dokter)->where('status_pemeriksaan', 'selesai')->orderBy('created_at', 'desc')->get();
+        $total_pasien = Pemeriksaan::where('id_dokterPoli', $id_dokter)->where('created_at', 'like', $tgl_hari_ini)->where('status_pemeriksaan', 'selesai')->count();
 
-        return view('dokterPoli.index_pemeriksaan', ['pemeriksaan'=> $pemeriksaan]);
+        return view('dokterPoli.index_pemeriksaan', ['pemeriksaan'=> $pemeriksaan, 'total_pasien' => $total_pasien]);
     }
 
     public function detailPemeriksaan($id){

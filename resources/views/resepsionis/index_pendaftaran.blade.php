@@ -41,6 +41,22 @@
     </div>
 
     <div class="row">
+        <div class="col-xs-3 col-xs-6">
+            <!-- small box -->
+            <div class="small-box bg-green">
+                <div class="inner">
+                    <h3>{{ $total_pasien }}</h3>
+
+                    <p>Pendaftaran Pasien hari ini</p>
+                </div>
+                <div class="icon">
+                    <i class="ion ion-person"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
         <div class="col-xs-12">
             <div class="box box-info" id="tabelsemuapasien1" style="position: relative;">
                 <!-- /.box-header -->

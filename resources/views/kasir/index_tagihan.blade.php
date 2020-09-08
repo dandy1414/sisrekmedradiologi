@@ -50,6 +50,36 @@
     </div>
 
     <div class="row">
+        <div class="col-xs-3 col-xs-4">
+            <!-- small box -->
+            <div class="small-box bg-yellow">
+                <div class="inner">
+                    <h3>{{ $total_belum }}</h3>
+
+                    <p>Pasien belum bayar</p>
+                </div>
+                <div class="icon">
+                    <i class="ion ion-person"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xs-3 col-xs-4">
+            <!-- small box -->
+            <div class="small-box bg-green">
+                <div class="inner">
+                    <h3>{{ $total_sudah }}</h3>
+
+                    <p>Pasien sudah bayar</p>
+                </div>
+                <div class="icon">
+                    <i class="ion ion-person"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
         <div class="col-xs-12">
             <div class="box box-warning" id="tagihanBelum" style="position: relative;" >
                 <div class="box-header">

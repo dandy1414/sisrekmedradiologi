@@ -1,11 +1,11 @@
 @extends('layouts.global')
 
-@section('title') List Rujuk Pemeriksaan @endsection
+@section('title') List Pemeriksaan @endsection
 
 @section('content')
 <section class="content-header" style="margin-top: 50px;">
     <h1>
-        List Rujuk Pemeriksaan
+        List Pemeriksaan
     </h1>
     <ol class="breadcrumb">
         <li class="active"><a href="#"> Pemeriksaan</a></li>
@@ -36,6 +36,22 @@
                     {{ $message }}
             </div>
             @endif
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-3 col-xs-6">
+            <!-- small box -->
+            <div class="small-box bg-green">
+                <div class="inner">
+                    <h3>{{ $total_pasien }}</h3>
+
+                    <p>Pemeriksaan Pasien hari ini</p>
+                </div>
+                <div class="icon">
+                    <i class="ion ion-person"></i>
+                </div>
+            </div>
         </div>
     </div>
 

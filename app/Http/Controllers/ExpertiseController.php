@@ -10,6 +10,7 @@ use App\Models\Pemeriksaan;
 use App\Models\Film;
 use App\User;
 use App\Models\Ruangan;
+use Alert;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
@@ -51,11 +52,15 @@ class ExpertiseController extends Controller
     }
 
     public function indexPemeriksaan(){
+        $tgl_hari_ini = date('Y-m-d').'%';
+        $total_belum = Pemeriksaan::where('status_pemeriksaan', 'pending')->where('updated_at', 'like', $tgl_hari_ini)->count();
+        $total_selesai = Pemeriksaan::where('status_pemeriksaan', 'selesai')->where('updated_at', 'like', $tgl_hari_ini)->count();
+
         $id_dokterRadiologi = Auth::user()->id;
         $belum = Pemeriksaan::where('status_pemeriksaan', 'pending')->where('id_dokterRadiologi', $id_dokterRadiologi)->orderBy('created_at', 'desc')->get();
         $selesai = Pemeriksaan::where('status_pemeriksaan', 'selesai')->where('id_dokterRadiologi', $id_dokterRadiologi)->orderBy('created_at', 'desc')->get();
 
-        return view('dokterRadiologi.index_pemeriksaan', ['belum'=> $belum, 'selesai'=>$selesai]);
+        return view('dokterRadiologi.index_pemeriksaan', ['belum'=> $belum, 'selesai'=>$selesai, 'total_belum'=>$total_belum, 'total_selesai'=>$total_selesai]);
     }
 
     public function detailPemeriksaan($id){

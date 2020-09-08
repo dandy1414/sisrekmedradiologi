@@ -10,6 +10,7 @@ use App\Models\Pemeriksaan;
 use App\Models\Film;
 use App\Models\Tagihan;
 use App\User;
+use Alert;
 use App\Models\Ruangan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -52,11 +53,16 @@ class PemeriksaanController extends Controller
     }
 
     public function indexPemeriksaan(){
+        $tgl_hari_ini = date('Y-m-d').'%';
+        $total_belum = Pemeriksaan::where('status_pemeriksaan', 'belum')->where('created_at', 'like', $tgl_hari_ini)->count();
+        $total_pending = Pemeriksaan::where('status_pemeriksaan', 'pending')->where('updated_at', 'like', $tgl_hari_ini)->count();
+        $total_selesai = Pemeriksaan::where('status_pemeriksaan', 'selesai')->where('updated_at', 'like', $tgl_hari_ini)->count();
+
         $belum = Pemeriksaan::where('status_pemeriksaan', 'belum')->orderBy('created_at', 'desc')->get();
         $pending = Pemeriksaan::where('status_pemeriksaan', 'pending')->orderBy('created_at', 'desc')->get();
         $selesai = Pemeriksaan::where('status_pemeriksaan', 'selesai')->orderBy('created_at', 'desc')->get();
 
-        return view('radiografer.index_pemeriksaan', ['belum'=> $belum, 'pending'=>$pending, 'selesai'=>$selesai]);
+        return view('radiografer.index_pemeriksaan', ['belum'=> $belum, 'pending'=>$pending, 'selesai'=>$selesai, 'total_belum'=>$total_belum, 'total_pending'=>$total_pending, 'total_selesai'=>$total_selesai]);
     }
 
     public function detailPemeriksaan($id){
