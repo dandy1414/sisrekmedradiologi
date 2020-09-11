@@ -445,7 +445,7 @@ class UserController extends Controller
 
     public function delete($id){
         $user = User::findOrFail($id);
-        if($user->role == 'dokter%'){
+        if($user->role == 'dokterPoli' || $user->role == 'dokterRadiologi'){
             $pindah = true;
         } else {
             $pindah = false;
@@ -454,24 +454,24 @@ class UserController extends Controller
         $user->delete();
 
         if($pindah){
-            Session::flash('delete_succeed', 'Data dokter berhasil terubah');
+            Session::flash('delete_succeed', 'Data dokter berhasil terhapus');
             return redirect()->route('dokter.index');
         }
-        Session::flash('delete_succeed', 'Data pegawai berhasil terubah');
+        Session::flash('delete_succeed', 'Data pegawai berhasil terhapus');
         return redirect()->route('pegawai.index');
     }
 
     public function trash(){
         $users = User::onlyTrashed()->get();
 
-        return view('user.trash', ['users' => $users]);
+        return view('admin.user.trash_user', ['users' => $users]);
     }
 
     public function restore($id){
         $user = User::onlyTrashed()->where('id', $id);
         $user->restore();
 
-        Session::flash('delete_succeed', 'Data user berhasil dikembalikan');
+        Session::flash('restore_succeed', 'Data user berhasil dikembalikan');
         return redirect()->route('user.trash');
     }
 

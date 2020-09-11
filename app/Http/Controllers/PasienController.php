@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Session;
 use App\Models\Pasien;
 use App\Models\Pendaftaran;
 use App\Models\Pemeriksaan;
