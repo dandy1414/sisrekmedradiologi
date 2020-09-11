@@ -89,15 +89,14 @@
                                 <td>
                                     <div class="input-group margin">
                                         <div class="input-group-btn">
-                                            <button type="button" class="btn btn-default dropdown-toggle"
-                                                data-toggle="dropdown">
-                                                <span class="fa fa-gears"></span>
+                                            <button type="button" class="btn btn-success dropdown-toggle"
+                                                data-toggle="dropdown">Aksi
                                                 <span class="fa fa-caret-down"></span>
                                             </button>
                                             <ul class="dropdown-menu">
                                                 <li><a href="{{ route('pasien.restore',
                                                     ['id'=>$p->id]) }}">Kembalikan Pasien</a></li>
-                                                <li><a href="{{ route('pasien.destroy',
+                                                <li><a class="delete-confirmation" href="{{ route('pasien.destroy',
                                                     ['id'=>$p->id]) }}">Hapus Permanen</a></li>
                                             </ul>
                                         </div>
@@ -116,3 +115,37 @@
 </section>
 
 @endsection
+@push('scripts')
+<script>
+    $(".delete-confirmation").on('click', function (event) {
+        event.preventDefault();
+        const url=$(this).attr('href');
+        swal({
+        title: "Apa anda yakin?",
+        text: "Data pasien akan terhapus permanen",
+        icon: "warning",
+        buttons: ["Tidak", "Ya"],
+        })
+        .then(function(value) {
+            if (value) {
+                window.location.href = url;
+            }
+        });
+    });
+</script>
+@if (Session::has('restore_succeed'))
+<script>
+swal('Berhasil', '{!! Session::get('restore_succeed') !!}', 'success',{
+    button:'OK',
+});
+</script>
+@endif
+
+@if (Session::has('destroy_succeed'))
+<script>
+swal('Berhasil', '{!! Session::get('destroy_succeed') !!}', 'success',{
+    button:'OK',
+});
+</script>
+@endif
+@endpush

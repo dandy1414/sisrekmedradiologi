@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use Session;
 use App\Models\Pasien;
 use App\Models\Jadwal;
 use App\Models\Layanan;
 use App\Models\Pendaftaran;
 use App\Models\Pemeriksaan;
 use App\User;
-use Alert;
 use App\Models\Ruangan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -45,7 +45,7 @@ class RujukanController extends Controller
         $validator = Validator::make($request->all(),[
             "noRm" => "required|unique:trans_pasien,nomor_rm",
             "nama" => "required|min:3|max:100",
-            "nomorKtp" => "required|digits_between:10,12|unique:trans_pasien,nomor_ktp",
+            "nomorKtp" => "required|max:16|unique:trans_pasien,nomor_ktp",
             "umur" => "required|numeric",
             "asalRuangan" => "required",
             "jenisKelamin" => "required",
@@ -73,12 +73,15 @@ class RujukanController extends Controller
             $new_pasien->save();
 
             DB::commit();
-            return redirect()->route('dokterPoli.pasien.index-pasien')->with(['success' => 'Pasien berhasil ditambahkan']);
+
+            Session::flash('store_succeed', 'Data pasien berhasil tersimpan');
+            return redirect()->route('dokterPoli.pasien.index-pasien');
         } catch (QueryException $x)
         {
             DB::rollBack();
             dd($x->getMessage());
-            return redirect()->route('dokterPoli.pasien.create-pasien')->with(['error' => 'Pasien gagal ditambahkan']);
+            Session::flash('store_failed', 'Data pasien gagal tersimpan');
+            return redirect()->route('dokterPoli.pasien.create-pasien');
         }
     }
 
@@ -91,13 +94,14 @@ class RujukanController extends Controller
 
     public function updatePasien(Request $request, $id){
         $validator = Validator::make($request->all(),[
-            "noRm" => "required|unique:trans_pasien,nomor_rm",
+            "noRm" => "required|unique:trans_pasien,nomor_rm". $id,
             "nama" => "required|min:3|max:100",
-            "nomorKtp" => "required|digits_between:10,12",
+            "nomorKtp" => "required|max:16|unique:trans_pasien,nomor_ktp,". $id,
             "umur" => "required|numeric",
             "jenisKelamin" => "required",
+            "asalRuangan" => "required",
             "alamat" => "required|min:5|max:200",
-            "nomorTelepon" => "required|digits_between:10,12",
+            "nomorTelepon" => "required|digits_between:10,12|unique:trans_pasien,nomor_telepon". $id,
             "jenisAsuransi" => "required"
         ])->validate();
 
@@ -120,12 +124,15 @@ class RujukanController extends Controller
             ]);
 
             DB::commit();
-            return redirect()->route('dokterPoli.pasien.index-pasien')->with(['success' => 'Pasien berhasil diedit']);
+
+            Session::flash('update_succeed', 'Data pasien berhasil terubah');
+            return redirect()->route('dokterPoli.pasien.index-pasien');
 
         } catch (QueryException $x)
         {
             DB::rollBack();
             dd($x->getMessage());
+            Session::flash('update_failed', 'Data pasien gagal tersimpan');
             return redirect()->route('dokterPoli.pasien.edit-pasien')->with(['error' => 'Pasien gagal diedit']);
         }
     }
@@ -205,11 +212,13 @@ class RujukanController extends Controller
 
                 DB::commit();
 
-                return redirect()->route('dokterPoli.pasien.index-pasien')->with(['success' => 'Rujuk pemeriksaan berhasil']);
+                Session::flash('store_succeed', 'Rujukan pasien berhasil tersimpan');
+                return redirect()->route('dokterPoli.index-rujuk');
             }catch (QueryException $x){
                 DB::rollBack();
                 dd($x->getMessage());
-                return redirect()->route('dokterPoli.pasien.rujuk-pasien')->with(['error' => 'Rujuk pemeriksaan gagal']);
+                Session::flash('store_failed', 'Rujukan pasien gagal tersimpan');
+                return redirect()->route('dokterPoli.pasien.rujuk-pasien');
             }
         }else{
             $new_pendaftaran = new Pendaftaran();
@@ -245,11 +254,13 @@ class RujukanController extends Controller
 
                 $pendaftaran = Pendaftaran::findOrFail($id_pendaftaran);
 
+                Session::flash('store_succeed', 'Rujukan pasien berhasil tersimpan, silahkan unduh surat rujukan terlebih dahulu');
                 return view('suratRujukan.surat_rujukan', compact('pendaftaran'));
             }catch (QueryException $x){
                 DB::rollBack();
                 dd($x->getMessage());
-                return redirect()->route('dokterPoli.pasien.rujuk-pasien')->with(['error' => 'Rujuk pemeriksaan gagal']);
+                Session::flash('store_failed', 'Rujukan pasien gagal tersimpan');
+                return redirect()->route('dokterPoli.pasien.rujuk-pasien');
             }
         }
     }

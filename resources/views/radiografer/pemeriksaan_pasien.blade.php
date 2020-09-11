@@ -222,6 +222,7 @@
     </div>
 </section>
 @endsection
+@push('scripts')
 <script type="text/javascript">
     function yesnoSelect() {
         if (document.getElementById("yesSelect").selected) {
@@ -244,3 +245,13 @@
     }
 
 </script>
+
+@if (Session::has('store_failed'))
+<script>
+swal('Gagal', '{!! Session::get('store_failed') !!}', 'error',{
+    button:'OK',
+});
+</script>
+@endif
+@endpush
+

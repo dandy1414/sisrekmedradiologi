@@ -69,8 +69,8 @@
 
         <!-- content -->
         <div class="content-wrapper">
-            @include('sweetalert::alert')
-            
+            @include('sweet::alert')
+
             @yield('content')
         </div>
         <!-- /.content -->
@@ -291,6 +291,8 @@
     <script src="{{ asset('adminlte/dist/js/adminlte.min.js') }}"></script>
     <!-- Select2 -->
     <script src="{{ asset('adminlte/bower_components/select2/dist/js/select2.full.min.js') }}"></script>
+    <!-- Sweetalert -->
+    <script src="{{ asset('vendor/sweetalert/sweetalert.min.js') }}"></script>
 
     @stack('scripts')
 

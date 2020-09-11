@@ -232,4 +232,12 @@
     })
 
 </script>
+
+@if (Session::has('store_failed'))
+<script>
+swal('Gagal', '{!! Session::get('store_failed') !!}', 'error',{
+    button:'OK',
+});
+</script>
+@endif
 @endpush

@@ -55,7 +55,7 @@
             </div>
         </div>
     </div>
-    
+
     <div class="row">
         <div class="col-xs-12">
             <div class="box box-info" id="tabelsemuapasien1" style="position: relative;">
@@ -193,6 +193,12 @@
             $('#keluhan-pasien').text(keluhan_pasien);
         })
     })
-
 </script>
+@if (Session::has('store_succeed'))
+<script>
+swal('Berhasil', '{!! Session::get('store_succeed') !!}', 'success',{
+    button:'OK',
+});
+</script>
+@endif
 @endpush

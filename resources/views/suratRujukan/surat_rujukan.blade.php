@@ -27,6 +27,7 @@
 </head>
 
 <body>
+    @include('sweet::alert')
     <div class="container">
         <div class="row">
             <div class="col-md-12">
@@ -115,13 +116,16 @@
             <div class="col-xs-9">
 
                 @if (request()->is('resepsionis/*/pendaftaran/pasien*') )
-                <a class="btn btn-success btn" href="{{ route('resepsionis.pasien.index.pendaftaran') }}"><i class="fa fa-list"></i>Kembali</a>
+                <a class="btn btn-default btn" href="{{ route('resepsionis.pasien.index.pendaftaran') }}"><i class="fa  fa-chevron-left"></i>Kembali</a>
                 <a class="btn btn-danger btn"
                     href="{{ route('resepsionis.pasien.pendaftaran.print.surat-rujukan', ['id'=>$pendaftaran->id]) }}"
                     target="_blank"><i class="fa fa-print"></i> Export PDF</a>
                 @endif
                 @if(request()->is('dokter-poli/*/rujuk-pasien'))
-                <a class="btn btn-success btn" href="{{ route('dokterPoli.pasien.index-rujuk') }}"><i class="fa fa-list"></i>Kembali</a>
+                <a class="btn btn-default btn" href="{{ route('dokterPoli.pasien.index-rujuk') }}"><i class="fa  fa-chevron-left"></i>Kembali</a>
+                <a class="btn btn-danger btn"
+                    href="{{ route('dokterPoli.pasien.pendaftaran.print.surat-rujukan', ['id'=>$pendaftaran->id]) }}"
+                    target="_blank"><i class="fa fa-print"></i> Export PDF</a>
                 @endif
 
 
@@ -165,5 +169,13 @@
         </div>
         <br>
     </div>
+    @if (Session::has('store_succeed'))
+    <script>
+    swal('Berhasil', '{!! Session::get('store_succeed') !!}', 'success',{
+        button:'OK',
+    });
+    </script>
+    @endif
 </body>
 </html>
+

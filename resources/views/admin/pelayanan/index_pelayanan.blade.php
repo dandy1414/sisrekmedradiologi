@@ -120,7 +120,7 @@
                                             <span class="sr-only">Toggle Dropdown</span>
                                         </button>
                                         <ul class="dropdown-menu" role="menu">
-                                            <li><a href="{{ route('layanan.delete', ['id'=>$l->id]) }}">Hapus</a></li>
+                                            <li><a class="delete-layanan-confirmation" href="{{ route('layanan.delete', ['id'=>$l->id]) }}">Hapus</a></li>
                                         </ul>
                                     </div>
                                 </td>
@@ -166,7 +166,7 @@
                                             <span class="sr-only">Toggle Dropdown</span>
                                         </button>
                                         <ul class="dropdown-menu" role="menu">
-                                            <li><a href="{{ route('film.delete', ['id'=>$f->id]) }}">Hapus</a></li>
+                                            <li><a class="delete-film-confirmation" href="{{ route('film.delete', ['id'=>$f->id]) }}">Hapus</a></li>
                                         </ul>
                                     </div>
                                 </td>
@@ -374,6 +374,38 @@
 @endsection
 @push('scripts')
 <script>
+    $(".delete-layanan-confirmation").on('click', function (event) {
+        event.preventDefault();
+        const url=$(this).attr('href');
+        swal({
+        title: "Apa anda yakin?",
+        text: "Setelah terhapus, data layanan akan terhapus permanen",
+        icon: "warning",
+        buttons: ["Tidak", "Ya"],
+        })
+        .then(function(value) {
+            if (value) {
+                window.location.href = url;
+            }
+        });
+    });
+
+    $(".delete-film-confirmation").on('click', function (event) {
+        event.preventDefault();
+        const url=$(this).attr('href');
+        swal({
+        title: "Apa anda yakin?",
+        text: "Setelah terhapus, data film akan terhapus permanen",
+        icon: "warning",
+        buttons: ["Tidak", "Ya"],
+        })
+        .then(function(value) {
+            if (value) {
+                window.location.href = url;
+            }
+        });
+    });
+
     $('#edit-layanan').on('show.bs.modal', function (event) {
         var id_layanan = $('#editLayanan').attr('data-MyIdLayanan')
         var nama = $("#editLayanan").attr("data-MyNama")
@@ -400,6 +432,85 @@
         modal.find('.modal-body #nama-film').val(nama);
         modal.find('.modal-body #harga-film').val(harga);
     })
-
 </script>
+
+@if (Session::has('store_layanan_succeed'))
+<script>
+swal('Berhasil', '{!! Session::get('store_layanan_succeed') !!}', 'success',{
+    button:'OK',
+});
+</script>
+@endif
+
+@if (Session::has('store_layanan_failed'))
+<script>
+swal('Berhasil', '{!! Session::get('delete_succeed') !!}', 'error',{
+    button:'OK',
+});
+</script>
+@endif
+
+@if (Session::has('store_film_succeed'))
+<script>
+swal('Berhasil', '{!! Session::get('store_layanan_succeed') !!}', 'success',{
+    button:'OK',
+});
+</script>
+@endif
+
+@if (Session::has('store_film_failed'))
+<script>
+swal('Berhasil', '{!! Session::get('delete_succeed') !!}', 'error',{
+    button:'OK',
+});
+</script>
+@endif
+
+@if (Session::has('update_layanan_succeed'))
+<script>
+swal('Berhasil', '{!! Session::get('update_layanan_succeed') !!}', 'success',{
+    button:'OK',
+});
+</script>
+@endif
+
+@if (Session::has('update_layanan_failed'))
+<script>
+swal('Berhasil', '{!! Session::get('update_layanan_succeed') !!}', 'error',{
+    button:'OK',
+});
+</script>
+@endif
+
+@if (Session::has('update_film_succeed'))
+<script>
+swal('Berhasil', '{!! Session::get('update_film_succeed') !!}', 'success',{
+    button:'OK',
+});
+</script>
+@endif
+
+@if (Session::has('update_film_failed'))
+<script>
+swal('Berhasil', '{!! Session::get('update_film_failed') !!}', 'error',{
+    button:'OK',
+});
+</script>
+@endif
+
+@if (Session::has('delete_layanan_succeed'))
+<script>
+swal('Berhasil', '{!! Session::get('delete_layanan_succeed') !!}', 'success',{
+    button:'OK',
+});
+</script>
+@endif
+
+@if (Session::has('delete_film_succeed'))
+<script>
+swal('Berhasil', '{!! Session::get('delete_film_succeed') !!}', 'success',{
+    button:'OK',
+});
+</script>
+@endif
 @endpush

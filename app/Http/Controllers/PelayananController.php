@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Session;
 use Illuminate\Http\Request;
 use App\Models\Jadwal;
 use App\Models\Film;
@@ -39,12 +40,14 @@ class PelayananController extends Controller
             $new_layanan->save();
 
             DB::commit();
-            return redirect()->route('pelayanan.index')->with(['success' => 'Layanan berhasil ditambahkan']);
+            Session::flash('store_layanan_succeed', 'Data layanan berhasil tersimpan');
+            return redirect()->route('pelayanan.index');
         } catch (QueryException $x)
         {
             DB::rollBack();
             dd($x->getMessage());
-            return redirect()->route('pelayanan.index')->with(['error' => 'Layanan gagal ditambahkan']);
+            Session::flash('store_layanan_failed', 'Data layanan gagal tersimpan');
+            return redirect()->route('pelayanan.index');
         }
 
     }
@@ -59,12 +62,14 @@ class PelayananController extends Controller
             $new_film->save();
 
             DB::commit();
-            return redirect()->route('pelayanan.index')->with(['success' => 'Film berhasil ditambahkan']);
+            Session::flash('store_film_succeed', 'Data film berhasil tersimpan');
+            return redirect()->route('pelayanan.index');
         } catch (QueryException $x)
         {
             DB::rollBack();
             dd($x->getMessage());
-            return redirect()->route('pelayanan.index')->with(['error' => 'Film gagal ditambahkan']);
+            Session::flash('store_film_failed', 'Data film gagal tersimpan');
+            return redirect()->route('pelayanan.index');
         }
 
     }
@@ -81,11 +86,13 @@ class PelayananController extends Controller
 
             DB::commit();
 
-            return redirect()->route('pelayanan.index')->with(['success' => 'Layanan berhasil diubah']);
+            Session::flash('update_layanan_succeed', 'Data layanan berhasil terubah');
+            return redirect()->route('pelayanan.index');
         } catch(QueryException $x){
             DB::rollBack();
             dd($x->getMessage());
-            return redirect()->route('pelayanan.index')->with(['success' => 'Layanan gagal diubah']);
+            Session::flash('update_layanan_failed', 'Data layanan gagal terubah');
+            return redirect()->route('pelayanan.index');
         }
 
     }
@@ -101,11 +108,13 @@ class PelayananController extends Controller
 
             DB::commit();
 
-            return redirect()->route('pelayanan.index')->with(['success' => 'FIlm berhasil diubah']);
+            Session::flash('update_film_succeed', 'Data film berhasil terubah');
+            return redirect()->route('pelayanan.index');
         } catch(QueryException $x){
             DB::rollBack();
             dd($x->getMessage());
-            return redirect()->route('pelayanan.index')->with(['success' => 'Film gagal diubah']);
+            Session::flash('update_film_failed', 'Data film gagal terubah');
+            return redirect()->route('pelayanan.index');
         }
 
     }
@@ -113,12 +122,14 @@ class PelayananController extends Controller
     public function deleteLayanan($id){
         Layanan::where('id', $id)->delete();
 
-        return redirect()->route('pelayanan.index')->with(['success' => 'Layanan berhasil dihapus']);
+        Session::flash('delete_layanan_succeed', 'Data layanan berhasil terhapus');
+        return redirect()->route('pelayanan.index');
     }
 
     public function deleteFilm($id){
         Film::where('id', $id)->delete();
 
-        return redirect()->route('pelayanan.index')->with(['success' => 'Film berhasil dihapus']);
+        Session::flash('delete_film_succeed', 'Data film berhasil terhapus');
+        return redirect()->route('pelayanan.index');
     }
 }

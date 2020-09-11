@@ -232,4 +232,12 @@ $("#tombolDua").click(function () {
     $("#tagihanBelum").hide(300)
 })
 </script>
+
+@if (Session::has('login_succeed'))
+<script>
+swal('Login Berhasil', '{!! Session::get('login_succeed') !!}', 'success',{
+    button:'OK',
+});
+</script>
+@endif
 @endpush

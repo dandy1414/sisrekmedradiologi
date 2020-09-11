@@ -2,16 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use Session;
 use App\Models\Pasien;
-use App\Models\Jadwal;
 use App\Models\Layanan;
 use App\Models\Pendaftaran;
 use App\Models\Pemeriksaan;
 use App\Models\Film;
 use App\Models\Tagihan;
-use App\User;
-use Alert;
-use App\Models\Ruangan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
@@ -139,13 +136,15 @@ class PemeriksaanController extends Controller
 
             DB::commit();
 
-            return redirect()->route('radiografer.pasien.index-pemeriksaan')->with(['success' => 'Data Pemeriksaan berhasil diunggah']);
+            Session::flash('store_succeed', 'Pemeriksaan berhasil tersimpan');
+            return redirect()->route('radiografer.pasien.index-pemeriksaan');
 
             } catch (QueryException $x)
             {
                 DB::rollBack();
                 dd($x->getMessage());
-                return redirect()->route('radiografer.pasien.pemeriksaan-pasien')->with(['error' => 'Data pemeriksaan gagal diunggah']);
+                Session::flash('store_failed', 'Pemeriksaan gagal tersimpan');
+                return redirect()->route('radiografer.pasien.pemeriksaan-pasien');
             }
         } else {
             DB::beginTransaction();
@@ -189,13 +188,15 @@ class PemeriksaanController extends Controller
 
             DB::commit();
 
-            return redirect()->route('radiografer.pasien.index-pemeriksaan')->with(['success' => 'Data Pemeriksaan berhasil diunggah']);
+            Session::flash('store_succeed', 'Pemeriksaan berhasil tersimpan');
+            return redirect()->route('radiografer.pasien.index-pemeriksaan');
 
             } catch (QueryException $x)
             {
                 DB::rollBack();
                 dd($x->getMessage());
-                return redirect()->route('radiografer.pasien.pemeriksaan-pasien')->with(['error' => 'Data pemeriksaan gagal diunggah']);
+                Session::flash('store_failed', 'Pemeriksaan gagal tersimpan');
+                return redirect()->route('radiografer.pasien.pemeriksaan-pasien');
             }
         }
     }

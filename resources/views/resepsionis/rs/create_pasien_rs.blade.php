@@ -89,8 +89,7 @@
                                     <select class="form-control select2" name="asalRuangan" style="width: 100%;">
                                         <option selected disabled>Silahkan pilih salah satu</option>
                                         @foreach ($ruangan as $r)
-                                        <option value="{{ $r->id_ruangan }}"
-                                            {{ old('asalRuangan') == $r->id_ruangan ? "selected" : "" }}>
+                                        <option value="{{ $r->id }}" {{ old('asalRuangan') == $r->id ? "selected" : "" }}>
                                             {{ $r->nama_ruangan }}</option>
                                         @endforeach
                                     </select>
@@ -152,6 +151,7 @@
     </div>
 </section>
 @endsection
+@push('scripts')
 <script type="text/javascript">
     function yesnoSelect() {
         if(document.getElementById("yesSelect").selected) {
@@ -171,3 +171,12 @@
         }
     }
 </script>
+@if (Session::has('store_failed'))
+<script>
+swal('Gagal', '{!! Session::get('store_failed') !!}', 'error',{
+    button:'OK',
+});
+</script>
+@endif
+@endpush
+

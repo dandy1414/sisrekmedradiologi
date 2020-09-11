@@ -189,3 +189,11 @@
     </div>
 </section>
 @endsection
+@if (Session::has('update_failed'))
+<script>
+swal('Berhasil', '{!! Session::get('update_failed') !!}', 'error',{
+    button:'OK',
+});
+</script>
+@endif
+@endpush

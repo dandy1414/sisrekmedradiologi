@@ -2,21 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use PDF;
+use Session;
 use App\Models\Pasien;
-use App\Models\Jadwal;
-use App\Models\Layanan;
 use App\Models\Pendaftaran;
 use App\Models\Pemeriksaan;
-use App\Models\Film;
-use App\User;
-use App\Models\Ruangan;
-use Alert;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Auth;
-use PDF;
 
 class ExpertiseController extends Controller
 {
@@ -95,12 +89,14 @@ class ExpertiseController extends Controller
 
             $pemeriksaan = Pemeriksaan::findOrFail($id);
 
+            Session::flash('store_succeed', 'Expertise berhasil tersimpan, silahkan unduh hasil expertise terlebih dahulu');
             return view('hasilExpertise.hasil_expertise', compact('pemeriksaan'));
         }
         catch(QueryException $x){
             DB::rollBack();
             dd($x->getMessage());
-            return redirect()->route('dokterRadiologi.pasien.expertise-pasien')->with(['error' => 'Expertise gagal dikirim']);
+            Session::flash('store_failed', 'Expertise gagal tersimpan');
+            return redirect()->route('dokterRadiologi.pasien.expertise-pasien');
         }
     }
 

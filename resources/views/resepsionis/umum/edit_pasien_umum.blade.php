@@ -165,6 +165,7 @@
     </div>
 </section>
 @endsection
+@push('scripts')
 <script type="text/javascript">
     // function yesnoSelect() {
     //     if(document.getElementById("yesSelect").selected) {
@@ -184,3 +185,13 @@
         }
     }
 </script>
+
+@if (Session::has('update_failed'))
+<script>
+swal('Gagal', '{!! Session::get('update_failed') !!}', 'error',{
+    button:'OK',
+});
+</script>
+@endif
+@endpush
+

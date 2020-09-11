@@ -106,3 +106,21 @@
 </section>
 
 @endsection
+@push('scripts')
+@if (Session::has('store_succeed'))
+<script>
+swal('Berhasil', '{!! Session::get('store_succeed') !!}', 'success',{
+    button:'OK',
+});
+</script>
+@endif
+
+@if (Session::has('update_succeed'))
+<script>
+swal('Berhasil', '{!! Session::get('update_succeed') !!}', 'success',{
+    button:'OK',
+});
+</script>
+@endif
+
+@endpush

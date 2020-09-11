@@ -37,12 +37,21 @@
                     <div class="box-body">
                         <div class="row">
                             <div class="col-md-6">
+                                @if ($nomor_rm->isEmpty())
                                 <div class="form-group {{ $errors->first('nomorRm') ? "has-error": "" }}">
                                     <label>Nomor Rekam Medis :</label>
-                                    <input value="{{ old('nomorRm') }}" type="text" name="nomorRm" class="form-control"
-                                        placeholder="Nomor Rekam Medis ...">
+                                    <input value="{{ $nomor }}" type="text" name="nomorRm" class="form-control"
+                                        placeholder="Nomor Rekam Medis ..." disabled>
                                     <span class="help-block">{{ $errors->first('nomorRm') }}</span>
                                 </div>
+                                @else
+                                <div class="form-group {{ $errors->first('nomorRm') ? "has-error": "" }}">
+                                    <label>Nomor Rekam Medis :</label>
+                                    <input value="{{ $nomor_rm }}" type="text" name="nomorRm" class="form-control"
+                                        placeholder="Nomor Rekam Medis ..." disabled>
+                                    <span class="help-block">{{ $errors->first('nomorRm') }}</span>
+                                </div>
+                                @endif
 
                                 <div class="form-group {{ $errors->first('nomorKtp') ? "has-error": "" }}">
                                     <label>Nomor KTP :</label>
@@ -139,6 +148,7 @@
     </div>
 </section>
 @endsection
+@push('scripts')
 <script type="text/javascript">
     function yesnoSelect() {
         if(document.getElementById("yesSelect").selected) {
@@ -158,3 +168,13 @@
         }
     }
 </script>
+
+@if (Session::has('store_failed'))
+<script>
+swal('Gagal', '{!! Session::get('store_failed') !!}', 'error',{
+    button:'OK',
+});
+</script>
+@endif
+@endpush
+

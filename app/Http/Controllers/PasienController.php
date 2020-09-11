@@ -50,11 +50,27 @@ class PasienController extends Controller
     }
 
     public function createPasienUmum(){
-        return view('admin.pasien.umum.create_pasien_umum');
+        $pasien = Pasien::all();
+
+        if($pasien->isEmpty()){
+            $nomor = str_pad(1, 6, '0', STR_PAD_LEFT);
+        } else {
+            $mamak = $pasien->nomor_rm + 1;
+            $mamak = str_pad($mamak, 6, '0', STR_PAD_LEFT);
+        }
+
+        return view('admin.pasien.umum.create_pasien_umum', ['mamak' => $mamak, 'nomor' => $nomor]);
     }
 
     public function createPasienRs(){
+        $nomor_rm = Pasien::latest()->first()->value('nomor_rm');
         $ruangan = Ruangan::all();
+
+        if($nomor_rm == null){
+            $nomor_rm = str_pad(1, 6, '0', STR_PAD_LEFT);
+        } else {
+            $nomor_rm = str_pad($nomor_rm + 1, 6, '0', STR_PAD_LEFT);
+        }
 
         return view('admin.pasien.rs.create_pasien_rs', ['ruangan' => $ruangan]);
     }
@@ -66,7 +82,6 @@ class PasienController extends Controller
 
     public function storePasienUmum(Request $request){
         $validator = Validator::make($request->all(),[
-            "nomorRm" => "required|max:6|unique:trans_pasien,nomor_rm",
             "nama" => "required|min:3|max:100",
             "nomorKtp" => "required|max:16|unique:trans_pasien,nomor_ktp",
             "umur" => "required|numeric",
@@ -78,10 +93,17 @@ class PasienController extends Controller
 
     DB::beginTransaction();
 
+    $pasien = Pasien::latest()->first();
+        if($pasien->nomor_rm == null){
+            $pasien->nomor_rm = str_pad(1, 6, '0', STR_PAD_LEFT);
+        } else {
+            $pasien->nomor_rm = str_pad($pasien->nomor_rm + 1, 6, '0', STR_PAD_LEFT);
+        }
+
     try{
         $new_pasien = new \App\Models\Pasien;
         $new_pasien->nomor_ktp = $request->nomorKtp;
-        $new_pasien->nomor_rm = $request->nomorRm;
+        $new_pasien->nomor_rm = $pasien->nomor_rm;
         $new_pasien->nama = $request->nama;
         $new_pasien->jenis_pasien = "umum";
         $new_pasien->umur = $request->umur;
@@ -94,12 +116,15 @@ class PasienController extends Controller
         $new_pasien->save();
 
         DB::commit();
-        return redirect()->route('pasien.index-pasien-umum')->with(['success' => 'Pasien berhasil ditambahkan']);
+
+        Session::flash('store_succeed', 'Data Pasien berhasil tersimpan');
+        return redirect()->route('pasien.index-pasien-umum');
     } catch (QueryException $x)
     {
         DB::rollBack();
         dd($x->getMessage());
-        return redirect()->route('pasien.create.pasien-umum')->with(['error' => 'Pasien gagal ditambahkan']);
+        Session::flash('store_failed', 'Data pasien gagal tersimpan');
+        return redirect()->route('pasien.create.pasien-umum');
     }
 }
 
@@ -135,12 +160,14 @@ class PasienController extends Controller
             $new_pasien->save();
 
             DB::commit();
-            return redirect()->route('pasien.index-pasien-rs')->with(['success' => 'Pasien berhasil ditambahkan']);
+            Session::flash('store_succeed', 'Data Pasien berhasil tersimpan');
+            return redirect()->route('pasien.index-pasien-rs');
         } catch (QueryException $x)
         {
             DB::rollBack();
             dd($x->getMessage());
-            return redirect()->route('pasien.create.pasien-rs')->with(['error' => 'Pasien gagal ditambahkan']);
+            Session::flash('store_failed', 'Data pasien gagal tersimpan');
+            return redirect()->route('pasien.create.pasien-rs');
         }
     }
 
@@ -160,7 +187,6 @@ class PasienController extends Controller
     public function editPasienRs($id){
         $ruangan = Ruangan::all();
         $pas = Pasien::findOrFail($id);
-        // dd($pas);
 
         return view('admin.pasien.rs.edit_pasien_rs', ['pas'=> $pas, 'ruangan' => $ruangan]);
     }
@@ -195,13 +221,15 @@ class PasienController extends Controller
             ]);
 
             DB::commit();
-            return redirect()->route('pasien.index-pasien-umum')->with(['success' => 'Pasien berhasil diedit']);
+            Session::flash('update_succeed', 'Data pasien berhasil terubah');
+            return redirect()->route('pasien.index-pasien-umum');
 
         } catch (QueryException $x)
         {
             DB::rollBack();
             dd($x->getMessage());
-            return redirect()->route('pasien.edit-pasien-umum')->with(['error' => 'Pasien gagal diedit']);
+            Session::flash('update_failed', 'Data pasien gagal terubah');
+            return redirect()->route('pasien.edit-pasien-umum');
         }
     }
 
@@ -236,13 +264,16 @@ class PasienController extends Controller
             ]);
 
             DB::commit();
-            return redirect()->route('pasien.index-pasien-rs')->with(['success' => 'Pasien berhasil diedit']);
+
+            Session::flash('update_succeed', 'Data pasien berhasil terubah');
+            return redirect()->route('pasien.index-pasien-rs');
 
         } catch (QueryException $x)
         {
             DB::rollBack();
             dd($x->getMessage());
-            return redirect()->route('pasien.edit-pasien-rs')->with(['error' => 'Pasien gagal diedit']);
+            Session::flash('update_failed', 'Data pasien gagal terubah');
+            return redirect()->route('pasien.edit-pasien-rs');
         }
     }
 
@@ -256,9 +287,11 @@ class PasienController extends Controller
         $pasien = Pasien::where('id', $id)->delete();
 
         if($pindah){
-            return redirect()->route('pasien.index-pasien-umum')->with(['warning' => 'Pasien berhasil dihapus']);
+            Session::flash('delete_succeed', 'Data pasien berhasil terhapus');
+            return redirect()->route('pasien.index-pasien-umum');
         }
-        return redirect()->route('pasien.index-pasien-rs')->with(['warning' => 'Pasien berhasil dihapus']);
+        Session::flash('delete_succeed', 'Data pasien berhasil terhapus');
+        return redirect()->route('pasien.index-pasien-rs');
     }
 
     public function trash(){
@@ -270,13 +303,15 @@ class PasienController extends Controller
     public function restore($id){
         Pasien::onlyTrashed()->where('id', $id)->restore();
 
-        return redirect()->route('pasien.trash')->with(['success' => 'User berhasil dikembalikan']);
+        Session::flash('restore_succeed', 'Data pasien berhasil dikembalikan');
+        return redirect()->route('pasien.trash');
     }
 
     public function destroy($id){
         Pasien::where('id', $id)->withTrashed()->forceDelete();
 
-        return redirect()->route('user.trash')->with(['success' => 'User berhasil dihapus permanen']);
+        Session::flash('destroy_succeed', 'Data pasien berhasil dihapus permanen');
+        return redirect()->route('pasien.trash');
     }
 
     public function detailSuratRujukan($id){

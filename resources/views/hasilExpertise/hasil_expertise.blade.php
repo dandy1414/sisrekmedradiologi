@@ -27,6 +27,7 @@
 </head>
 
 <body>
+    @include('sweet::alert')
     <div class="container">
         <div class="row">
             <div class="col-md-12">
@@ -102,8 +103,7 @@
         <br>
         <div class="row">
             @if (request()->is('dokter-radiologi/*/expertise-pasien'))
-            <a class="pull left btn btn-success btn" href="{{ route('dokterRadiologi.pasien.index-pemeriksaan') }}"><i
-                class="fa fa-list"></i> Kembali</a>
+            <a class="pull left btn btn-default btn" href="{{ route('dokterRadiologi.pasien.index-pemeriksaan') }}"><i class="fa fa-chevron-left"></i> Kembali</a>
             <a class="pull left btn btn-danger btn" href="{{ route('dokterRadiologi.pasien.pemeriksaan.print.hasil-expertise', ['id'=>$pemeriksaan->id]) }}" target="_blank"><i class="fa fa-print"></i> Export PDF</a>
             @else
             @endif
@@ -144,6 +144,13 @@
         <br>
         <br>
     </div>
-</body>
 
+@if (Session::has('store_succeed'))
+<script>
+swal('Berhasil', '{!! Session::get('store_succeed') !!}', 'success',{
+    button:'OK',
+});
+</script>
+@endif
+</body>
 </html>

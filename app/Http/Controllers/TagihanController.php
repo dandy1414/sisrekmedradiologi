@@ -2,23 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use Alert;
+use PDF;
+use Session;
 use App\Models\Pasien;
-use App\Models\Jadwal;
-use App\Models\Layanan;
-use App\Models\Pendaftaran;
-use App\Models\Pemeriksaan;
-use App\Models\Film;
 use App\Models\Tagihan;
-use App\User;
-use App\Models\Ruangan;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Str;
-use PDF;
 
 class TagihanController extends Controller
 {
@@ -88,11 +79,13 @@ class TagihanController extends Controller
             $tagihan = Tagihan::findOrFail($id);
             $tarif = $tagihan->layanan->tarif - 25000;
 
+            Session::flash('store_succeed', 'Pembayaran berhasil tersimpan, silahkan unduh struk pembayaran');
             return view('kasir.detail_pembayaran', ['tagihan'=>$tagihan, 'tarif'=>$tarif]);
         } catch(QueryException $x) {
             DB::rollBack();
             dd($x->getMessage());
-            return redirect()->route('kasir.pasien.pembayaran-pasien')->with(['error' => 'Pembayaran gagal']);
+            Session::flash('store_failed', 'Pembayaran gagal tersimpan');
+            return redirect()->route('kasir.pasien.pembayaran-pasien');
         }
     }
 

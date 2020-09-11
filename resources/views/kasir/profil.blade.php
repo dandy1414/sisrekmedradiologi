@@ -265,5 +265,21 @@ $("#riwayat-pendaftaran").click(function () {
     $("#box-edit").hide(300)
 })
 </script>
+
+@if (Session::has('store_succeed'))
+<script>
+swal('Berhasil', '{!! Session::get('store_succeed') !!}', 'success',{
+    button:'OK',
+});
+</script>
+@endif
+
+@if (Session::has('store_failed'))
+<script>
+swal('Gagal', '{!! Session::get('store_failed') !!}', 'error',{
+    button:'OK',
+});
+</script>
+@endif
 @endpush
 

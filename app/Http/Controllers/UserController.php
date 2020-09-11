@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use Session;
 use App\User;
 use App\Models\Pendaftaran;
 use App\Models\Pemeriksaan;
 use App\Models\Tagihan;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -93,16 +93,20 @@ class UserController extends Controller
             DB::commit();
             switch ($user->role) {
                 case 'admin':
-                    return redirect()->route('profil.show', ['id' => $id])->with(['success' => 'Profil berhasil diedit']);
+                    Session::flash('store_succeed', 'Profil berhasil terubah');
+                    return redirect()->route('profil.show', ['id' => $id]);
                     break;
                 case 'resepsionis':
-                    return redirect()->route('profil.show.resepsionis', ['id' => $id])->with(['success' => 'Profil berhasil diedit']);
+                    Session::flash('store_succeed', 'Profil berhasil terubah');
+                    return redirect()->route('profil.show.resepsionis', ['id' => $id]);
                     break;
                 case 'radiografer':
-                    return redirect()->route('profil.show.resepsionis', ['id' => $id])->with(['success' => 'Profil berhasil diedit']);
+                    Session::flash('store_succeed', 'Profil berhasil terubah');
+                    return redirect()->route('profil.show.resepsionis', ['id' => $id]);
                     break;
                 case 'kasir':
-                    return redirect()->route('profil.show.resepsionis', ['id' => $id])->with(['success' => 'Profil berhasil diedit']);
+                    Session::flash('store_succeed', 'Profil berhasil terubah');
+                    return redirect()->route('profil.show.resepsionis', ['id' => $id]);
                     break;
                 default:
                     break;
@@ -113,16 +117,20 @@ class UserController extends Controller
             dd($x->getMessage());
             switch ($user->role) {
                 case 'admin':
-                    return redirect()->route('profil.show', ['id' => $id])->with(['success' => 'Profil gagal diedit']);
+                    Session::flash('store_failed', 'Profil gagal terubah');
+                    return redirect()->route('profil.show', ['id' => $id]);
                     break;
                 case 'resepsionis':
-                    return redirect()->route('profil.show.resepsionis', ['id' => $id])->with(['success' => 'Profil gagal diedit']);
+                    Session::flash('store_failed', 'Profil gagal terubah');
+                    return redirect()->route('profil.show.resepsionis', ['id' => $id]);
                     break;
                 case 'radiografer':
-                    return redirect()->route('profil.show.resepsionis', ['id' => $id])->with(['success' => 'Profil gagal diedit']);
+                    Session::flash('store_failed', 'Profil gagal terubah');
+                    return redirect()->route('profil.show.resepsionis', ['id' => $id]);
                     break;
                 case 'kasir':
-                    return redirect()->route('profil.show.resepsionis', ['id' => $id])->with(['success' => 'Profil gagal diedit']);
+                    Session::flash('store_failed', 'Profil gagal terubah');
+                    return redirect()->route('profil.show.resepsionis', ['id' => $id]);
                     break;
                 default:
                     break;
@@ -169,10 +177,12 @@ class UserController extends Controller
             DB::commit();
             switch ($user->role) {
                 case 'dokterPoli':
-                    return redirect()->route('profil.show.dokterPoli', ['id' => $id])->with(['success' => 'Profil berhasil diedit']);
+                    Session::flash('store_succeed', 'Profil berhasil terubah');
+                    return redirect()->route('profil.show.dokterPoli', ['id' => $id]);
                     break;
                 case 'dokterRadiologi':
-                    return redirect()->route('profil.show.resepsionis', ['id' => $id])->with(['success' => 'Profil berhasil diedit']);
+                    Session::flash('store_succeed', 'Profil berhasil terubah');
+                    return redirect()->route('profil.show.resepsionis', ['id' => $id]);
                     break;
                 default:
                     break;
@@ -183,10 +193,12 @@ class UserController extends Controller
             dd($x->getMessage());
             switch ($user->role) {
                 case 'dokterPoli':
-                    return redirect()->route('profil.show.dokterPoli', ['id' => $id])->with(['success' => 'Profil gagal diedit']);
+                    Session::flash('store_failed', 'Profil gagal terubah');
+                    return redirect()->route('profil.show.dokterPoli', ['id' => $id]);
                     break;
                 case 'dokterRadiologi':
-                    return redirect()->route('profil.show.resepsionis', ['id' => $id])->with(['success' => 'Profil gagal diedit']);
+                    Session::flash('store_failed', 'Profil gagal terubah');
+                    return redirect()->route('profil.show.resepsionis', ['id' => $id]);
                     break;
                 default:
                     break;
@@ -257,14 +269,15 @@ class UserController extends Controller
             $new_user->save();
 
             DB::commit();
-            return redirect()->route('dokter.index')->with(['success' => 'Dokter berhasil ditambahkan']);
+            Session::flash('store_succeed', 'Data dokter berhasil tersimpan');
+            return redirect()->route('dokter.index');
         } catch (QueryException $x)
         {
             DB::rollBack();
             dd($x->getMessage());
-            return redirect()->route('dokter.create')->with(['error' => 'Dokter gagal ditambahkan']);
+            Session::flash('store_failed', 'Data dokter gagal tersimpan');
+            return redirect()->route('dokter.create');
         }
-
     }
 
     public function storePegawai(Request $request){
@@ -304,12 +317,14 @@ class UserController extends Controller
             $new_user->save();
 
             DB::commit();
-            return redirect()->route('pegawai.index')->with(['success' => 'Pegawai berhasil ditambahkan']);
+            Session::flash('store_succeed', 'Data pegawai berhasil tersimpan');
+            return redirect()->route('pegawai.index');
         } catch (QueryException $x)
         {
             DB::rollBack();
             dd($x->getMessage());
-            return redirect()->route('pegawai.create')->with(['error' => 'Pegawai gagal ditambahkan']);
+            Session::flash('store_failed', 'Data pegawai gagal tersimpan');
+            return redirect()->route('pegawai.create');
         }
 
     }
@@ -366,12 +381,14 @@ class UserController extends Controller
             $user->save();
 
             DB::commit();
-            return redirect()->route('dokter.index')->with(['success' => 'User berhasil diedit']);
+            Session::flash('update_succeed', 'Data dokter berhasil terubah');
+            return redirect()->route('dokter.index');
         } catch (QueryException $x)
         {
             DB::rollBack();
             dd($x->getMessage());
-            return redirect()->route('dokter.edit')->with(['error' => 'User gagal diedit']);
+            Session::flash('update_failed', 'Data dokter gagal terubah');
+            return redirect()->route('dokter.edit');
         }
     }
 
@@ -415,33 +432,47 @@ class UserController extends Controller
             $user->save();
 
             DB::commit();
-            return redirect()->route('pegawai.index')->with(['success' => 'Pegawai berhasil diedit']);
+            Session::flash('update_succeed', 'Data pegawai berhasil terubah');
+            return redirect()->route('pegawai.index');
         } catch (QueryException $x)
         {
             DB::rollBack();
             dd($x->getMessage());
-            return redirect()->route('pegawai.edit')->with(['error' => 'Pegawai gagal diedit']);
+            Session::flash('update_failed', 'Data pegawai gagal terubah');
+            return redirect()->route('pegawai.edit');
         }
     }
 
     public function delete($id){
         $user = User::findOrFail($id);
+        if($user->role == 'dokter%'){
+            $pindah = true;
+        } else {
+            $pindah = false;
+        }
+
         $user->delete();
 
-        return redirect()->route('user.index')->with(['warning' => 'User berhasil dihapus']);
+        if($pindah){
+            Session::flash('delete_succeed', 'Data dokter berhasil terubah');
+            return redirect()->route('dokter.index');
+        }
+        Session::flash('delete_succeed', 'Data pegawai berhasil terubah');
+        return redirect()->route('pegawai.index');
     }
 
     public function trash(){
         $users = User::onlyTrashed()->get();
 
-        return view('admin.user.trash_user', ['users' => $users]);
+        return view('user.trash', ['users' => $users]);
     }
 
     public function restore($id){
         $user = User::onlyTrashed()->where('id', $id);
         $user->restore();
 
-        return redirect()->route('user.trash')->with(['success' => 'User berhasil dikembalikan']);
+        Session::flash('delete_succeed', 'Data user berhasil dikembalikan');
+        return redirect()->route('user.trash');
     }
 
     public function destroy($id){
@@ -454,6 +485,7 @@ class UserController extends Controller
         }
         $user->forceDelete();
 
-        return redirect()->route('user.trash')->with(['success' => 'User berhasil dihapus permanen']);
+        Session::flash('destroy_succeed', 'Data user berhasil dihapus permanen');
+        return redirect()->route('user.trash');
     }
 }

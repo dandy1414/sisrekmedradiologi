@@ -36,8 +36,7 @@
                         Aturan
                     </h4>
                     - Username harus kombinasi angka dan huruf <br>
-                    - Password harus berisi 6 karakter <br>
-                    - Password harus kombinasi angka dan huruf <br>
+                    - Password harus berisi 6 karakter & kombinasi angka dan huruf <br>
                 </div>
             </div>
         </div>
@@ -180,6 +179,12 @@
     </div>
 </section>
 @endsection
+@push('scripts')
+@if (Session::has('store_failed'))
 <script>
-    $('.select2').select2()
+swal('Berhasil', '{!! Session::get('store_failed') !!}', 'error',{
+    button:'OK',
+});
 </script>
+@endif
+@endpush

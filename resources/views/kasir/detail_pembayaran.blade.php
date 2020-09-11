@@ -202,3 +202,14 @@
 
 @endsection
 
+@push('scripts')
+@if (Session::has('store_succeed'))
+    <script>
+    swal('Berhasil', '{!! Session::get('store_succeed') !!}', 'success',{
+        button:'OK',
+    });
+    </script>
+    @endif
+@endpush
+
+

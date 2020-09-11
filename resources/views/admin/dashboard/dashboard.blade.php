@@ -153,4 +153,12 @@
 <!--Dashboard-->
 <script src="{{ asset('adminlte/dist/js/pages/grafik.js') }}"></script>
 <!-- page script -->
+
+@if (Session::has('login_succeed'))
+<script>
+swal('Login Berhasil', '{!! Session::get('login_succeed') !!}', 'success',{
+    button:'OK',
+});
+</script>
+@endif
 @endpush

@@ -335,7 +335,6 @@
 @endsection
 @push('scripts')
 <script>
-
 $(document).ready(function () {
         $(document).on('click', '#modal-detail', function() {
             var tanggal = $(this).data('tanggal');
@@ -383,4 +382,20 @@ $("#button-three").click(function () {
     $("#tabelpending").hide(300)
 })
 </script>
+
+@if (Session::has('store_succeed'))
+<script>
+swal('Berhasil', '{!! Session::get('store_succeed') !!}', 'success',{
+    button:'OK',
+});
+</script>
+@endif
+
+@if (Session::has('login_succeed'))
+<script>
+swal('Login Berhasil', '{!! Session::get('login_succeed') !!}', 'success',{
+    button:'OK',
+});
+</script>
+@endif
 @endpush

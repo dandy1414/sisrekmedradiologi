@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use Session;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
@@ -35,21 +36,27 @@ class LoginController extends Controller
 
         switch ($role) {
             case 'admin':
+                Session::flash('login_succeed', 'Selamat datang di Sistem Rekam Medis Unit Radiologi Rumah Sakit Banjar Patroman');
                 return route('admin.dashboard');
                 break;
             case 'resepsionis':
+                Session::flash('login_succeed', 'Selamat datang di Sistem Rekam Medis Unit Radiologi Rumah Sakit Banjar Patroman');
                 return route('resepsionis.pasien.index-pasien-umum');
                 break;
             case 'radiografer':
+                Session::flash('login_succeed', 'Selamat datang di Sistem Rekam Medis Unit Radiologi Rumah Sakit Banjar Patroman');
                 return route('radiografer.pasien.index-pemeriksaan');
                 break;
             case 'dokterPoli':
+                Session::flash('login_succeed', 'Selamat datang di Sistem Rekam Medis Unit Radiologi Rumah Sakit Banjar Patroman');
                 return route('dokterPoli.pasien.index-pasien');
                 break;
             case 'dokterRadiologi':
+                Session::flash('login_succeed', 'Selamat datang di Sistem Rekam Medis Unit Radiologi Rumah Sakit Banjar Patroman');
                 return route('dokterRadiologi.pasien.index-pemeriksaan');
                 break;
             case 'kasir':
+                Session::flash('login_succeed', 'Selamat datang di Sistem Rekam Medis Unit Radiologi Rumah Sakit Banjar Patroman');
                 return route('kasir.index-tagihan');
                 break;
             default:

@@ -121,7 +121,7 @@
                                                 <li><a href="#">Detail Pegawai</a></li>
                                                 <li><a href="{{ route('pegawai.edit',
                                                     ['id'=>$user->id]) }}">Edit Pegawai</a></li>
-                                                <li><a href="{{ route('user.delete',
+                                                <li><a class="delete-confirmation" href="{{ route('user.delete',
                                                     ['id'=>$user->id]) }}">Hapus Pegawai</a></li>
                                             </ul>
                                         </div>
@@ -140,3 +140,46 @@
 </section>
 
 @endsection
+@push('scripts')
+<script>
+$(".delete-confirmation").on('click', function (event) {
+        event.preventDefault();
+        const url=$(this).attr('href');
+        swal({
+        title: "Apa anda yakin?",
+        text: "Setelah terhapus, data pegawai akan tersimpan di tempat sampah sistem",
+        icon: "warning",
+        buttons: ["Tidak", "Ya"],
+        })
+        .then(function(value) {
+            if (value) {
+                window.location.href = url;
+            }
+        });
+    });
+</script>
+
+@if (Session::has('store_succeed'))
+<script>
+swal('Berhasil', '{!! Session::get('store_succeed') !!}', 'success',{
+    button:'OK',
+});
+</script>
+@endif
+
+@if (Session::has('update_succeed'))
+<script>
+swal('Berhasil', '{!! Session::get('update_succeed') !!}', 'success',{
+    button:'OK',
+});
+</script>
+@endif
+
+@if (Session::has('delete_succeed'))
+<script>
+swal('Berhasil', '{!! Session::get('delete_succeed') !!}', 'warning',{
+    button:'OK',
+});
+</script>
+@endif
+@endpush

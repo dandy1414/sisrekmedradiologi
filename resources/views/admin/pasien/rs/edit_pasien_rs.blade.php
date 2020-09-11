@@ -153,6 +153,7 @@
     </div>
 </section>
 @endsection
+@push('scripts')
 <script type="text/javascript">
     function yesnoSelectAsuransi() {
         if(document.getElementById("yesSelectAsuransi").selected) {
@@ -162,3 +163,13 @@
         }
     }
 </script>
+
+@if (Session::has('update_failed'))
+<script>
+swal('Gagal', '{!! Session::get('update_failed') !!}', 'error',{
+    button:'OK',
+});
+</script>
+@endif
+@endpush
+
