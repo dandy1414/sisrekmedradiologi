@@ -7,7 +7,7 @@
             @if (Auth::user()->avatar == null)
             <img src="{{ asset('adminlte/dist/img/avatar1.png') }}" class="img-circle" alt="User Image">
             @else
-            <img src="{{ asset('adminlte/dist/img/' . Auth::user()->avatar) }}" class="img-circle" alt="User Image">
+            <img src="{{ asset('storage/avatars/' . Auth::user()->avatar) }}" class="img-circle" alt="User Image">
             @endif
         </div>
         <div class="pull-left info">

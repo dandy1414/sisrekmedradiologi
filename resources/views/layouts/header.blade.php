@@ -56,7 +56,7 @@
                         @if (Auth::user()->avatar == null)
                         <img src="{{ asset('adminlte/dist/img/avatar1.png') }}" class="user-image" alt="User Image">
                         @else
-                        <img src="{{ asset('adminlte/dist/img/' . Auth::user()->avatar) }}" class="user-image" alt="User Image">
+                        <img src="{{ asset('storage/avatars/' . Auth::user()->avatar) }}" class="user-image" alt="User Image">
                         @endif
                         <span class="hidden-xs">{{ Auth::user()->name }}</span>
                     </a>
@@ -66,7 +66,7 @@
                             @if (Auth::user()->avatar == null)
                             <img src="{{ asset('adminlte/dist/img/avatar1.png') }}" class="img-circle" alt="User Image">
                             @else
-                            <img src="{{ asset('adminlte/dist/img/' . Auth::user()->avatar) }}" class="img-circle" alt="User Image">
+                            <img src="{{ asset('storage/avatars/' . Auth::user()->avatar) }}" class="img-circle" alt="User Image">
                             @endif
                             <p>
                                 {{ Auth::user()->nama }}
