@@ -42,8 +42,11 @@
         <div class="col-md-4">
             <div class="box box-primary">
                 <div class="box-body box-profile">
-                  <img class="profile-user-img img-responsive img-circle" src="{{ asset('adminlte/dist/img/user4-128x128.jpg') }}" alt="User profile picture">
-
+                    @if ($user->avatar == null)
+                    <img class="profile-user-img img-responsive img-circle" src="{{ asset('adminlte/dist/img/avatar1.png') }}" alt="User profile picture">
+                    @else
+                    <img class="profile-user-img img-responsive img-circle" src="{{ asset('storage/avatars/'.$user->avatar) }}" alt="User profile picture">
+                    @endif
                   <h3 class="profile-username text-center">{{ $user->nama }}</h3>
 
                   <p class="text-muted text-center">
