@@ -20,7 +20,7 @@
                 <div class="inner">
                     <h3>{{ $total_pasien }}</h3>
 
-                    <p>Rujukan Pasien hari ini</p>
+                    <p>Rujukan pasien hari ini</p>
                 </div>
                 <div class="icon">
                     <i class="ion ion-person"></i>

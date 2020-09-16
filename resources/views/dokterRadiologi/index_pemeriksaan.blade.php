@@ -41,7 +41,7 @@
                 <div class="inner">
                     <h3>{{ $total_belum }}</h3>
 
-                    <p>Pasien belum expertise</p>
+                    <p>Pasien belum expertise hari ini</p>
                 </div>
                 <div class="icon">
                     <i class="ion ion-person"></i>
@@ -55,7 +55,7 @@
                 <div class="inner">
                     <h3>{{ $total_selesai }}</h3>
 
-                    <p>Pasien selesai expertise</p>
+                    <p>Pasien selesai expertise hari ini</p>
                 </div>
                 <div class="icon">
                     <i class="ion ion-person"></i>

@@ -400,7 +400,7 @@ class PendaftaranController extends Controller
             $upload_surat->save();
 
             DB::commit();
-            Session::flash('upload_success', 'Upload surat berhasil');
+            Session::flash('upload_succeed', 'Upload surat berhasil');
             return redirect()->route('resepsionis.pasien.index.pendaftaran');
         }catch (QueryException $x){
             DB::rollBack();
