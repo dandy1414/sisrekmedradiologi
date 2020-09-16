@@ -40,7 +40,7 @@
                                 <div id="ifYes1" class="form-group {{ $errors->first('noRm') ? "has-error": "" }}">
                                     <label>Nomor Rekam Medis :</label>
                                     <input value="{{ $pasien->nomor_rm }}" type="text" name="noRm" class="form-control"
-                                        placeholder="Nomor Rekam Medis ...">
+                                        placeholder="Nomor Rekam Medis ..." readonly>
                                     <span class="help-block">{{ $errors->first('noRm') }}</span>
                                 </div>
 

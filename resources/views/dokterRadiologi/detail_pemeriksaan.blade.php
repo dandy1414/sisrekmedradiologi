@@ -95,7 +95,7 @@
         <div class="col-md-8">
             <div class="box box-info" style="position: relative;">
                 <div class="box-header">
-                    <h3 class="box-title">Data Pasien</h3>
+                    <h3 class="box-title">Detail Pasien</h3>
                 </div>
                 <div class="box-body">
                     <div class="col-md-7">
@@ -106,7 +106,7 @@
 
                         <strong><i class="fa fa-medkit"></i> Nomor Rekam Medis :</strong>
 
-                        <p class="text-muted">{{ $pemeriksaan->pasien->nomor_rm }}</p>
+                        <p class="text-muted">{{ str_pad($pemeriksaan->pasien->nomor_rm, 6, '0', STR_PAD_LEFT) }}</p>
 
                         <strong><i class="fa fa-credit-card"></i> Nomor KTP :</strong>
 

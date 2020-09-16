@@ -95,7 +95,7 @@
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $b->nomor_tagihan }}</td>
                                 <td>{{ $b->pasien->nama }}</td>
-                                <td>{{ $b->pasien->nomor_rm }}</td>
+                                <td>{{ str_pad($b->pasien->nomor_rm, 6, '0', STR_PAD_LEFT) }}</td>
                                 <td>{{ $b->pasien->nomor_ktp }}</td>
                                 <td>{{ ($b->pasien->jenis_pasien) == 'umum' ? "Umum" : "Rumah Sakit" }}</td>
                                 <td>{{ ucfirst($b->pemeriksaan->jenis_pemeriksaan) }}</td>
@@ -157,7 +157,7 @@
                                 <td>{{ $s->tanggal }}</td>
                                 <td>{{ $s->nomor_tagihan }}</td>
                                 <td>{{ $s->pasien->nama }}</td>
-                                <td>{{ $s->pasien->nomor_rm }}</td>
+                                <td>{{ str_pad($s->pasien->nomor_rm, 6, '0', STR_PAD_LEFT) }}</td>
                                 <td>{{ $s->pasien->nomor_ktp }}</td>
                                 <td>{{ ($s->pasien->jenis_pasien) == 'umum' ? "Umum" : "Rumah Sakit" }}</td>
                                 <td>{{ ucfirst($s->pemeriksaan->jenis_pemeriksaan) }}</td>

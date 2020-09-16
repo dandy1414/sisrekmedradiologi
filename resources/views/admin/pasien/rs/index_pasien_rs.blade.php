@@ -51,7 +51,7 @@
                             @foreach ($pasien as $p)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
-                                <td>{{ $p->nomor_rm }}</td>
+                                <td>{{ str_pad($p->nomor_rm, 6, '0', STR_PAD_LEFT)  }}</td>
                                 <td>{{ $p->nama }}</td>
                                 <td>{{ $p->nomor_ktp }}</td>
                                 <td>{{ $p->ruangan->nama_ruangan }}</td>

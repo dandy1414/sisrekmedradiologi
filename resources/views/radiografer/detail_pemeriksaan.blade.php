@@ -13,22 +13,7 @@
 </section>
 
 <section class="content">
-    <div class="row">
-        <div class="col-xs-12">
-            @if ($message = Session::get('error'))
-            <div class="alert alert-danger alert-dismissable">
-                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
-                <h4>
-                    <i class="icon fa fa-check"></i>
-                    Gagal
-                </h4>
-                {{ $message }}
-            </div>
-            @endif
-        </div>
-    </div>
-
-    <div class="row">
+<div class="row">
         <div class="col-md-4">
             <div class="box box-warning" style="position: relative;">
                 <div class="box-header">
@@ -106,7 +91,7 @@
 
                         <strong><i class="fa fa-medkit"></i> Nomor Rekam Medis :</strong>
 
-                        <p class="text-muted">{{ $pemeriksaan->pasien->nomor_rm }}</p>
+                        <p class="text-muted">{{ str_pad($pemeriksaan->pasien->nomor_rm, 6, '0', STR_PAD_LEFT) }}</p>
 
                         <strong><i class="fa fa-credit-card"></i> Nomor KTP :</strong>
 

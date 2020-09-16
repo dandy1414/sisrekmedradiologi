@@ -29,7 +29,7 @@
                             <p class="text-muted">{{ $pasien->created_at }}</p>
 
                             <strong><i class="fa fa-book margin-r-5"></i> Nomor Rekam Medis :</strong>
-                            <p class="text-muted">{{ $pasien->nomor_rm }}</p>
+                            <p class="text-muted">{{ str_pad($pasien->nomor_rm, 6, '0', STR_PAD_LEFT) }}</p>
 
                             <strong><i class="fa fa-book margin-r-5"></i> Nomor KTP :</strong>
                             <p class="text-muted">{{ $pasien->nomor_ktp }}</p>

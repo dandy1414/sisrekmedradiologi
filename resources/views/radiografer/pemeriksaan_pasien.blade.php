@@ -30,7 +30,7 @@
 
                         <strong><i class="fa fa-medkit"></i> Nomor Rekam Medis :</strong>
 
-                        <p class="text-muted">{{ $pemeriksaan->pasien->nomor_rm }}</p>
+                        <p class="text-muted">{{ str_pad($pemeriksaan->pasien->nomor_rm, 6, '0', STR_PAD_LEFT) }}</p>
 
                         <strong><i class="fa fa-credit-card"></i> Nomor KTP :</strong>
 

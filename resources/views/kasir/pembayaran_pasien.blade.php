@@ -33,7 +33,7 @@
             <strong> Nama Pasien</strong><br>
             {{ $tagihan->pasien->nama }} <br>
             <strong> No. Rekam Medis</strong><br>
-            {{ $tagihan->pasien->no_rm }} <br>
+            {{ str_pad($tagihan->pasien->no_rm, 6, '0', STR_PAD_LEFT) }} <br>
             <strong> Alamat</strong><br>
             {{ $tagihan->pasien->alamat }} <br>
             <strong> No. telepon</strong><br>

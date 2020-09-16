@@ -58,7 +58,7 @@
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $r->nomor_pendaftaran }}</td>
                                 <td>{{ $r->created_at }}</td>
-                                <td>{{ $r->pasien->nomor_rm }}</td>
+                                <td>{{ str_pad($r->pasien->nomor_rm, 6, '0', STR_PAD_LEFT) }}</td>
                                 <td>{{ $r->pasien->nomor_ktp }}</td>
                                 <td>{{ $r->pasien->nama }}</td>
                                 <td>{{ ucfirst($r->jenis_pemeriksaan) }}</td>

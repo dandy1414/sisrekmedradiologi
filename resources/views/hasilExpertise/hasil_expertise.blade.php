@@ -47,7 +47,7 @@
                 <strong> Nama Pasien : </strong><br>
                 {{ ucfirst($pemeriksaan->pasien->nama) }} <br>
                 <strong> No. Rekam Medis :</strong><br>
-                {{ $pemeriksaan->pasien->nomor_rm }} <br>
+                {{ str_pad($pemeriksaan->pasien->nomor_rm, 6, '0', STR_PAD_LEFT) }} <br>
                 <strong> No. Pemeriksaan :</strong><br>
                 {{ $pemeriksaan->nomor_pemeriksaan }} <br>
                 <strong> Jenis Kelamin / Umur :</strong><br>

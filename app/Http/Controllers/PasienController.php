@@ -51,34 +51,31 @@ class PasienController extends Controller
     }
 
     public function createPasienUmum(){
-        $pasien = Pasien::all();
-
-        if($pasien->isEmpty()){
-            $nomor = str_pad(1, 6, '0', STR_PAD_LEFT);
-        } else {
-            $mamak = $pasien->nomor_rm + 1;
-            $mamak = str_pad($mamak, 6, '0', STR_PAD_LEFT);
+        $last_nomor_rm = Pasien::max('nomor_rm');
+        if($last_nomor_rm == null){
+            $nomor_rm = 1;
+        }else{
+            $nomor_rm = $last_nomor_rm + 1;
         }
 
-        return view('admin.pasien.umum.create_pasien_umum', ['mamak' => $mamak, 'nomor' => $nomor]);
+        $nomor_rm = str_pad($nomor_rm, 6, '0', STR_PAD_LEFT);
+
+        return view('admin.pasien.umum.create_pasien_umum', ['nomor_rm' => $nomor_rm]);
     }
 
     public function createPasienRs(){
-        $nomor_rm = Pasien::latest()->first()->value('nomor_rm');
         $ruangan = Ruangan::all();
+        $last_nomor_rm = Pasien::max('nomor_rm');
 
-        if($nomor_rm == null){
-            $nomor_rm = str_pad(1, 6, '0', STR_PAD_LEFT);
-        } else {
-            $nomor_rm = str_pad($nomor_rm + 1, 6, '0', STR_PAD_LEFT);
+        if($last_nomor_rm == null){
+            $nomor_rm = 1;
+        }else{
+            $nomor_rm = $last_nomor_rm + 1;
         }
 
-        return view('admin.pasien.rs.create_pasien_rs', ['ruangan' => $ruangan]);
-    }
+        $nomor_rm = str_pad($nomor_rm, 6, '0', STR_PAD_LEFT);
 
-    public function createPasienPasien(){
-        $ruangan = Ruangan::all();
-        return view('admin.pasien.create_pasien', ['ruangan' => $ruangan]);
+        return view('admin.pasien.rs.create_pasien_rs', ['nomor_rm' => $nomor_rm, 'ruangan' => $ruangan]);
     }
 
     public function storePasienUmum(Request $request){
@@ -94,17 +91,10 @@ class PasienController extends Controller
 
     DB::beginTransaction();
 
-    $pasien = Pasien::latest()->first();
-        if($pasien->nomor_rm == null){
-            $pasien->nomor_rm = str_pad(1, 6, '0', STR_PAD_LEFT);
-        } else {
-            $pasien->nomor_rm = str_pad($pasien->nomor_rm + 1, 6, '0', STR_PAD_LEFT);
-        }
-
     try{
         $new_pasien = new \App\Models\Pasien;
         $new_pasien->nomor_ktp = $request->nomorKtp;
-        $new_pasien->nomor_rm = $pasien->nomor_rm;
+        $new_pasien->nomor_rm = $request->rekamMedis;
         $new_pasien->nama = $request->nama;
         $new_pasien->jenis_pasien = "umum";
         $new_pasien->umur = $request->umur;
@@ -131,7 +121,6 @@ class PasienController extends Controller
 
     public function storePasienRs(Request $request){
         $validator = Validator::make($request->all(),[
-            "nomorRm" => "required|max:6|unique:trans_pasien,nomor_rm",
             "nama" => "required|min:3|max:100",
             "nomorKtp" => "required|max:16|unique:trans_pasien,nomor_ktp",
             "umur" => "required|numeric",
@@ -146,7 +135,7 @@ class PasienController extends Controller
 
         try{
             $new_pasien = new \App\Models\Pasien;
-            $new_pasien->nomor_rm = $request->nomorRm;
+            $new_pasien->nomor_rm = $request->rekamMedis;
             $new_pasien->nomor_ktp = $request->nomorKtp;
             $new_pasien->nama = $request->nama;
             $new_pasien->jenis_pasien = "rs";
@@ -194,7 +183,6 @@ class PasienController extends Controller
 
     public function updatePasienUmum(Request $request, $id){
         $validator = Validator::make($request->all(),[
-            "noRm" => "required|max:6|unique:trans_pasien,nomor_rm,". $id,
             "nama" => "required|min:3|max:100",
             "nomorKtp" => "required|max:16|unique:trans_pasien,nomor_ktp,". $id,
             "umur" => "required|numeric",
@@ -208,7 +196,7 @@ class PasienController extends Controller
 
         try{
             Pasien::where('id', $id)->update([
-                'nomor_rm' => $request->noRm,
+                'nomor_rm' => $request->rekamMedis,
                 'nomor_ktp' => $request->nomorKtp,
                 'nama' => $request->nama,
                 'jenis_pasien' => $request->jenisPasien,
@@ -236,7 +224,6 @@ class PasienController extends Controller
 
     public function updatePasienRs(Request $request, $id){
         $validator = Validator::make($request->all(),[
-            "noRm" => "required|max:6|unique:trans_pasien,nomor_rm,". $id,
             "nama" => "required|min:3|max:100",
             "nomorKtp" => "required|max:6|unique:trans_pasien,nomor_ktp,". $id,
             "umur" => "required|numeric",
@@ -251,7 +238,7 @@ class PasienController extends Controller
         try{
 
             Pasien::where('id', $id)->update([
-                'nomor_rm' => $request->noRm,
+                'nomor_rm' => $request->rekamMedis,
                 'nomor_ktp' => $request->nomorKtp,
                 'nama' => $request->nama,
                 'umur' => $request->umur,

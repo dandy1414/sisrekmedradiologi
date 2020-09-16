@@ -55,7 +55,7 @@
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ ucfirst($p->jenis_pasien) }}</td>
-                                <td>{{ $p->nomor_rm == null ? '-' : $p->nomor_rm}}</td>
+                                <td>{{ str_pad($p->nomor_rm, 6, '0', STR_PAD_LEFT) }}</td>
                                 <td>{{ $p->nama }}</td>
                                 <td>{{ $p->nomor_ktp }}</td>
                                 <td>{{ $p->id_ruangan == null ? '-' : $p->ruangan->nama_ruangan }}</td>

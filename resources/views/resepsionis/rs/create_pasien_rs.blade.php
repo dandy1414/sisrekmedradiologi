@@ -22,11 +22,11 @@
                     <div class="box-body">
                         <div class="row">
                             <div class="col-md-6">
-                                <div class="form-group {{ $errors->first('noRm') ? "has-error": "" }}">
+                                <div class="form-group {{ $errors->first('rekamMedis') ? "has-error": "" }}">
                                     <label>Nomor Rekam Medis :</label>
-                                    <input value="{{ old('noRm') }}" type="text" name="nomorRm" class="form-control"
-                                        placeholder="Nomor Rekam Medis ...">
-                                    <span class="help-block">{{ $errors->first('noRm') }}</span>
+                                    <input value="{{ $nomor_rm }}" type="text" name="rekamMedis" class="form-control"
+                                        placeholder="Nomor Rekam Medis ..." readonly>
+                                    <span class="help-block">{{ $errors->first('rekamMedis') }}</span>
                                 </div>
 
                                 <div class="form-group {{ $errors->first('nomorKtp') ? "has-error": "" }}">

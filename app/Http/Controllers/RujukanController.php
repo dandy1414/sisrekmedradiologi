@@ -39,12 +39,21 @@ class RujukanController extends Controller
 
     public function createPasien(){
         $ruangan = Ruangan::all();
-        return view('dokterPoli.create_pasien', ['ruangan' => $ruangan]);
+        $last_nomor_rm = Pasien::max('nomor_rm');
+
+        if($last_nomor_rm == null){
+            $nomor_rm = 1;
+        }else{
+            $nomor_rm = $last_nomor_rm + 1;
+        }
+
+        $nomor_rm = str_pad($nomor_rm, 6, '0', STR_PAD_LEFT);
+
+        return view('dokterPoli.create_pasien', ['ruangan' => $ruangan, 'nomor_rm' => $nomor_rm]);
     }
 
     public function storePasien(Request $request){
         $validator = Validator::make($request->all(),[
-            "noRm" => "required|unique:trans_pasien,nomor_rm",
             "nama" => "required|min:3|max:100",
             "nomorKtp" => "required|max:16|unique:trans_pasien,nomor_ktp",
             "umur" => "required|numeric",
@@ -95,7 +104,6 @@ class RujukanController extends Controller
 
     public function updatePasien(Request $request, $id){
         $validator = Validator::make($request->all(),[
-            "noRm" => "required|unique:trans_pasien,nomor_rm". $id,
             "nama" => "required|min:3|max:100",
             "nomorKtp" => "required|max:16|unique:trans_pasien,nomor_ktp,". $id,
             "umur" => "required|numeric",

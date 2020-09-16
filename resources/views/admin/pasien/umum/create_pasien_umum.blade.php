@@ -22,21 +22,12 @@
                     <div class="box-body">
                         <div class="row">
                             <div class="col-md-6">
-                                @if ($nomor_rm->isEmpty())
-                                <div class="form-group {{ $errors->first('nomorRm') ? "has-error": "" }}">
+                                <div class="form-group {{ $errors->first('rekamMedis') ? "has-error": "" }}">
                                     <label>Nomor Rekam Medis :</label>
-                                    <input value="{{ $nomor }}" type="text" name="nomorRm" class="form-control"
-                                        placeholder="Nomor Rekam Medis ..." disabled>
-                                    <span class="help-block">{{ $errors->first('nomorRm') }}</span>
+                                    <input value="{{ $nomor_rm }}" type="text" name="rekamMedis" class="form-control"
+                                        placeholder="Nomor Rekam Medis ..." readonly>
+                                    <span class="help-block">{{ $errors->first('rekamMedis') }}</span>
                                 </div>
-                                @else
-                                <div class="form-group {{ $errors->first('nomorRm') ? "has-error": "" }}">
-                                    <label>Nomor Rekam Medis :</label>
-                                    <input value="{{ $nomor_rm }}" type="text" name="nomorRm" class="form-control"
-                                        placeholder="Nomor Rekam Medis ..." disabled>
-                                    <span class="help-block">{{ $errors->first('nomorRm') }}</span>
-                                </div>
-                                @endif
 
                                 <div class="form-group {{ $errors->first('nomorKtp') ? "has-error": "" }}">
                                     <label>Nomor KTP :</label>

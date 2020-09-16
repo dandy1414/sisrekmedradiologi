@@ -37,11 +37,11 @@
                                     <span class="help-block">{{ $errors->first('jenisPasien') }}</span>
                                 </div>
 
-                                <div class="form-group {{ $errors->first('noRm') ? "has-error": "" }}">
+                                <div class="form-group {{ $errors->first('rekamMedis') ? "has-error": "" }}">
                                     <label>Nomor Rekam Medis :</label>
-                                    <input value="{{ $pasien->nomor_rm }}" type="text" name="noRm" class="form-control"
-                                        placeholder="Nomor Rekam Medis ...">
-                                    <span class="help-block">{{ $errors->first('noRm') }}</span>
+                                    <input value="{{ str_pad($pasien->nomor_rm, 6, '0', STR_PAD_LEFT) }}" type="text" name="rekamMedis" class="form-control"
+                                        placeholder="Nomor Rekam Medis ..." readonly>
+                                    <span class="help-block">{{ $errors->first('rekamMedis') }}</span>
                                 </div>
 
                                 <div class="form-group {{ $errors->first('nomorKtp') ? "has-error": "" }}">

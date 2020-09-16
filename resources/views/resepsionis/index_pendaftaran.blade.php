@@ -55,7 +55,7 @@
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $p->nomor_pendaftaran }}</td>
-                                <td>{{ $p->pasien->nomor_rm }}</td>
+                                <td>{{ str_pad($p->pasien->nomor_rm, 6, '0', STR_PAD_LEFT) }}</td>
                                 <td>{{ $p->pasien->nama }}</td>
                                 <td>{{ ($p->pasien->jenis_pasien) == 'umum' ? "Umum" : "Rumah Sakit" }}</td>
                                 <td>{{ ucfirst($p->jenis_pemeriksaan) }}</td>

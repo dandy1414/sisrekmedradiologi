@@ -40,7 +40,7 @@
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $p->created_at }}</td>
-                                <td>{{ $p->nomor_rm }}</td>
+                                <td>{{ str_pad($p->nomor_rm, 6, '0', STR_PAD_LEFT) }}</td>
                                 <td>{{ $p->nama }}</td>
                                 <td>{{ $p->nomor_ktp }}</td>
                                 <td>{{ $p->umur }} tahun</td>

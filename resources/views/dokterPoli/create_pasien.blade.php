@@ -24,8 +24,8 @@
                             <div class="col-md-6">
                                 <div class="form-group {{ $errors->first('noRm') ? "has-error": "" }}">
                                     <label>Nomor Rekam Medis :</label>
-                                    <input value="{{ old('noRm') }}" type="text" name="noRm" class="form-control"
-                                        placeholder="Nomor Rekam Medis ...">
+                                    <input value="{{ $nomor_rm }}" type="text" name="noRm" class="form-control"
+                                        placeholder="Nomor Rekam Medis ..." readonly>
                                     <span class="help-block">{{ $errors->first('noRm') }}</span>
                                 </div>
 

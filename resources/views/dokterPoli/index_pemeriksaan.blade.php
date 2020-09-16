@@ -57,7 +57,7 @@
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $p->nomor_pemeriksaan }}</td>
                                 <td>{{ $p->pasien->nama }}</td>
-                                <td>{{ $p->pasien->nomor_rm }}</td>
+                                <td>{{ str_pad($p->pasien->nomor_rm, 6, '0', STR_PAD_LEFT) }}</td>
                                 <td>{{ ucfirst($p->jenis_pemeriksaan) }}</td>
                                 <td>{{ ucfirst($p->layanan->nama) }}</td>
                                 <td>{{ $p->jadwal->waktu_mulai }} WIB - {{ $p->jadwal->waktu_selesai }} WIB</td>

@@ -54,17 +54,33 @@ class PendaftaranController extends Controller
     }
 
     public function createPasienUmum(){
-        return view('resepsionis.umum.create_pasien_umum');
+        $last_nomor_rm = Pasien::max('nomor_rm');
+        if($last_nomor_rm == null){
+            $nomor_rm = 1;
+        }else{
+            $nomor_rm = $last_nomor_rm + 1;
+        }
+
+        $nomor_rm = str_pad($nomor_rm, 6, '0', STR_PAD_LEFT);
+        return view('resepsionis.umum.create_pasien_umum', ['nomor_rm' => $nomor_rm]);
     }
 
     public function createPasienRs(){
         $ruangan = Ruangan::all();
-        return view('resepsionis.rs.create_pasien_rs', ['ruangan' => $ruangan]);
+        $last_nomor_rm = Pasien::max('nomor_rm');
+        if($last_nomor_rm == null){
+            $nomor_rm = 1;
+        }else{
+            $nomor_rm = $last_nomor_rm + 1;
+        }
+
+        $nomor_rm = str_pad($nomor_rm, 6, '0', STR_PAD_LEFT);
+
+        return view('resepsionis.rs.create_pasien_rs', ['ruangan' => $ruangan, 'nomor_rm' => $nomor_rm]);
     }
 
     public function storePasienUmum(Request $request){
             $validator = Validator::make($request->all(),[
-                "nomorRm" => "required|max:6|unique:trans_pasien,nomor_rm",
                 "nama" => "required|min:3|max:100",
                 "nomorKtp" => "required|max:16|unique:trans_pasien,nomor_ktp",
                 "umur" => "required|numeric",
@@ -78,7 +94,7 @@ class PendaftaranController extends Controller
 
         try{
             $new_pasien = new \App\Models\Pasien;
-            $new_pasien->nomor_rm = $request->nomorRm;
+            $new_pasien->nomor_rm = $request->rekamMedis;
             $new_pasien->nomor_ktp = $request->nomorKtp;
             $new_pasien->nama = $request->nama;
             $new_pasien->jenis_pasien = "umum";
@@ -106,7 +122,6 @@ class PendaftaranController extends Controller
 
     public function storePasienRs(Request $request){
         $validator = Validator::make($request->all(),[
-            "nomorRm" => "required|max:6|unique:trans_pasien,nomor_rm",
             "nama" => "required|min:3|max:100",
             "nomorKtp" => "required|max:16|unique:trans_pasien,nomor_ktp",
             "umur" => "required|numeric",
@@ -121,7 +136,7 @@ class PendaftaranController extends Controller
 
         try{
             $new_pasien = new \App\Models\Pasien;
-            $new_pasien->nomor_rm = $request->nomorRm;
+            $new_pasien->nomor_rm = $request->rekamMedis;
             $new_pasien->nomor_ktp = $request->nomorKtp;
             $new_pasien->nama = $request->nama;
             $new_pasien->jenis_pasien = "rs";
@@ -163,7 +178,6 @@ class PendaftaranController extends Controller
 
     public function updatePasienUmum(Request $request, $id){
         $validator = Validator::make($request->all(),[
-            "noRm" => "required|max:6|unique:trans_pasien,nomor_rm,". $id,
             "nama" => "required|min:3|max:100",
             "nomorKtp" => "required|max:16|unique:trans_pasien,nomor_ktp,". $id,
             "umur" => "required|numeric",
@@ -206,7 +220,6 @@ class PendaftaranController extends Controller
 
     public function updatePasienRs(Request $request, $id){
         $validator = Validator::make($request->all(),[
-            "noRm" => "required|max:6|unique:trans_pasien,nomor_rm,". $id,
             "nama" => "required|min:3|max:100",
             "nomorKtp" => "required|max:16|unique:trans_pasien,nomor_ktp,". $id,
             "umur" => "required|numeric",
