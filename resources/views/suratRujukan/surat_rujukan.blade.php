@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -44,31 +43,31 @@
 
         <div class="row">
             <div class="col-xs-9">
-                <strong> Nama Pasien</strong><br>
+                <strong> Nama Pasien :</strong><br>
                 {{ ucfirst($pendaftaran->pasien->nama) }} <br>
-                <strong> No. Rekam Medis</strong><br>
+                <strong> No. Rekam Medis :</strong><br>
                 {{ $pendaftaran->pasien->nomor_rm }} <br>
-                <strong> No. Rujukan</strong><br>
+                <strong> No. Rujukan :</strong><br>
                 {{ $pendaftaran->nomor_pendaftaran }}<br>
-                <strong> Jenis Kelamin / Umur</strong><br>
+                <strong> Jenis Kelamin / Umur :</strong><br>
                 {{ ucfirst($pendaftaran->pasien->jenis_kelamin) }} / {{ $pendaftaran->pasien->umur }} tahun <br>
-                <strong> Alamat</strong><br>
+                <strong> Alamat :</strong><br>
                 {{ ucfirst($pendaftaran->pasien->alamat) }} <br>
             </div>
             <div class="col-xs-3">
-                <strong> Jenis Pasien</strong><br>
+                <strong> Jenis Pasien :</strong><br>
                 {{ ($pendaftaran->pasien->jenis_pasien) == 'umum' ? "Umum" : "Rumah Sakit" }} <br>
-                <strong>Dokter Perujuk</strong><br>
+                <strong>Dokter Perujuk :</strong><br>
                 @if ($pendaftaran->id_dokterPoli != null)
                 {{ ucfirst($pendaftaran->dokterPoli->nama) }} <br>
                 @else
                 <strong>-</strong><br>
                 @endif
-                <strong>Dokter Rujukan</strong><br>
+                <strong>Dokter Rujukan :</strong><br>
                 {{ ucfirst($pendaftaran->dokterRadiologi->nama) }} <br>
-                <strong>Waktu Rujukan</strong><br>
+                <strong>Waktu Rujukan :</strong><br>
                 {{ $pendaftaran->created_at }} WIB <br>
-                <strong>Asal Ruangan</strong><br>
+                <strong>Asal Ruangan :</strong><br>
                 {{ ($pendaftaran->pasien->jenis_pasien) != 'umum' ? ucfirst($pendaftaran->pasien->ruangan->nama_ruangan) : "-" }}
             </div>
         </div>
@@ -114,54 +113,76 @@
         <br>
         <div class="row">
             <div class="col-xs-9">
-
-                @if (request()->is('resepsionis/*/pendaftaran/pasien*') )
-                <a class="btn btn-default btn" href="{{ route('resepsionis.pasien.index.pendaftaran') }}"><i class="fa  fa-chevron-left"></i>Kembali</a>
+                @if (request()->is('resepsionis/*/pendaftaran/pasien*'))
                 <a class="btn btn-danger btn"
                     href="{{ route('resepsionis.pasien.pendaftaran.print.surat-rujukan', ['id'=>$pendaftaran->id]) }}"
                     target="_blank"><i class="fa fa-print"></i> Export PDF</a>
+                <br>
+                <form method="POST" action="{{ route('resepsionis.pasien.upload.surat-rujukan', ['id'=>$pendaftaran->id]) }}" enctype="multipart/form-data">
+                    @csrf
+                    <div class="form-group">
+                        <label for="suratRujukan">Surat Rujukan :</label>
+                        <input id="suratRujukan" name="suratRujukan" class="form-control" type="file" id="suratRujukan" style="width: 50%">
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-success">Simpan</button>
+                    </div>
+                </form>
                 @endif
+
                 @if(request()->is('dokter-poli/*/rujuk-pasien'))
-                <a class="btn btn-default btn" href="{{ route('dokterPoli.pasien.index-rujuk') }}"><i class="fa  fa-chevron-left"></i>Kembali</a>
                 <a class="btn btn-danger btn"
                     href="{{ route('dokterPoli.pasien.pendaftaran.print.surat-rujukan', ['id'=>$pendaftaran->id]) }}"
                     target="_blank"><i class="fa fa-print"></i> Export PDF</a>
+                <br>
+                <br>
+                <form method="POST" action="{{ route('dokterPoli.pasien.upload.surat-rujukan', ['id'=>$pendaftaran->id]) }}" enctype="multipart/form-data">
+                    @csrf
+                    <div class="form-group">
+                        <label for="suratRujukan">Surat Rujukan :</label>
+                        <input id="suratRujukan" name="suratRujukan" class="form-control" type="file" id="suratRujukan" style="width: 50%">
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-success">Simpan</button>
+                    </div>
+                </form>
                 @endif
 
 
                 @if (request()->is('resepsionis/*/pendaftaran/detail/surat-rujukan'))
                 <a class="btn btn-danger btn"
-                    href="{{ route('dokterPoli.pasien.pendaftaran.print.surat-rujukan', ['id'=>$pendaftaran->id]) }}"
-                    target="_blank"><i class="fa fa-print"></i> Export PDF</a>
+                    href="{{ route('resepsionis.pasien.download.surat-rujukan', ['id'=>$pendaftaran->id]) }}"
+                    target="_blank"><i class="fa fa-print"></i> Download Surat</a>
                 @endif
 
                 @if (request()->is('dokter-poli/*/rujuk/detail/surat-rujukan'))
                 <a class="btn btn-danger btn"
-                    href="{{ route('dokterPoli.pasien.pendaftaran.print.surat-rujukan', ['id'=>$pendaftaran->id]) }}"
-                    target="_blank"><i class="fa fa-print"></i> Export PDF</a>
+                    href="{{ route('dokterPoli.pasien.download.surat-rujukan', ['id'=>$pendaftaran->id]) }}"
+                    target="_blank"><i class="fa fa-print"></i> Download Surat</a>
                 @endif
 
                 @if (request()->is('dokter-radiologi/*/pemeriksaan/detail/surat-rujukan'))
                 <a class="btn btn-danger btn"
-                    href="{{ route('dokterRadiologi.pasien.pendaftaran.print.surat-rujukan', ['id'=>$pendaftaran->id]) }}"
-                    target="_blank"><i class="fa fa-print"></i> Export PDF</a>
+                    href="{{ route('dokterRadiologi.pasien.download.surat-rujukan', ['id'=>$pendaftaran->id]) }}"
+                    target="_blank"><i class="fa fa-print"></i> Download Surat</a>
                 @endif
 
                 @if (request()->is('radiografer/*/pemeriksaan/detail/surat-rujukan'))
                 <a class="btn btn-danger btn"
-                    href="{{ route('dokterPoli.pasien.pendaftaran.print.surat-rujukan', ['id'=>$pendaftaran->id]) }}"
-                    target="_blank"><i class="fa fa-print"></i> Export PDF</a>
+                    href="{{ route('radiografer.pasien.download.surat-rujukan', ['id'=>$pendaftaran->id]) }}"
+                    target="_blank"><i class="fa fa-print"></i> Download Surat</a>
                 @endif
 
                 @if (request()->is('admin/*/pasien/detail/surat-rujukan'))
                 <a class="btn btn-danger btn"
-                    href="{{ route('pasien.pendaftaran.surat-rujukan', ['id'=>$pendaftaran->id]) }}"
-                    target="_blank"><i class="fa fa-print"></i> Export PDF</a>
+                    href="{{ route('pasien.download.surat-rujukan', ['id'=>$pendaftaran->id]) }}" target="_blank"><i
+                        class="fa fa-print"></i> Download Surat</a>
                 @endif
             </div>
             <div class="col-xs-3">
                 Tanggal cetak &nbsp;: {{ $pendaftaran->created_at }} WIB<br>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Dokter Perujuk <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Dokter
+                Perujuk <br>
                 <br><br>
 
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ ($pendaftaran->id_dokterPoli != null ? ucfirst($pendaftaran->dokterPoli->nama) : "-") }}
@@ -169,13 +190,23 @@
         </div>
         <br>
     </div>
+
+    <script src="{{ asset('vendor/sweetalert/sweetalert.min.js') }}"></script>
+
     @if (Session::has('store_succeed'))
     <script>
-    swal('Berhasil', '{!! Session::get('store_succeed') !!}', 'success',{
+        swal('Berhasil', '{!! Session::get('store_succeed') !!}', 'success', {
+            button: 'OK',
+        });
+    </script>
+    @endif
+
+    @if (Session::has('upload_failed'))
+    <script>
+    swal('Error', '{!! Session::get('upload_failed') !!}', 'error',{
         button:'OK',
     });
     </script>
     @endif
 </body>
 </html>
-

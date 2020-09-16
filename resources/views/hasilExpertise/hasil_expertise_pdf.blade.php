@@ -43,31 +43,31 @@
 
         <div class="row">
             <div class="col-xs-8">
-                <strong> Nama Pasien</strong><br>
+                <strong> Nama Pasien :</strong><br>
                 {{ ucfirst($pemeriksaan->pasien->nama) }} <br>
-                <strong> No. Rekam Medis</strong><br>
-                {{ $pemeriksaan->pasien->no_rm }} <br>
-                <strong> No. Pemeriksaan</strong><br>
+                <strong> No. Rekam Medis :</strong><br>
+                {{ $pemeriksaan->pasien->nomor_rm }} <br>
+                <strong> No. Pemeriksaan :</strong><br>
                 {{ $pemeriksaan->nomor_pemeriksaan }} <br>
-                <strong> Jenis Kelamin / Umur</strong><br>
+                <strong> Jenis Kelamin / Umur :</strong><br>
                 {{ ucfirst($pemeriksaan->pasien->jenis_kelamin) }} / {{ $pemeriksaan->pasien->umur }} tahun <br>
-                <strong> Alamat</strong><br>
+                <strong> Alamat :</strong><br>
                 {{ ucfirst($pemeriksaan->pasien->alamat) }} <br>
             </div>
             <div class="col-xs-4">
-                <strong> Jenis Pasien</strong><br>
+                <strong> Jenis Pasien :</strong><br>
                 {{ ($pemeriksaan->pasien->jenis_pasien) == 'umum' ? "Umum" : "Rumah Sakit" }} <br>
-                <strong>Dokter Perujuk</strong><br>
+                <strong>Dokter Perujuk :</strong><br>
                 @if ($pemeriksaan->id_dokterPoli != null)
                 {{ ucfirst($pemeriksaan->dokterPoli->nama) }} <br>
                 @else
                 <strong>-</strong><br>
                 @endif
-                <strong>Radiografer</strong> <br>
+                <strong>Radiografer :</strong> <br>
                 {{ ucfirst($pemeriksaan->radiografer->nama) }} <br>
-                <strong>Waktu Pemeriksaan</strong><br>
+                <strong>Waktu Pemeriksaan :</strong><br>
                 {{ \Carbon\Carbon::parse($pemeriksaan->waktu_kirim)->format('d, F Y H:i') }} WIB <br>
-                <strong>Asal Ruangan</strong><br>
+                <strong>Asal Ruangan :</strong><br>
                 {{ ($pemeriksaan->pasien->jenis_pasien) != 'umum' ? ucfirst($pemeriksaan->pasien->ruangan->nama_ruangan) : "-" }}
                 {{-- <strong>Poli</strong><br>
                 {{ ($pemeriksaan->pasien->jenis_pasien) != 'umum' ? ucfirst($pemeriksaan->pasien->ruangan->nama_ruangan) : "-" }}
@@ -79,9 +79,9 @@
 
         <div class="row">
             <div class="col-xs-12">
-                <strong>Kategori/layanan &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</strong>
+                <strong>Kategori/layanan &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</strong>
                 {{ ucfirst($pemeriksaan->layanan->kategori->nama) }} / {{ ucfirst($pemeriksaan->layanan->nama) }}<br>
-                <strong>Informasi tambahan/permintaan foto &nbsp;:</strong>
+                <strong>Informasi tambahan/permintaan foto &nbsp;&nbsp;&nbsp;:</strong>
                 {{ ($pemeriksaan->permintaan_tambahan) != null ? ucfirst($pemeriksaan->permintaan_tambahan) : "Tidak ada" }}<br>
                 <strong>Indikasi pemeriksaan/diagnosa klinis &nbsp;&nbsp;:</strong>
                 {{ ($pemeriksaan->keluhan) != null ? ucfirst($pemeriksaan->keluhan) : "Tidak ada" }}<br>
@@ -104,11 +104,12 @@
         <div class="row">
             <div class="col-xs-7">
                 <br>
+                <br>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Petugas Radiografer <br><br><br>
 
-                {{ ($pemeriksaan->id_radiografer != null ? ucfirst($pemeriksaan->radiografer->nama) : "-") }}
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ ($pemeriksaan->id_radiografer != null ? ucfirst($pemeriksaan->radiografer->nama) : "-") }}
             </div>
-            <div class="col-xs-5">
+            <div class="col-xs-5" style="margin-right: 40px">
                 Tanggal cetak : {{ \Carbon\Carbon::parse($pemeriksaan->waktu_selesai)->format('d, F Y H:i') }} WIB<br>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Salam sejawat <br>
                 <br><br>

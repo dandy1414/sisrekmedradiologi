@@ -44,31 +44,31 @@
 
         <div class="row">
             <div class="col-xs-9">
-                <strong> Nama Pasien</strong><br>
+                <strong> Nama Pasien : </strong><br>
                 {{ ucfirst($pemeriksaan->pasien->nama) }} <br>
-                <strong> No. Rekam Medis</strong><br>
-                {{ $pemeriksaan->pasien->no_rm }} <br>
-                <strong> No. Pemeriksaan</strong><br>
+                <strong> No. Rekam Medis :</strong><br>
+                {{ $pemeriksaan->pasien->nomor_rm }} <br>
+                <strong> No. Pemeriksaan :</strong><br>
                 {{ $pemeriksaan->nomor_pemeriksaan }} <br>
-                <strong> Jenis Kelamin / Umur</strong><br>
+                <strong> Jenis Kelamin / Umur :</strong><br>
                 {{ ucfirst($pemeriksaan->pasien->jenis_kelamin) }} / {{ $pemeriksaan->pasien->umur }} tahun <br>
-                <strong> Alamat</strong><br>
+                <strong> Alamat :</strong><br>
                 {{ ucfirst($pemeriksaan->pasien->alamat) }} <br>
             </div>
             <div class="col-xs-3">
-                <strong> Jenis Pasien</strong><br>
+                <strong> Jenis Pasien :</strong><br>
                 {{ ($pemeriksaan->pasien->jenis_pasien) == 'umum' ? "Umum" : "Rumah Sakit" }} <br>
-                <strong>Dokter Perujuk</strong><br>
+                <strong>Dokter Perujuk :</strong><br>
                 @if ($pemeriksaan->id_dokterPoli != null)
                 {{ ucfirst($pemeriksaan->dokterPoli->nama) }} <br>
                 @else
                 <strong>-</strong><br>
                 @endif
-                <strong>Radiografer</strong> <br>
+                <strong>Radiografer :</strong> <br>
                 {{ ucfirst($pemeriksaan->radiografer->nama) }} <br>
-                <strong>Waktu Pemeriksaan</strong><br>
+                <strong>Waktu Pemeriksaan :</strong><br>
                 {{ \Carbon\Carbon::parse($pemeriksaan->waktu_kirim)->format('d, F Y H:i') }} WIB <br>
-                <strong>Asal Ruangan</strong><br>
+                <strong>Asal Ruangan :</strong><br>
                 {{ ($pemeriksaan->pasien->jenis_pasien) != 'umum' ? ucfirst($pemeriksaan->pasien->ruangan->nama_ruangan) : "-" }}
                 {{-- <strong>Poli</strong><br>
                 {{ ($pemeriksaan->pasien->jenis_pasien) != 'umum' ? ucfirst($pemeriksaan->pasien->ruangan->nama_ruangan) : "-" }}
@@ -103,36 +103,60 @@
         <br>
         <div class="row">
             @if (request()->is('dokter-radiologi/*/expertise-pasien'))
-            <a class="pull left btn btn-default btn" href="{{ route('dokterRadiologi.pasien.index-pemeriksaan') }}"><i class="fa fa-chevron-left"></i> Kembali</a>
             <a class="pull left btn btn-danger btn" href="{{ route('dokterRadiologi.pasien.pemeriksaan.print.hasil-expertise', ['id'=>$pemeriksaan->id]) }}" target="_blank"><i class="fa fa-print"></i> Export PDF</a>
-            @else
+            <br>
+            <br>
+                <form method="POST" action="{{ route('dokterRadiologi.pasien.upload.hasil-expertise', ['id'=>$pemeriksaan->id]) }}" enctype="multipart/form-data">
+                    @csrf
+                    <div class="form-group">
+                        <label for="hasil">Hasil Expertise :</label>
+                        <input id="hasil" name="hasil" class="form-control" type="file" id="hasil" style="width: 50%">
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-success">Simpan</button>
+                    </div>
+                </form>
             @endif
 
             @if (request()->is('dokter-radiologi/*/hasil-expertise'))
-            <a class="pull left btn btn-danger btn" href="{{ route('dokterRadiologi.pasien.pemeriksaan.print.hasil-expertise', ['id'=>$pemeriksaan->id]) }}" target="_blank"><i class="fa fa-print"></i> Export PDF</a>
+            <a class="pull left btn btn-danger btn" href="{{ route('dokterRadiologi.pasien.download.hasil-expertise', ['id'=>$pemeriksaan->id]) }}" target="_blank"><i class="fa fa-print"></i> Download Expertise</a>
             @endif
 
-            @if (request()->is('radiografer/*/pemeriksaan/hasil-expertise'))
-            <a class="pull left btn btn-danger btn" href="{{ route('radiografer.pasien.pemeriksaan.print.hasil-expertise', ['id'=>$pemeriksaan->id]) }}" target="_blank"><i class="fa fa-print"></i> Export PDF</a>
+            @if (request()->is('radiografer/*/pemeriksaan/hasil-expertise') && $pemeriksaan->expertise_pdf_radiografer == null)
+            <a class="pull left btn btn-danger btn" href="{{ route('radiografer.pasien.download.hasil-expertise', ['id'=>$pemeriksaan->id]) }}" target="_blank"><i class="fa fa-print"></i> Download Expertise</a>
+            <br>
+            <br>
+                <form method="POST" action="{{ route('radiografer.pasien.upload.hasil-expertise', ['id'=>$pemeriksaan->id]) }}" enctype="multipart/form-data">
+                    @csrf
+                    <div class="form-group">
+                        <label for="hasil">Hasil Expertise :</label>
+                        <input id="hasil" name="hasil" class="form-control" type="file" id="hasil" style="width: 50%">
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-success">Simpan</button>
+                    </div>
+                </form>
             @endif
 
-            @if (request()->is('dokter-poli/*/pemeriksaan/hasil-expertise'))
-            <a class="pull left btn btn-danger btn" href="{{ route('dokterPoli.pasien.pemeriksaan.print.hasil-expertise', ['id'=>$pemeriksaan->id]) }}" target="_blank"><i class="fa fa-print"></i> Export PDF</a>
+            @if (request()->is('dokter-poli/*/pemeriksaan/hasil-expertise') && $pemeriksaan->expertise_pdf_radiografer != null)
+            <a class="pull left btn btn-danger btn" href="{{ route('dokterPoli.pasien.download.hasil-expertise', ['id'=>$pemeriksaan->id]) }}" target="_blank"><i class="fa fa-print"></i> Download Expertise</a>
             @endif
 
-            @if (request()->is('admin/*/pasien/hasil-expertise'))
-            <a class="pull left btn btn-danger btn" href="{{ route('pasien.pemeriksaan.print.hasil-expertise', ['id'=>$pemeriksaan->id]) }}" target="_blank"><i class="fa fa-print"></i> Export PDF</a>
+            @if (request()->is('admin/*/pasien/hasil-expertise') && $pemeriksaan->expertise_pdf_radiografer != null)
+            <a class="pull left btn btn-danger btn" href="{{ route('pasien.download.hasil-expertise', ['id'=>$pemeriksaan->id]) }}" target="_blank"><i class="fa fa-print"></i> Download Expertise</a>
             @endif
 
         </div>
         <div class="row">
-            <div class="col-xs-9">
+            <br>
+            <br>
+            <div class="col-xs-7">
                 <br>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Petugas Radiografer <br><br><br>
 
-                {{ ($pemeriksaan->id_radiografer != null ? ucfirst($pemeriksaan->radiografer->nama) : "-") }}
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ ($pemeriksaan->id_radiografer != null ? ucfirst($pemeriksaan->radiografer->nama) : "-") }}
             </div>
-            <div class="col-xs-3">
+            <div class="col-xs-5">
                 Tanggal cetak &nbsp;: {{ \Carbon\Carbon::parse($pemeriksaan->waktu_selesai)->format('d, F Y H:i') }} WIB<br>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Salam sejawat <br>
                 <br><br>
@@ -145,12 +169,22 @@
         <br>
     </div>
 
-@if (Session::has('store_succeed'))
-<script>
-swal('Berhasil', '{!! Session::get('store_succeed') !!}', 'success',{
-    button:'OK',
-});
-</script>
-@endif
+    <script src="{{ asset('vendor/sweetalert/sweetalert.min.js') }}"></script>
+
+    @if (Session::has('store_succeed'))
+    <script>
+    swal('Berhasil', '{!! Session::get('store_succeed') !!}', 'success',{
+        button:'OK',
+    });
+    </script>
+    @endif
+
+    @if (Session::has('upload_failed'))
+    <script>
+    swal('Error', '{!! Session::get('upload_failed') !!}', 'error',{
+        button:'OK',
+    });
+    </script>
+    @endif
 </body>
 </html>

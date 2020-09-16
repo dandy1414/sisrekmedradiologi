@@ -13,6 +13,8 @@ use App\User;
 use App\Models\Ruangan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Auth;
@@ -370,6 +372,38 @@ class PendaftaranController extends Controller
         }
     }
 
+    public function uploadSuratRujukan(Request $request, $id){
+        $upload_surat = Pendaftaran::findOrFail($id);
+        DB::beginTransaction();
+        try{
+            if($upload_surat->surat_rujukan_pdf == null){
+                if($request->hasFile('suratRujukan')){
+                    $resource = $request->suratRujukan;
+                    $name = Str::slug($upload_surat->pasien->nama."_".time()).".".$resource->getClientOriginalExtension();
+                    $resource->move(\base_path() ."/public/storage/surat_rujukan", $name);
+                    $upload_surat->surat_rujukan_pdf = $name;
+                }
+            }
+            $upload_surat->save();
+
+            DB::commit();
+            Session::flash('upload_success', 'Upload surat berhasil');
+            return redirect()->route('resepsionis.pasien.index.pendaftaran');
+        }catch (QueryException $x){
+            DB::rollBack();
+            dd($x->getMessage());
+            Session::flash('upload_failed', 'Upload surat gagal');
+            return view('suratRujukan.surat_rujukan', compact('pendaftaran'));
+        }
+    }
+
+    public function downloadSuratRujukan($id){
+        $pendaftaran = Pendaftaran::findOrFail($id);
+        $nama_file = $pendaftaran->surat_rujukan_pdf;
+
+        return Storage::disk('local')->download('public/surat_rujukan/'.$nama_file);
+    }
+
     public function storePendaftaranPasienRs(Request $request, $id){
         $validator = Validator::make($request->all(),[
             "jenisPemeriksaan" => "required",
@@ -414,7 +448,7 @@ class PendaftaranController extends Controller
                 DB::rollBack();
                 dd($x->getMessage());
                 Session::flash('store_failed', 'Pendaftaran gagal tersimpan');
-                return redirect()->route('resepsionis.pasien.pendaftaran.pasien-umum')->with(['error' => 'Pendaftaran pemeriksaan gagal']);
+                return redirect()->route('resepsionis.pasien.pendaftaran.pasien-umum');
             }
         }else{
             $new_pendaftaran = new Pendaftaran();
@@ -456,7 +490,8 @@ class PendaftaranController extends Controller
             }catch (QueryException $x){
                 DB::rollBack();
                 dd($x->getMessage());
-                return redirect()->route('resepsionis.pasien.pendaftaran.pasien-umum')->with(['error' => 'Pendaftaran pemeriksaan gagal']);
+                Session::flash('store_failed', 'Pendaftaran gagal tersimpan');
+                return redirect()->route('resepsionis.pasien.pendaftaran.pasien-umum');
             }
         }
     }
@@ -473,4 +508,5 @@ class PendaftaranController extends Controller
         $pdf = PDF::loadview('suratRujukan.surat_rujukan_pdf', compact('pendaftaran'))->setPaper('A4', 'potrait');
         return $pdf->stream('surat-rujukan-'.$pendaftaran->nomor_pendaftaran.'.pdf');
     }
+
 }

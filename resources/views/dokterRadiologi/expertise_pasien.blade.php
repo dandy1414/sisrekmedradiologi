@@ -17,16 +17,17 @@
 <section class="content">
     <div class="row">
         <div class="col-xs-12">
-            @if ($message = Session::get('error'))
-            <div class="alert alert-danger alert-dismissable">
+            <div class="alert alert-info alert-dismissable">
                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
                 <h4>
-                    <i class="icon fa fa-check"></i>
-                    Gagal
+                    <i class="icon fa fa-info"></i>
+                    Petunjuk
                 </h4>
-                {{ $message }}
+                - Setelah menulis hasil expertise pasien, akan tampil hasil expertise <br>
+                - Pada tampilan hasil expertise tersebut terdapat tombol "Export PDF", klik untuk mengunduh expertise <br>
+                - Setelah hasil expertise terunduh, berikan tanda tangan anda pada hasil expertise tersebut menggunakan tanda tangan digital <br>
+                - Setelah diberi tanda tangan, unggah hasil expertise tersebut pada sistem <br>
             </div>
-            @endif
         </div>
     </div>
 

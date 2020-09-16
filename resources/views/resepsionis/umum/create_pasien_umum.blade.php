@@ -16,21 +16,6 @@
 <section class="content">
     <div class="row">
         <div class="col-xs-12">
-            @if ($message = Session::get('error'))
-            <div class="alert alert-danger alert-dismissable">
-                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
-                <h4>
-                    <i class="icon fa fa-check"></i>
-                    Gagal
-                </h4>
-                    {{ $message }}
-            </div>
-            @endif
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-xs-12">
             <form method="POST" action="{{ route('resepsionis.pasien.store.pasien-umum') }}" enctype="multipart/form-data">
                 @csrf
                 <div class="box box-success" style="position: relative;">

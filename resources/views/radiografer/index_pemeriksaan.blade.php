@@ -39,16 +39,19 @@
 <section class="content">
     <div class="row">
         <div class="col-xs-12">
-            @if ($message = Session::get('success'))
-            <div class="alert alert-success alert-dismissable">
+            <div class="alert alert-info alert-dismissable">
                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
                 <h4>
-                    <i class="icon fa fa-check"></i>
-                    Berhasil
+                    <i class="icon fa fa-info"></i>
+                    Peringatan Khusus Pasien Jenis Pemeriksaan Penuh
                 </h4>
-                    {{ $message }}
+                - Pastikan anda telah memberikan tanda tangan anda pada hasil expertise pasien <br>
+                - Klik "Lihat Hasil Expertise" pada tombol "Aksi" pasien yang telah selesai dilakukan expertise <br>
+                - Klik tombol "Download Expertise" untuk mengunduh hasil expertise <br>
+                - Berikan tanda tangan anda menggunakan tanda tangan digital pada hasil expertise tersebut <br>
+                - Setelah diberi tanda tangan, unggah hasil expertise tersebut pada sistem<br>
+                - Cetak hasil expertise menggunakan file pdf yang telah anda tanda tangani
             </div>
-            @endif
         </div>
     </div>
 
@@ -386,6 +389,14 @@ $("#button-three").click(function () {
 @if (Session::has('store_succeed'))
 <script>
 swal('Berhasil', '{!! Session::get('store_succeed') !!}', 'success',{
+    button:'OK',
+});
+</script>
+@endif
+
+@if (Session::has('upload_succeed'))
+<script>
+swal('Berhasil', '{!! Session::get('upload_succeed') !!}', 'success',{
     button:'OK',
 });
 </script>

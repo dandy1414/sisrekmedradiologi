@@ -11,6 +11,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 class ExpertiseController extends Controller
 {
@@ -89,7 +91,7 @@ class ExpertiseController extends Controller
 
             $pemeriksaan = Pemeriksaan::findOrFail($id);
 
-            Session::flash('store_succeed', 'Expertise berhasil tersimpan, silahkan unduh hasil expertise terlebih dahulu');
+            Session::flash('store_succeed', 'Expertise berhasil tersimpan, silahkan export pdf hasil expertise terlebih dahulu untuk di tanda tangani');
             return view('hasilExpertise.hasil_expertise', compact('pemeriksaan'));
         }
         catch(QueryException $x){
@@ -97,6 +99,43 @@ class ExpertiseController extends Controller
             dd($x->getMessage());
             Session::flash('store_failed', 'Expertise gagal tersimpan');
             return redirect()->route('dokterRadiologi.pasien.expertise-pasien');
+        }
+    }
+
+    public function uploadHasilExpertise(Request $request, $id){
+        $upload_expertise = Pemeriksaan::findOrFail($id);
+        DB::beginTransaction();
+        try{
+            if($upload_expertise->expertise_pdf == null){
+                if($request->hasFile('hasil')){
+                    $resource = $request->hasil;
+                    $name = Str::slug($upload_expertise->pasien->nama."_".time()).".".$resource->getClientOriginalExtension();
+                    $resource->move(\base_path() ."/public/storage/hasil_expertise", $name);
+                    $upload_expertise->expertise_pdf = $name;
+                }
+            }
+            $upload_expertise->save();
+
+            DB::commit();
+            Session::flash('upload_succeed', 'Upload hasil expertise berhasil');
+            return redirect()->route('dokterRadiologi.pasien.index-pemeriksaan');
+        }catch (QueryException $x){
+            DB::rollBack();
+            dd($x->getMessage());
+            Session::flash('upload_failed', 'Upload hasil expertise gagal');
+            return view('hasilExpertise.hasil_expertise', compact('upload_expertise'));
+        }
+    }
+
+    public function downloadHasilExpertise($id){
+        $pemeriksaan = Pemeriksaan::findOrFail($id);
+
+        if($pemeriksaan->expertise_pdf_radiografer == null){
+            $nama_file = $pemeriksaan->expertise_pdf;
+            return Storage::disk('local')->download('public/hasil_expertise/'.$nama_file);
+        }else{
+            $nama_file = $pemeriksaan->expertise_pdf_radiografer;
+            return Storage::disk('local')->download('public/hasil_expertise/'.$nama_file);
         }
     }
 
@@ -116,6 +155,6 @@ class ExpertiseController extends Controller
         $pemeriksaan = Pemeriksaan::findOrFail($id);
 
         $pdf = PDF::loadview('hasilExpertise.hasil_expertise_pdf', ['pemeriksaan'=>$pemeriksaan])->setPaper('A4', 'potrait');
-        return $pdf->stream('hasil-expertise'.$pemeriksaan->nomor_pemeriksaan.'.pdf');
+        return $pdf->stream('hasil-expertise-'.$pemeriksaan->nomor_pemeriksaan.'.pdf');
     }
 }

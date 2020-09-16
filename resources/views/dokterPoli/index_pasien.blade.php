@@ -23,32 +23,6 @@
 <section class="content">
     <div class="row">
         <div class="col-xs-12">
-            @if ($message = Session::get('success'))
-            <div class="alert alert-success alert-dismissable">
-                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
-                <h4>
-                    <i class="icon fa fa-check"></i>
-                    Berhasil
-                </h4>
-                    {{ $message }}
-            </div>
-            @endif
-
-            @if ($message = Session::get('warning'))
-            <div class="alert alert-warning alert-dismissable">
-                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
-                <h4>
-                    <i class="icon fa fa-check"></i>
-                    Berhasil
-                </h4>
-                    {{ $message }}
-            </div>
-            @endif
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-xs-12">
             <div class="box box-info" id="tabelsemuapasien1" style="position: relative;">
                 <!-- /.box-header -->
                 <div class="box-body">

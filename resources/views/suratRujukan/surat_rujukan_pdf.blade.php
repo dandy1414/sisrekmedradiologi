@@ -43,31 +43,31 @@
 
         <div class="row">
             <div class="col-xs-8">
-                <strong> Nama Pasien</strong><br>
+                <strong> Nama Pasien : </strong><br>
                 {{ ucfirst($pendaftaran->pasien->nama) }} <br>
-                <strong> No. Rekam Medis</strong><br>
-                {{ $pendaftaran->pasien->no_rm }} <br>
-                <strong> No. Rujukan</strong><br>
+                <strong> No. Rekam Medis :</strong><br>
+                {{ $pendaftaran->pasien->nomor_rm }} <br>
+                <strong> No. Rujukan :</strong><br>
                 {{ $pendaftaran->nomor_pendaftaran }}<br>
-                <strong> Jenis Kelamin / Umur</strong><br>
+                <strong> Jenis Kelamin / Umur :</strong><br>
                 {{ ucfirst($pendaftaran->pasien->jenis_kelamin) }} / {{ $pendaftaran->pasien->umur }} tahun <br>
-                <strong> Alamat</strong><br>
+                <strong> Alamat :</strong><br>
                 {{ ucfirst($pendaftaran->pasien->alamat) }} <br>
             </div>
             <div class="col-xs-4">
-                <strong> Jenis Pasien</strong><br>
+                <strong> Jenis Pasien :</strong><br>
                 {{ ($pendaftaran->pasien->jenis_pasien) == 'umum' ? "Umum" : "Rumah Sakit" }} <br>
-                <strong>Dokter Perujuk</strong><br>
+                <strong>Dokter Perujuk :</strong><br>
                 @if ($pendaftaran->id_dokterPoli != null)
                 {{ ucfirst($pendaftaran->dokterPoli->nama) }} <br>
                 @else
                 <strong>-</strong><br>
                 @endif
-                <strong>Dokter Rujukan</strong><br>
+                <strong>Dokter Rujukan :</strong><br>
                 {{ ucfirst($pendaftaran->dokterRadiologi->nama) }} <br>
-                <strong>Waktu Rujukan</strong><br>
+                <strong>Waktu Rujukan :</strong><br>
                 {{ $pendaftaran->created_at }} WIB <br>
-                <strong>Asal Ruangan</strong><br>
+                <strong>Asal Ruangan :</strong><br>
                 {{ ($pendaftaran->pasien->jenis_pasien) != 'umum' ? ucfirst($pendaftaran->pasien->ruangan->nama_ruangan) : "-" }}
             </div>
         </div>
@@ -113,7 +113,7 @@
         <div class="row">
             <div style="margin-left: 400px">
                 Tanggal cetak &nbsp;: {{ $pendaftaran->created_at }} WIB<br>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Dokter Perujuk <br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Dokter Perujuk <br>
                 <br><br>
 
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ ($pendaftaran->id_dokterPoli != null ? ucfirst($pendaftaran->dokterPoli->nama) : "-") }}

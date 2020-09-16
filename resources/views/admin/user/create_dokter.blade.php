@@ -15,19 +15,6 @@
 
 <section class="content">
     <div class="row">
-        <div class="col-xs-12">
-            @if ($message = Session::get('error'))
-            <div class="alert alert-danger alert-dismissable">
-                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
-                <h4>
-                    <i class="icon fa fa-check"></i>
-                    Gagal
-                </h4>
-                    {{ $message }}
-            </div>
-            @endif
-        </div>
-        <div class="row">
             <div class="col-xs-12">
                 <div class="alert alert-info alert-dismissable">
                     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>

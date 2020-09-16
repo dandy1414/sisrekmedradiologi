@@ -11,6 +11,7 @@ use App\Models\Pemeriksaan;
 use App\User;
 use App\Models\Ruangan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\QueryException;
@@ -254,7 +255,7 @@ class RujukanController extends Controller
 
                 $pendaftaran = Pendaftaran::findOrFail($id_pendaftaran);
 
-                Session::flash('store_succeed', 'Rujukan pasien berhasil tersimpan, silahkan unduh surat rujukan terlebih dahulu');
+                Session::flash('store_succeed', 'Rujukan pasien berhasil tersimpan, silahkan export pdf surat rujukan terlebih dahulu untuk di tanda tangani');
                 return view('suratRujukan.surat_rujukan', compact('pendaftaran'));
             }catch (QueryException $x){
                 DB::rollBack();
@@ -262,6 +263,31 @@ class RujukanController extends Controller
                 Session::flash('store_failed', 'Rujukan pasien gagal tersimpan');
                 return redirect()->route('dokterPoli.pasien.rujuk-pasien');
             }
+        }
+    }
+
+    public function uploadSuratRujukan(Request $request, $id){
+        $upload_surat = Pendaftaran::findOrFail($id);
+        DB::beginTransaction();
+        try{
+            if($upload_surat->surat_rujukan_pdf == null){
+                if($request->hasFile('suratRujukan')){
+                    $resource = $request->suratRujukan;
+                    $name = Str::slug($upload_surat->pasien->nama."_".time()).".".$resource->getClientOriginalExtension();
+                    $resource->move(\base_path() ."/public/storage/surat_rujukan", $name);
+                    $upload_surat->surat_rujukan_pdf = $name;
+                }
+            }
+            $upload_surat->save();
+
+            DB::commit();
+            Session::flash('upload_succeed', 'Upload surat berhasil');
+            return redirect()->route('dokterPoli.pasien.index-rujuk');
+        }catch (QueryException $x){
+            DB::rollBack();
+            dd($x->getMessage());
+            Session::flash('upload_failed', 'Upload surat gagal');
+            return view('suratRujukan.surat_rujukan', compact('pendaftaran'));
         }
     }
 

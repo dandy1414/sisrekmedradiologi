@@ -16,20 +16,21 @@
 <section class="content">
     <div class="row">
         <div class="col-xs-12">
-            @if ($message = Session::get('error'))
-            <div class="alert alert-danger alert-dismissable">
+            <div class="alert alert-info alert-dismissable">
                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
                 <h4>
-                    <i class="icon fa fa-check"></i>
-                    Gagal
+                    <i class="icon fa fa-info"></i>
+                    Petunjuk Khusus Jenis Pemeriksaan Penuh
                 </h4>
-                {{ $message }}
+                - Setelah mendaftarkan pasien, akan tampil hasil surat rujukan <br>
+                - Pada tampilan surat rujukan tersebut terdapat tombol "Export PDF", klik untuk mengunduh surat rujukan <br>
+                - Setelah surat rujukan terunduh, berikan tanda tangan dokter yang merujuk pada surat tersebut menggunakan tanda tangan digital <br>
+                - Setelah diberi tanda tangan, unggah surat rujukan tersebut pada sistem <br>
             </div>
-            @endif
         </div>
     </div>
 
-    <div class="row">
+   <div class="row">
         <div class="col-md-6">
             <div class="box box-info" style="position: relative;">
                 <div class="box-header">

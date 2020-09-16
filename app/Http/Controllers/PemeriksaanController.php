@@ -62,12 +62,36 @@ class PemeriksaanController extends Controller
         return view('radiografer.index_pemeriksaan', ['belum'=> $belum, 'pending'=>$pending, 'selesai'=>$selesai, 'total_belum'=>$total_belum, 'total_pending'=>$total_pending, 'total_selesai'=>$total_selesai]);
     }
 
+    public function uploadHasilExpertise(Request $request, $id){
+        $upload_expertise = Pemeriksaan::findOrFail($id);
+        DB::beginTransaction();
+        try{
+            if($upload_expertise->expertise_pdf_radiografer == null){
+                if($request->hasFile('hasil')){
+                    $resource = $request->hasil;
+                    $name = Str::slug('Radiografer-'.$upload_expertise->pasien->nama."_".time()).".".$resource->getClientOriginalExtension();
+                    $resource->move(\base_path() ."/public/storage/hasil_expertise", $name);
+                    $upload_expertise->expertise_pdf_radiografer = $name;
+                }
+            }
+            $upload_expertise->save();
+
+            DB::commit();
+            Session::flash('upload_succeed', 'Upload hasil expertise berhasil');
+            return redirect()->route('radiografer.pasien.index-pemeriksaan');
+        }catch (QueryException $x){
+            DB::rollBack();
+            dd($x->getMessage());
+            Session::flash('upload_failed', 'Upload hasil expertise gagal');
+            return view('hasilExpertise.hasil_expertise', compact('upload_expertise'));
+        }
+    }
+
     public function detailPemeriksaan($id){
         $pemeriksaan = Pemeriksaan::findOrFail($id);
 
         return view('radiografer.detail_pemeriksaan', ['pemeriksaan'=> $pemeriksaan]);
     }
-
 
     public function pemeriksaanPasien($id){
         $pemeriksaan = Pemeriksaan::where('id', $id)->firstOrFail();
