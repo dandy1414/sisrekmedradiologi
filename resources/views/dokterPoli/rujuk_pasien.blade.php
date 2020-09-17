@@ -23,8 +23,10 @@
                     Petunjuk
                 </h4>
                 - Setelah melakukan rujuk pasien, akan tampil hasil surat rujukan <br>
-                - Pada tampilan surat rujukan tersebut terdapat tombol "Export PDF", klik untuk mengunduh surat rujukan <br>
-                - Setelah surat rujukan terunduh, berikan tanda tangan anda pada surat tersebut menggunakan tanda tangan digital <br>
+                - Pada tampilan surat rujukan tersebut terdapat tombol "Export PDF", klik untuk mengunduh surat rujukan
+                <br>
+                - Setelah surat rujukan terunduh, berikan tanda tangan anda pada surat tersebut menggunakan tanda tangan
+                digital <br>
                 - Setelah diberi tanda tangan, unggah surat rujukan tersebut pada sistem <br>
             </div>
         </div>
@@ -95,12 +97,14 @@
                             <div class="radio">
                                 <label>
                                     <input type="radio" name="jenisPemeriksaan" id="biasa" value="biasa"
-                                        {{ old('jenisPemeriksaan') == 'biasa' ? "checked" : "" }}>
+                                        {{ old('jenisPemeriksaan') == 'biasa' ? "checked" : "" }}
+                                        onchange="disableSelect()">
                                     Biasa
                                 </label>
                                 <label>
                                     <input type="radio" name="jenisPemeriksaan" id="penuh" value="penuh"
-                                        {{ old('jenisPemeriksaan') == 'penuh' ? "checked" : "" }}>
+                                        {{ old('jenisPemeriksaan') == 'penuh' ? "checked" : "" }}
+                                        onchange="disableSelect()">
                                     Penuh
                                 </label>
                                 <span class="help-block">{{ $errors->first('jenisPemeriksaan') }}</span>
@@ -108,100 +112,144 @@
                         </div>
 
                         {{-- <div class="form-group {{ $errors->first('cito') ? "has-error": "" }}">
-                            <label>CITO :</label>
-                            <div class="radio">
-                                <label>
-                                    <input type="radio" name="cito" id="ya" value="ya"
-                                        {{ old('cito') == 'iya' ? "checked" : "" }}>
-                                    Ya
-                                </label>
-                                <label>
-                                    <input type="radio" name="cito" id="tidak" value="tidak"
-                                        {{ old('cito') == 'tidak' ? "checked" : "" }}>
-                                    Tidak
-                                </label>
-                                <span class="help-block">{{ $errors->first('cito') }}</span>
-                            </div>
-                        </div> --}}
-
-                        <div class="form-group {{ $errors->first('layanan') ? "has-error": "" }}">
-                            <label>Layanan Kategori Rontgen :</label>
-                            <select class="form-control select2" name="layanan" style="width: 100%;">
-                                <option selected disabled>Silahkan pilih salah satu</option>
-                                @foreach ($layanan_rontgen as $lr)
-                                <option value="{{ $lr->id }}" {{ old('layanan') == $lr->id ? "selected" : "" }}>
-                                    {{ $lr->nama }}</option>
-                                @endforeach
-                            </select>
-                            <span class="help-block">{{ $errors->first('layanan') }}</span>
+                        <label>CITO :</label>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="cito" id="ya" value="ya"
+                                    {{ old('cito') == 'iya' ? "checked" : "" }}>
+                                Ya
+                            </label>
+                            <label>
+                                <input type="radio" name="cito" id="tidak" value="tidak"
+                                    {{ old('cito') == 'tidak' ? "checked" : "" }}>
+                                Tidak
+                            </label>
+                            <span class="help-block">{{ $errors->first('cito') }}</span>
                         </div>
-                        <div class="form-group {{ $errors->first('layanan') ? "has-error": "" }}">
-                            <label>Layanan Kategori USG :</label>
-                            <select class="form-control select2" name="layanan" style="width: 100%;">
-                                <option selected disabled>Silahkan pilih salah satu</option>
-                                @foreach ($layanan_usg as $lu)
-                                <option value="{{ $lu->id }}" {{ old('layanan') == $lu->id ? "selected" : "" }}>
-                                    {{ $lu->nama }}</option>
-                                @endforeach
-                            </select>
-                            <span class="help-block">{{ $errors->first('layanan') }}</span>
-                        </div>
+                    </div> --}}
 
-                        <div class="form-group {{ $errors->first('jadwal') ? "has-error": "" }}">
-                            <label>Jadwal :</label>
-                            <select class="form-control select2" name="jadwal" style="width: 100%;">
-                                <option selected disabled>Silahkan pilih salah satu</option>
-                                @foreach ($jadwal as $j)
-                                <option value="{{ $j->id }}" {{ old('jadwal') == $j->id ? "selected" : "" }}>
-                                    {{ $j->waktu_mulai }} WIB - {{ $j->waktu_selesai }} WIB</option>
-                                @endforeach
-                            </select>
-                            <span class="help-block">{{ $errors->first('jadwal') }}</span>
-                        </div>
 
-                        <div class="form-group {{ $errors->first('dokterRujukan') ? "has-error": "" }}">
-                            <label>Dokter Rujukan :</label>
-                            <select class="form-control select2" name="dokterRujukan" style="width: 100%;">
-                                <option selected disabled>Silahkan pilih salah satu</option>
-                                @foreach ($dokter_radiologi as $dr)
-                                <option value="{{ $dr->id }}" {{ old('dokterRujukan') == $dr->id ? "selected" : "" }}>
-                                    {{ $dr->nama }}</option>
-                                @endforeach
-                            </select>
-                            <span class="help-block">{{ $errors->first('dokterRujukan') }}</span>
-                        </div>
-
-                        <div class="form-group {{ $errors->first('keluhan') ? "has-error": "" }}">
-                            <label>Keluhan :</label>
-                            <input value="{{ old('nama') }}" type="text" name="keluhan" class="form-control"
-                                placeholder="Keluhan ...">
-                            <span class="help-block">{{ $errors->first('keluhan') }}</span>
-                        </div>
-
-                        <div class="form-group {{ $errors->first('permintaan') ? "has-error": "" }}">
-                            <label>Informasi Tambahan :</label>
-                            <input value="{{ old('permintaan') }}" type="text" name="permintaan" class="form-control"
-                                placeholder="Informasi tambahan  ...">
-                            <span class="help-block">{{ $errors->first('permintaan') }}</span>
+                    <div class="form-group">
+                        <label>Kategori Layanan :</label>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="kategori" id="rontgen" value="rontgen"
+                                    onchange="selectNone()">
+                                Rontgen
+                            </label>
+                            <label>
+                                <input type="radio" name="kategori" id="usg" value="usg" onchange="selectNone()">
+                                USG
+                            </label>
                         </div>
                     </div>
-                    <div class="box-footer">
-                        <div class="form-group">
-                            <button type="submit" class="btn btn-success">Simpan</button>
-                        </div>
+
+                    <div id="select-rontgen" class="form-group {{ $errors->first('layanan') ? "has-error": "" }}"
+                        style="display: none">
+                        <label>Layanan Kategori Rontgen :</label>
+                        <select class="form-control select2" name="layanan" style="width: 100%;">
+                            <option selected disabled>Silahkan pilih salah satu</option>
+                            @foreach ($layanan_rontgen as $lr)
+                            <option value="{{ $lr->id }}" {{ old('layanan') == $lr->id ? "selected" : "" }}>
+                                {{ $lr->nama }}</option>
+                            @endforeach
+                        </select>
+                        <span class="help-block">{{ $errors->first('layanan') }}</span>
+                    </div>
+
+                    <div id="select-usg" class="form-group {{ $errors->first('layanan') ? "has-error": "" }}"
+                        style="display: none">
+                        <label>Layanan Kategori USG :</label>
+                        <select class="form-control select2" name="layanan" style="width: 100%;">
+                            <option selected disabled>Silahkan pilih salah satu</option>
+                            @foreach ($layanan_usg as $lu)
+                            <option value="{{ $lu->id }}" {{ old('layanan') == $lu->id ? "selected" : "" }}>
+                                {{ $lu->nama }}</option>
+                            @endforeach
+                        </select>
+                        <span class="help-block">{{ $errors->first('layanan') }}</span>
+                    </div>
+
+
+                    <div class="form-group {{ $errors->first('jadwal') ? "has-error": "" }}">
+                        <label>Jadwal :</label>
+                        <select class="form-control select2" name="jadwal" style="width: 100%;">
+                            <option selected disabled>Silahkan pilih salah satu</option>
+                            @foreach ($jadwal as $j)
+                            <option value="{{ $j->id }}" {{ old('jadwal') == $j->id ? "selected" : "" }}>
+                                {{ $j->waktu_mulai }} WIB - {{ $j->waktu_selesai }} WIB</option>
+                            @endforeach
+                        </select>
+                        <span class="help-block">{{ $errors->first('jadwal') }}</span>
+                    </div>
+
+                    <div class="form-group {{ $errors->first('dokterRujukan') ? "has-error": "" }}">
+                        <label>Dokter Rujukan :</label>
+                        <select class="form-control select2" name="dokterRujukan" style="width: 100%;"
+                            onchange="disableSelect()" id="dokter-rujukan">
+                            <option selected disabled>Silahkan pilih salah satu</option>
+                            @foreach ($dokter_radiologi as $dr)
+                            <option value="{{ $dr->id }}" {{ old('dokterRujukan') == $dr->id ? "selected" : "" }}>
+                                {{ $dr->nama }}</option>
+                            @endforeach
+                        </select>
+                        <span class="help-block">{{ $errors->first('dokterRujukan') }}</span>
+                    </div>
+
+                    <div class="form-group {{ $errors->first('keluhan') ? "has-error": "" }}">
+                        <label>Keluhan :</label>
+                        <input value="{{ old('nama') }}" type="text" name="keluhan" class="form-control"
+                            placeholder="Keluhan ...">
+                        <span class="help-block">{{ $errors->first('keluhan') }}</span>
+                    </div>
+
+                    <div class="form-group {{ $errors->first('permintaan') ? "has-error": "" }}">
+                        <label>Informasi Tambahan :</label>
+                        <input value="{{ old('permintaan') }}" type="text" name="permintaan" class="form-control"
+                            placeholder="Informasi tambahan  ...">
+                        <span class="help-block">{{ $errors->first('permintaan') }}</span>
                     </div>
                 </div>
-            </form>
+                <div class="box-footer">
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-success">Simpan</button>
+                    </div>
+                </div>
         </div>
+        </form>
+    </div>
     </div>
 </section>
 @endsection
 @push('scripts')
+<script>
+    function disableSelect() {
+        if (document.getElementById('biasa').checked) {
+            document.getElementById('dokter-rujukan').disabled = true;
+        } else if (document.getElementById('penuh').checked) {
+            document.getElementById('dokter-rujukan').disabled = false;
+        }
+    }
+
+    $('#rontgen').click(function () {
+        $('#select-rontgen').show(500);
+        $('#select-usg').hide(200);
+    })
+
+    $('#usg').click(function () {
+        $('#select-usg').show(500);
+        $('#select-rontgen').hide(200);
+    })
+
+</script>
+
 @if (Session::has('store_failed'))
 <script>
-swal('Gagal', '{!! Session::get('store_failed') !!}', 'error',{
-    button:'OK',
-});
+    swal('Gagal', '{!! Session::get('
+        store_failed ') !!}', 'error', {
+            button: 'OK',
+        });
+
 </script>
 @endif
 @endpush

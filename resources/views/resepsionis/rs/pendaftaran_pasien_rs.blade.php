@@ -23,14 +23,16 @@
                     Petunjuk Khusus Jenis Pemeriksaan Penuh
                 </h4>
                 - Setelah mendaftarkan pasien, akan tampil hasil surat rujukan <br>
-                - Pada tampilan surat rujukan tersebut terdapat tombol "Export PDF", klik untuk mengunduh surat rujukan <br>
-                - Setelah surat rujukan terunduh, berikan tanda tangan dokter yang merujuk pada surat tersebut menggunakan tanda tangan digital <br>
+                - Pada tampilan surat rujukan tersebut terdapat tombol "Export PDF", klik untuk mengunduh surat rujukan
+                <br>
+                - Setelah surat rujukan terunduh, berikan tanda tangan dokter yang merujuk pada surat tersebut
+                menggunakan tanda tangan digital <br>
                 - Setelah diberi tanda tangan, unggah surat rujukan tersebut pada sistem <br>
             </div>
         </div>
     </div>
 
-   <div class="row">
+    <div class="row">
         <div class="col-md-6">
             <div class="box box-info" style="position: relative;">
                 <div class="box-header">
@@ -96,12 +98,12 @@
                             <div class="radio">
                                 <label>
                                     <input type="radio" name="jenisPemeriksaan" id="biasa" value="biasa"
-                                        {{ old('jenisPemeriksaan') == 'biasa' ? "checked" : "" }}>
+                                        {{ old('jenisPemeriksaan') == 'biasa' ? "checked" : "" }} onchange="disableSelect()">
                                     Biasa
                                 </label>
                                 <label>
                                     <input type="radio" name="jenisPemeriksaan" id="penuh" value="penuh"
-                                        {{ old('jenisPemeriksaan') == 'penuh' ? "checked" : "" }}>
+                                        {{ old('jenisPemeriksaan') == 'penuh' ? "checked" : "" }} onchange="disableSelect()">
                                     Penuh
                                 </label>
                                 <span class="help-block">{{ $errors->first('jenisPemeriksaan') }}</span>
@@ -125,7 +127,22 @@
                         </div>
                     </div> --}}
 
-                    <div class="form-group {{ $errors->first('layanan') ? "has-error": "" }}">
+                    <div class="form-group">
+                        <label>Kategori Layanan :</label>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="kategori" id="rontgen" value="rontgen"
+                                    onchange="selectNone()">
+                                Rontgen
+                            </label>
+                            <label>
+                                <input type="radio" name="kategori" id="usg" value="usg" onchange="selectNone()">
+                                USG
+                            </label>
+                        </div>
+                    </div>
+
+                    <div id="select-rontgen" class="form-group {{ $errors->first('layanan') ? "has-error": "" }}" style="display: none">
                         <label>Layanan Kategori Rontgen :</label>
                         <select class="form-control select2" name="layanan" style="width: 100%;">
                             <option selected disabled>Silahkan pilih salah satu</option>
@@ -136,7 +153,7 @@
                         </select>
                         <span class="help-block">{{ $errors->first('layanan') }}</span>
                     </div>
-                    <div class="form-group {{ $errors->first('layanan') ? "has-error": "" }}">
+                    <div id="select-usg" class="form-group {{ $errors->first('layanan') ? "has-error": "" }}" style="display: none">
                         <label>Layanan Kategori USG :</label>
                         <select class="form-control select2" name="layanan" style="width: 100%;">
                             <option selected disabled>Silahkan pilih salah satu</option>
@@ -162,7 +179,7 @@
 
                     <div class="form-group {{ $errors->first('dokterPerujuk') ? "has-error" : "" }}">
                         <label>Dokter Perujuk :</label>
-                        <select class="form-control select2" name="dokterPerujuk" style="width: 100%;">
+                        <select class="form-control select2" name="dokterPerujuk" style="width: 100%;" onchange="disableSelect()" id="dokter-perujuk">
                             <option selected disabled>Silahkan pilih salah satu</option>
                             @foreach ($dokter_poli as $dp)
                             <option value="{{ $dp->id }}" {{ old('dokterPerujuk') == $dp->id ? "selected" : "" }}>
@@ -174,7 +191,7 @@
 
                     <div class="form-group {{ $errors->first('dokterRujukan') ? "has-error": "" }}">
                         <label>Dokter Rujukan :</label>
-                        <select class="form-control select2" name="dokterRujukan" style="width: 100%;">
+                        <select class="form-control select2" name="dokterRujukan" style="width: 100%;"  onchange="disableSelect()" id="dokter-rujukan">
                             <option selected disabled>Silahkan pilih salah satu</option>
                             @foreach ($dokter_radiologi as $dr)
                             <option value="{{ $dr->id }}" {{ old('dokterRujukan') == $dr->id ? "selected" : "" }}>
@@ -211,31 +228,34 @@
 @endsection
 @push('scripts')
 <script type="text/javascript">
-    function yesnoSelect() {
-        if (document.getElementById("yesSelect").selected) {
-            document.getElementById("ifYes1").style.display = "block";
-            document.getElementById("ifYes2").style.display = "block";
-        } else {
-            document.getElementById("ifYes1").style.display = "none";
-            document.getElementById("ifYes2").style.display = "none";
+ function disableSelect() {
+        if (document.getElementById('biasa').checked) {
+            document.getElementById('dokter-perujuk').disabled = true;
+            document.getElementById('dokter-rujukan').disabled = true;
+        } else if (document.getElementById('penuh').checked) {
+            document.getElementById('dokter-perujuk').disabled = false;
+            document.getElementById('dokter-rujukan').disabled = false;
         }
     }
 
-    function yesnoSelectAsuransi() {
-        if (document.getElementById("yesSelectAsuransi").selected) {
-            document.getElementById("ifYesAsuransi").style.display = "block";
-        } else {
-            document.getElementById("ifYesAsuransi").style.display = "none";
-        }
-    }
+    $('#rontgen').click(function () {
+        $('#select-rontgen').show(500);
+        $('#select-usg').hide(200);
+    })
 
+    $('#usg').click(function () {
+        $('#select-usg').show(500);
+        $('#select-rontgen').hide(200);
+    })
 </script>
 
 @if (Session::has('store_failed'))
 <script>
-swal('Gagal', '{!! Session::get('store_failed') !!}', 'error',{
-    button:'OK',
-});
+    swal('Gagal', '{!! Session::get('
+        store_failed ') !!}', 'error', {
+            button: 'OK',
+        });
+
 </script>
 @endif
 @endpush
