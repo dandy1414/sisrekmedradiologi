@@ -106,7 +106,7 @@
             </div>
 
             <div id="box-edit" class="box box-success" style="position: relative; display:none">
-                <form method="POST" action="{{ route('profil.update.dokterPoli', ['id' => $user->id]) }}"
+                <form method="POST" action="{{ route('profil.update.dokterRadiologi', ['id' => $user->id]) }}"
                     enctype="multipart/form-data">
                     @csrf
                     {{ method_field('PUT') }}
