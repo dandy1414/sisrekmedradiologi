@@ -102,11 +102,11 @@ class UserController extends Controller
                     break;
                 case 'radiografer':
                     Session::flash('store_succeed', 'Profil berhasil terubah');
-                    return redirect()->route('profil.show.resepsionis', ['id' => $id]);
+                    return redirect()->route('profil.show.radiografer', ['id' => $id]);
                     break;
                 case 'kasir':
                     Session::flash('store_succeed', 'Profil berhasil terubah');
-                    return redirect()->route('profil.show.resepsionis', ['id' => $id]);
+                    return redirect()->route('profil.show.kasir', ['id' => $id]);
                     break;
                 default:
                     break;
@@ -126,11 +126,11 @@ class UserController extends Controller
                     break;
                 case 'radiografer':
                     Session::flash('store_failed', 'Profil gagal terubah');
-                    return redirect()->route('profil.show.resepsionis', ['id' => $id]);
+                    return redirect()->route('profil.show.radiografer', ['id' => $id]);
                     break;
                 case 'kasir':
                     Session::flash('store_failed', 'Profil gagal terubah');
-                    return redirect()->route('profil.show.resepsionis', ['id' => $id]);
+                    return redirect()->route('profil.show.kasir', ['id' => $id]);
                     break;
                 default:
                     break;
@@ -182,7 +182,7 @@ class UserController extends Controller
                     break;
                 case 'dokterRadiologi':
                     Session::flash('store_succeed', 'Profil berhasil terubah');
-                    return redirect()->route('profil.show.resepsionis', ['id' => $id]);
+                    return redirect()->route('profil.show.dokterRadiologi', ['id' => $id]);
                     break;
                 default:
                     break;
@@ -198,7 +198,7 @@ class UserController extends Controller
                     break;
                 case 'dokterRadiologi':
                     Session::flash('store_failed', 'Profil gagal terubah');
-                    return redirect()->route('profil.show.resepsionis', ['id' => $id]);
+                    return redirect()->route('profil.show.dokterRadiologi', ['id' => $id]);
                     break;
                 default:
                     break;
