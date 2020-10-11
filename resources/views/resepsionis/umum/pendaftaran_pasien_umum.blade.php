@@ -14,7 +14,7 @@
 </section>
 
 <section class="content">
- <div class="row">
+    <div class="row">
         <div class="col-md-6">
             <div class="box box-info" style="position: relative;">
                 <div class="box-header">
@@ -72,16 +72,18 @@
                     </div>
                     <div class="box-body">
                         <div class="form-group {{ $errors->first('jenisPemeriksaan') ? "has-error": "" }}">
-                            <label>Jenis Pemeriksaan :</label>
+                            <label><span style="color: red">*</span> Jenis Pemeriksaan :</label>
                             <div class="radio">
                                 <label>
                                     <input type="radio" name="jenisPemeriksaan" id="biasa" value="biasa"
-                                        {{ old('jenisPemeriksaan') == 'biasa' ? "checked" : "" }} onchange="disableSelect()">
+                                        {{ old('jenisPemeriksaan') == 'biasa' ? "checked" : "" }}
+                                        onchange="disableSelect()">
                                     Biasa
                                 </label>
                                 <label>
                                     <input type="radio" name="jenisPemeriksaan" id="penuh" value="penuh"
-                                        {{ old('jenisPemeriksaan') == 'penuh' ? "checked" : "" }} onchange="disableSelect()">
+                                        {{ old('jenisPemeriksaan') == 'penuh' ? "checked" : "" }}
+                                        onchange="disableSelect()">
                                     Penuh
                                 </label>
                                 <span class="help-block">{{ $errors->first('jenisPemeriksaan') }}</span>
@@ -89,7 +91,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label>Kategori Layanan :</label>
+                            <label><span style="color: red">*</span> Kategori Layanan :</label>
                             <div class="radio">
                                 <label>
                                     <input type="radio" name="kategori" id="rontgen" value="rontgen"
@@ -103,8 +105,9 @@
                             </div>
                         </div>
 
-                        <div id="select-rontgen" class="form-group {{ $errors->first('layanan') ? "has-error": "" }}" style="display: none">
-                            <label>Layanan Kategori Rontgen :</label>
+                        <div id="select-rontgen" class="form-group {{ $errors->first('layanan') ? "has-error": "" }}"
+                            style="display: none">
+                            <label><span style="color: red">*</span> Layanan Kategori Rontgen :</label>
                             <select class="form-control select2" name="layanan" style="width: 100%;">
                                 <option selected disabled>Silahkan pilih salah satu</option>
                                 @foreach ($layanan_rontgen as $lr)
@@ -114,8 +117,9 @@
                             </select>
                             <span class="help-block">{{ $errors->first('layanan') }}</span>
                         </div>
-                        <div id="select-usg" class="form-group {{ $errors->first('layanan') ? "has-error": "" }}" style="display: none">
-                            <label>Layanan Kategori USG :</label>
+                        <div id="select-usg" class="form-group {{ $errors->first('layanan') ? "has-error": "" }}"
+                            style="display: none">
+                            <label><span style="color: red">*</span> Layanan Kategori USG :</label>
                             <select class="form-control select2" name="layanan" style="width: 100%;">
                                 <option selected disabled>Silahkan pilih salah satu</option>
                                 @foreach ($layanan_usg as $lu)
@@ -127,7 +131,7 @@
                         </div>
 
                         <div class="form-group {{ $errors->first('jadwal') ? "has-error": "" }}">
-                            <label>Jadwal :</label>
+                            <label><span style="color: red">*</span> Jadwal :</label>
                             <select class="form-control select2" name="jadwal" style="width: 100%;">
                                 <option selected disabled>Silahkan pilih salah satu</option>
                                 @foreach ($jadwal as $j)
@@ -139,8 +143,9 @@
                         </div>
 
                         <div class="form-group {{ $errors->first('dokterRujukan') ? "has-error": "" }}">
-                            <label>Dokter Rujukan :</label>
-                            <select class="form-control select2" name="dokterRujukan" style="width: 100%;" onchange="disableSelect()" id="dokter-rujukan">
+                            <label><span style="color: red">*</span> Dokter Rujukan :</label>
+                            <select class="form-control select2" name="dokterRujukan" style="width: 100%;"
+                                onchange="disableSelect()" id="dokter-rujukan">
                                 <option selected disabled>Silahkan pilih salah satu</option>
                                 @foreach ($dokter as $d)
                                 <option value="{{ $d->id }}" {{ old('dokterRujukan') == $d->id ? "selected" : "" }}>
@@ -164,20 +169,17 @@
                             <span class="help-block">{{ $errors->first('permintaan') }}</span>
                         </div>
 
-                        {{--  <div class="form-group {{ $errors->first('suratRujukan') ? "has-error": "" }}">
-                        <label for="foto">Surat Rujukan</label>
-                        <input id="avatar" name="suratRujukan" class="form-control" type="file" id="suratRujukan">
-                        <span class="help-block">{{ $errors->first('suratRujukan') }}</span>
-                    </div> --}}
-                </div>
-                <div class="box-footer">
-                    <div class="form-group">
-                        <button type="submit" class="btn btn-success">Simpan</button>
+                        <hr>
+                        <label class="text-muted"><span style="color: red">*</span> Wajib diisi</label>
+                    </div>
+                    <div class="box-footer">
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-success">Simpan</button>
+                        </div>
                     </div>
                 </div>
+            </form>
         </div>
-        </form>
-    </div>
     </div>
 </section>
 @endsection
@@ -200,13 +202,16 @@
         $('#select-usg').show(500);
         $('#select-rontgen').hide(200);
     })
+
 </script>
 
 @if (Session::has('store_failed'))
 <script>
-swal('Gagal', '{!! Session::get('store_failed') !!}', 'error',{
-    button:'OK',
-});
+    swal('Gagal', '{!! Session::get('
+        store_failed ') !!}', 'error', {
+            button: 'OK',
+        });
+
 </script>
 @endif
 @endpush

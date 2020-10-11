@@ -133,14 +133,14 @@
                     <div class="box-body">
                         <div class="col-md-6">
                             <div class="form-group {{ $errors->first('hasilFoto') ? "has-error": "" }}">
-                                <label for="foto">Hasil Foto</label>
+                                <label for="foto"><span style="color: red">*</span> Hasil Foto</label>
                                 <input id="hasilFoto" name="hasilFoto" class="form-control" type="file">
                                 <p class="help-block">Silahkan unggah hasil foto</p>
                                 <span class="help-block">{{ $errors->first('hasilFoto') }}</span>
                             </div>
 
                             <div class="form-group {{ $errors->first('film') ? "has-error": "" }}">
-                                <label>Film :</label>
+                                <label><span style="color: red">*</span> Film :</label>
                                 <select class="form-control select2" name="film" style="width: 100%;">
                                     <option disabled selected>Silahkan pilih salah satu</option>
                                     @foreach ($film as $f)
@@ -163,6 +163,9 @@
                                     placeholder="Arus dan Waktu ...">
                                 <span class="help-block">{{ $errors->first('arus') }}</span>
                             </div>
+
+                            <hr>
+                        <label class="text-muted"><span style="color: red">*</span> Wajib diisi</label>
                         </div>
 
                         <div class="col-md-6">

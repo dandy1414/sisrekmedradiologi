@@ -30,28 +30,28 @@
                                 </div>
 
                                 <div class="form-group {{ $errors->first('nomorKtp') ? "has-error": "" }}">
-                                    <label>Nomor KTP :</label>
+                                    <label><span style="color: red">*</span> Nomor KTP :</label>
                                     <input value="{{ old('nomorKtp') }}" type="text" name="nomorKtp" class="form-control"
                                         placeholder="Nomor KTP ...">
                                     <span class="help-block">{{ $errors->first('nomorKtp') }}</span>
                                 </div>
 
                                 <div class="form-group {{ $errors->first('nama') ? "has-error": "" }}">
-                                    <label>Nama :</label>
+                                    <label><span style="color: red">*</span> Nama :</label>
                                     <input value="{{ old('nama') }}" type="text" name="nama" class="form-control"
                                         placeholder="Nama ...">
                                     <span class="help-block">{{ $errors->first('nama') }}</span>
                                 </div>
 
                                 <div class="form-group {{ $errors->first('umur') ? "has-error": "" }}">
-                                    <label>Umur :</label>
+                                    <label><span style="color: red">*</span> Umur :</label>
                                     <input value="{{ old('umur') }}" type="text" name="umur"
                                         class="form-control" placeholder="Umur ...">
                                     <span class="help-block">{{ $errors->first('umur') }}</span>
                                 </div>
 
                                 <div class="form-group {{ $errors->first('jenisKelamin') ? "has-error": "" }}">
-                                    <label>Jenis Kelamin :</label>
+                                    <label><span style="color: red">*</span> Jenis Kelamin :</label>
                                     <div class="radio">
                                         <label>
                                             <input type="radio" name="jenisKelamin" id="Laki-laki" value="Laki-laki"
@@ -66,11 +66,14 @@
                                         <span class="help-block">{{ $errors->first('jenisKelamin') }}</span>
                                     </div>
                                 </div>
+
+                                <hr>
+                                <label class="text-muted"><span style="color: red">*</span> Wajib diisi</label>
                             </div>
 
                             <div class="col-md-6">
                                 <div class="form-group {{ $errors->first('nomorTelepon') ? "has-error": "" }}">
-                                    <label>Nomor Telepon :</label>
+                                    <label><span style="color: red">*</span> Nomor Telepon :</label>
                                     <input value="{{old('nomorTelepon')}}" type="text" name="nomorTelepon"
                                         class="form-control {{$errors->first('nomorTelepon') ? "is-invalid" : ""}}"
                                         placeholder="Nomor telepon ...">
@@ -78,14 +81,14 @@
                                 </div>
 
                                 <div class="form-group {{ $errors->first('alamat') ? "has-error": "" }}">
-                                    <label>Alamat :</label>
+                                    <label><span style="color: red">*</span> Alamat :</label>
                                     <textarea name="alamat" id="alamat"
                                         class="form-control {{$errors->first('alamat') ? "is-invalid" : ""}}">{{old('alamat')}}</textarea>
                                     <span class="help-block">{{ $errors->first('alamat') }}</span>
                                 </div>
 
                                 <div class="form-group {{ $errors->first('jenisAsuransi') ? "has-error": "" }}">
-                                    <label>Jenis Asuransi :</label>
+                                    <label><span style="color: red">*</span> Jenis Asuransi :</label>
                                     <select onchange="yesnoSelectAsuransi()" class="form-control select2" name="jenisAsuransi" style="width: 100%;">
                                         <option selected disabled>Silahkan pilih salah satu</option>
                                         <option id="noSelectAsuransi" value="umum"
@@ -105,7 +108,7 @@
                                 </div>
 
                                 <div id="ifYesAsuransi" class="form-group {{ $errors->first('noBpjs') ? "has-error": "" }}" style="display: none">
-                                    <label>Nomor BPJS :</label>
+                                    <label><span style="color: red">*</span> Nomor BPJS :</label>
                                     <input value="{{ old('noBpjs') }}" type="text" name="noBpjs" class="form-control"
                                         placeholder="Nomor BPJS ...">
                                     <span class="help-block">{{ $errors->first('noBpjs') }}</span>

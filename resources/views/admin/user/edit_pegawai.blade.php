@@ -40,21 +40,21 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group {{ $errors->first('name') ? "has-error": "" }}">
-                                    <label>Username :</label>
+                                    <label><span style="color: red">*</span> Username :</label>
                                     <input value="{{ $user->name }}" type="text" name="name" class="form-control"
                                         placeholder="Username ...">
                                     <span class="help-block">{{ $errors->first('name') }}</span>
                                 </div>
 
                                 <div class="form-group {{ $errors->first('email') ? "has-error": "" }}">
-                                    <label>Email :</label>
+                                    <label><span style="color: red">*</span> Email :</label>
                                     <input value="{{ $user->email }}" type="email" name="email" class="form-control"
                                         placeholder="Email ...">
                                     <span class="help-block">{{ $errors->first('email') }}</span>
                                 </div>
 
                                 <div class="form-group {{ $errors->first('role') ? "has-error": "" }}">
-                                    <label>Role :</label>
+                                    <label><span style="color: red">*</span> Role :</label>
                                     <select class="form-control select2" name="role" style="width: 100%;">
                                         <option value="admin"
                                             {{ $user->role  == 'admin' ? "selected" : "" }}>Admin</option>
@@ -71,7 +71,7 @@
                                 </div>
 
                                 <div class="form-group {{ $errors->first('jabatan') ? "has-error": "" }}">
-                                    <label>Jabatan :</label>
+                                    <label><span style="color: red">*</span> Jabatan :</label>
                                     <select class="form-control select2" name="jabatan" style="width: 100%;">
                                         <option selected disabled>Silahkan pilih salah satu</option>
                                         <option value="pendaftaran_ri"
@@ -90,7 +90,7 @@
                                 </div>
 
                                 <div class="form-group {{ $errors->first('nip') ? "has-error": "" }}">
-                                    <label>NIP :</label>
+                                    <label><span style="color: red">*</span> NIP :</label>
                                     <input value="{{ $user->nip }}" type="text" name="nip"
                                         class="form-control {{$errors->first('nip') ? "is-invalid" : ""}}"
                                         placeholder="NIP ...">
@@ -98,12 +98,15 @@
                                 </div>
 
                                 <div class="form-group {{ $errors->first('nama') ? "has-error": "" }}">
-                                    <label>Nama :</label>
+                                    <label><span style="color: red">*</span> Nama :</label>
                                     <input value="{{ $user->nama }}" type="text" name="nama"
                                         class="form-control {{$errors->first('nama') ? "is-invalid" : ""}}"
                                         placeholder="Nama ...">
                                     <span class="help-block">{{ $errors->first('nama') }}</span>
                                 </div>
+
+                                <hr>
+                                <label class="text-muted"><span style="color: red">*</span> Wajib diisi</label>
                             </div>
 
                             <div class="col-md-6">
@@ -125,14 +128,14 @@
                                 </div>
 
                                 <div class="form-group {{ $errors->first('alamat') ? "has-error": "" }}">
-                                    <label>Alamat :</label>
+                                    <label><span style="color: red">*</span> Alamat :</label>
                                     <textarea name="alamat" id="alamat"
                                         class="form-control {{$errors->first('alamat') ? "is-invalid" : ""}}">{{ $user->alamat }}</textarea>
                                     <span class="help-block">{{ $errors->first('alamat') }}</span>
                                 </div>
 
                                 <div class="form-group {{ $errors->first('nomorTelepon') ? "has-error": "" }}">
-                                    <label>No. Telepon :</label>
+                                    <label><span style="color: red">*</span> No. Telepon :</label>
                                     <input value="{{$user->nomor_telepon}}" type="text" name="nomorTelepon"
                                         class="form-control {{$errors->first('nomorTelepon') ? "is-invalid" : ""}}"
                                         placeholder="Nomor telepon ...">

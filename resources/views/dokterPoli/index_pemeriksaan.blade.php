@@ -41,7 +41,6 @@
                                 <th width="30%">Nomor Pemeriksaan</th>
                                 <th>Nomor RM</th>
                                 <th width="20%">Nama</th>
-                                <th width="15%">Jenis Pasien</th>
                                 <th width="2%">Jenis Pemeriksaan</th>
                                 <th>Layanan</th>
                                 <th>Jadwal</th>
@@ -61,7 +60,7 @@
                                 <td>{{ ucfirst($p->jenis_pemeriksaan) }}</td>
                                 <td>{{ ucfirst($p->layanan->nama) }}</td>
                                 <td>{{ $p->jadwal->waktu_mulai }} WIB - {{ $p->jadwal->waktu_selesai }} WIB</td>
-                                <td>{{ $s->waktu_selesai }}</td>
+                                <td>{{ $p->waktu_selesai }}</td>
                                 <td>{{ ($p->id_dokterRadiologi) != null ? $p->dokterRadiologi->nama : "-" }}</td>
                                 <td>{{ ($p->keluhan) != null ? ucfirst($p->keluhan) : "Tidak ada" }}</td>
                                 <td>
