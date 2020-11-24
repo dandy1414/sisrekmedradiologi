@@ -78,7 +78,7 @@ class PelayananController extends Controller
         DB::beginTransaction();
 
         try{
-            $layanan = Layanan::findOrFail($request->id_layanan);
+            $layanan = Layanan::where($request->id_layanan)->first();
             $layanan->nama = $request->nama;
             $layanan->id_kategori = $request->kategori;
             $layanan->tarif = $request->tarif;
@@ -86,7 +86,10 @@ class PelayananController extends Controller
 
             DB::commit();
 
-            Session::flash('update_layanan_succeed', 'Data layanan berhasil terubah');
+            if($layanan->wasChanged() == true){
+                Session::flash('update_layanan_succeed', 'Data layanan berhasil terubah');
+            }
+
             return redirect()->route('pelayanan.index');
         } catch(QueryException $x){
             DB::rollBack();
@@ -101,14 +104,17 @@ class PelayananController extends Controller
         DB::beginTransaction();
 
         try{
-            $film = FIlm::findOrFail($request->id_film);
+            $film = Film::findOrFail($request->id_film);
             $film->nama = $request->nama;
             $film->harga = $request->harga;
             $film->save();
 
             DB::commit();
 
-            Session::flash('update_film_succeed', 'Data film berhasil terubah');
+            if($film->wasChanged() == true){
+                Session::flash('update_film_succeed', 'Data film berhasil terubah');
+            }
+
             return redirect()->route('pelayanan.index');
         } catch(QueryException $x){
             DB::rollBack();

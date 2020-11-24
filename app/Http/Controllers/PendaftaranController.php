@@ -11,6 +11,7 @@ use App\Models\Pendaftaran;
 use App\Models\Pemeriksaan;
 use App\User;
 use App\Models\Ruangan;
+use App\Notifications\PendaftaranNotifikasi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
@@ -18,6 +19,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
 
 
 class PendaftaranController extends Controller
@@ -80,15 +82,15 @@ class PendaftaranController extends Controller
     }
 
     public function storePasienUmum(Request $request){
-            $validator = Validator::make($request->all(),[
-                "nama" => "required|min:3|max:100",
-                "nomorKtp" => "required|max:16|unique:trans_pasien,nomor_ktp",
-                "umur" => "required|numeric",
-                "jenisKelamin" => "required",
-                "alamat" => "required|min:5|max:200",
-                "nomorTelepon" => "required|digits_between:10,12|unique:trans_pasien,nomor_telepon",
-                "jenisAsuransi" => "required",
-            ])->validate();
+        $validator = Validator::make($request->all(),[
+            "nama" => "required|min:3|max:100",
+            "nomorKtp" => "required|size:16|string|unique:trans_pasien,nomor_ktp",
+            "umur" => "required|numeric",
+            "jenisKelamin" => "required",
+            "alamat" => "required|min:5|max:200",
+            "nomorTelepon" => "required|numeric|digits_between:10,12|unique:trans_pasien,nomor_telepon",
+            "jenisAsuransi" => "required",
+        ])->validate();
 
         DB::beginTransaction();
 
@@ -123,12 +125,12 @@ class PendaftaranController extends Controller
     public function storePasienRs(Request $request){
         $validator = Validator::make($request->all(),[
             "nama" => "required|min:3|max:100",
-            "nomorKtp" => "required|max:16|unique:trans_pasien,nomor_ktp",
+            "nomorKtp" => "required|size:16|string|unique:trans_pasien,nomor_ktp",
             "umur" => "required|numeric",
             "jenisKelamin" => "required",
             "asalRuangan" => "required",
             "alamat" => "required|min:5|max:200",
-            "nomorTelepon" => "required|digits_between:10,12|unique:trans_pasien,nomor_telepon",
+            "nomorTelepon" => "required|numeric|digits_between:10,12|unique:trans_pasien,nomor_telepon",
             "jenisAsuransi" => "required",
         ])->validate();
 
@@ -179,11 +181,11 @@ class PendaftaranController extends Controller
     public function updatePasienUmum(Request $request, $id){
         $validator = Validator::make($request->all(),[
             "nama" => "required|min:3|max:100",
-            "nomorKtp" => "required|max:16|unique:trans_pasien,nomor_ktp,". $id,
+            "nomorKtp" => "required|size:16|string|unique:trans_pasien,nomor_ktp,". $id,
             "umur" => "required|numeric",
             "jenisKelamin" => "required",
             "alamat" => "required|min:5|max:200",
-            "nomorTelepon" => "required|digits_between:10,12|unique:trans_pasien,nomor_telepon,". $id,
+            "nomorTelepon" => "required|numeric|digits_between:10,12|unique:trans_pasien,nomor_telepon,". $id,
             "jenisAsuransi" => "required"
         ])->validate();
 
@@ -191,22 +193,26 @@ class PendaftaranController extends Controller
 
         try{
 
-            Pasien::where('id', $id)->update([
-                'nomor_rm' => $request->noRm,
-                'nomor_ktp' => $request->nomorKtp,
-                'nama' => $request->nama,
-                'jenis_pasien' => $request->jenisPasien,
-                'umur' => $request->umur,
-                'id_ruangan' => $request->asalRuangan,
-                'jenis_kelamin' => $request->jenisKelamin,
-                'alamat' => $request->alamat,
-                'nomor_telepon' => $request->nomorTelepon,
-                'jenis_asuransi' => $request->jenisAsuransi,
-                'nomor_bpjs' => $request->noBpjs,
-            ]);
+            $pasien = Pasien::where('id', $id)->first();
+            $pasien->nomor_ktp = $request->nomorKtp;
+            $pasien->nama = $request->nama;
+            $pasien->jenis_pasien = $request->jenisPasien;
+            $pasien->umur = $request->umur;
+            $pasien->id_ruangan = $request->asalRuangan;
+            $pasien->jenis_kelamin = $request->jenisKelamin;
+            $pasien->id_ruangan = $request->asalRuangan;
+            $pasien->alamat = $request->alamat;
+            $pasien->nomor_telepon = $request->nomorTelepon;
+            $pasien->jenis_asuransi = $request->jenisAsuransi;
+            $pasien->nomor_bpjs = $request->noBpjs;
+            $pasien->save();
 
             DB::commit();
-            Session::flash('update_succeed', 'Data pasien berhasil terubah');
+
+            if($pasien->wasChanged() == true){
+                Session::flash('update_succeed', 'Data pasien berhasil terubah');
+            }
+
             return redirect()->route('resepsionis.pasien.index-pasien-umum');
 
         } catch (QueryException $x)
@@ -221,35 +227,36 @@ class PendaftaranController extends Controller
     public function updatePasienRs(Request $request, $id){
         $validator = Validator::make($request->all(),[
             "nama" => "required|min:3|max:100",
-            "nomorKtp" => "required|max:16|unique:trans_pasien,nomor_ktp,". $id,
+            "nomorKtp" => "required|size:16|string|unique:trans_pasien,nomor_ktp,". $id,
             "umur" => "required|numeric",
             "asalRuangan" => "required",
             "jenisKelamin" => "required",
             "alamat" => "required|min:5|max:200",
-            "nomorTelepon" => "required|digits_between:10,12|unique:trans_pasien,nomor_telepon,". $id,
-            "jenisAsuransi" => "required"
+            "nomorTelepon" => "required|numeric|digits_between:10,12|unique:trans_pasien,nomor_telepon,". $id,
+            "jenisAsuransi" => "required",
         ])->validate();
 
         DB::beginTransaction();
 
         try{
-
-            Pasien::where('id', $id)->update([
-                'nomor_rm' => $request->noRm,
-                'nomor_ktp' => $request->nomorKtp,
-                'nama' => $request->nama,
-                'umur' => $request->umur,
-                'id_ruangan' => $request->asalRuangan,
-                'jenis_kelamin' => $request->jenisKelamin,
-                'id_ruangan' => $request->asalRuangan,
-                'alamat' => $request->alamat,
-                'nomor_telepon' => $request->nomorTelepon,
-                'jenis_asuransi' => $request->jenisAsuransi,
-                'nomor_bpjs' => $request->noBpjs,
-            ]);
+            $pasien = Pasien::where('id', $id)->first();
+            $pasien->nomor_ktp = $request->nomorKtp;
+            $pasien->nama = $request->nama;
+            $pasien->umur = $request->umur;
+            $pasien->id_ruangan = $request->asalRuangan;
+            $pasien->jenis_kelamin = $request->jenisKelamin;
+            $pasien->id_ruangan = $request->asalRuangan;
+            $pasien->alamat = $request->alamat;
+            $pasien->nomor_telepon = $request->nomorTelepon;
+            $pasien->jenis_asuransi = $request->jenisAsuransi;
+            $pasien->nomor_bpjs = $request->noBpjs;
+            $pasien->save();
 
             DB::commit();
-            Session::flash('update_succeed', 'Data pasien berhasil terubah');
+
+            if($pasien->wasChanged() == true){
+                Session::flash('update_succeed', 'Data pasien berhasil terubah');
+            }
             return redirect()->route('resepsionis.pasien.index-pasien-rs');
 
         } catch (QueryException $x)
@@ -271,8 +278,8 @@ class PendaftaranController extends Controller
 
     public function pendaftaranPasienUmum($id){
         $pasien = Pasien::where('id', $id)->firstOrFail();
-        $layanan_rontgen = Layanan::where('id', '2')->get();
-        $layanan_usg = Layanan::where('id', '1')->get();
+        $layanan_rontgen = Layanan::where('id_kategori', '2')->get();
+        $layanan_usg = Layanan::where('id_kategori', '1')->get();
         $dokter = User::where('role', 'dokterRadiologi')->get();
 
         $tgl_hari_ini = date('Y-m-d').'%';
@@ -303,6 +310,8 @@ class PendaftaranController extends Controller
             "jadwal" => "required",
         ])->validate();
 
+        $penerima_radiografer = User::where('role', 'radiografer')->get();
+
         if($request->jenisPemeriksaan == 'biasa'){
             $new_pendaftaran = new Pendaftaran();
             $new_pendaftaran->jenis_pemeriksaan = $request->jenisPemeriksaan;
@@ -312,8 +321,8 @@ class PendaftaranController extends Controller
             $new_pendaftaran->id_resepsionis = Auth::user()->id;
             $new_pendaftaran->id_dokterRadiologi = $request->dokterRujukan;
             $new_pendaftaran->keluhan = $request->keluhan;
-
             $new_pendaftaran->save();
+
             $id_pendaftaran = $new_pendaftaran->id;
 
             DB::beginTransaction();
@@ -330,10 +339,14 @@ class PendaftaranController extends Controller
                 $pemeriksaan->total_tarif = $tarif;
                 $pemeriksaan->save();
 
+                $nama_pasien = $pemeriksaan->pasien->nama;
+
+                Notification::send($penerima_radiografer, new PendaftaranNotifikasi($pemeriksaan, $nama_pasien));
+
                 DB::commit();
 
                 Session::flash('store_succeed', 'Pendaftaran berhasil tersimpan');
-                return redirect()->route('resepsionis.index-pendaftaran');
+                return redirect()->route('resepsionis.pasien.index.pendaftaran');
             }catch (QueryException $x){
                 DB::rollBack();
                 dd($x->getMessage());
@@ -350,8 +363,8 @@ class PendaftaranController extends Controller
             $new_pendaftaran->id_dokterPoli = $request->dokterPerujuk;
             $new_pendaftaran->id_dokterRadiologi = $request->dokterRujukan;
             $new_pendaftaran->keluhan = $request->keluhan;
-
             $new_pendaftaran->save();
+
             $id_pendaftaran = $new_pendaftaran->id;
 
             DB::beginTransaction();
@@ -369,6 +382,112 @@ class PendaftaranController extends Controller
                 $pemeriksaan->permintaan_tambahan = $request->permintaan;
                 $pemeriksaan->total_tarif = $tarif;
                 $pemeriksaan->save();
+
+                $nama_pasien = $pemeriksaan->pasien->nama;
+
+                Notification::send($penerima_radiografer, new PendaftaranNotifikasi($pemeriksaan, $nama_pasien));
+
+                DB::commit();
+
+                $pendaftaran = Pendaftaran::findOrFail($id_pendaftaran);
+
+                Session::flash('store_succeed', 'Pendaftaran berhasil tersimpan');
+                return view('suratRujukan.surat_rujukan', compact('pendaftaran'));
+            }catch (QueryException $x){
+                DB::rollBack();
+                dd($x->getMessage());
+                Session::flash('store_failed', 'Pendaftaran gagal tersimpan');
+                return redirect()->route('resepsionis.pasien.pendaftaran.pasien-umum');
+            }
+        }
+    }
+
+    public function storePendaftaranPasienRs(Request $request, $id){
+        $validator = Validator::make($request->all(),[
+            "jenisPemeriksaan" => "required",
+            "layanan" => "required",
+            "jadwal" => "required",
+        ])->validate();
+
+        $penerima_radiografer = User::where('role', 'radiografer')->get();
+
+        if($request->jenisPemeriksaan == 'biasa'){
+            $new_pendaftaran = new Pendaftaran();
+            $new_pendaftaran->jenis_pemeriksaan = $request->jenisPemeriksaan;
+            $new_pendaftaran->pasien_id = $id;
+            $new_pendaftaran->id_jadwal = $request->jadwal;
+            $new_pendaftaran->id_layanan = $request->layanan;
+            $new_pendaftaran->id_resepsionis = Auth::user()->id;
+            $new_pendaftaran->id_dokterPoli = $request->dokterPerujuk;
+            $new_pendaftaran->id_dokterRadiologi = $request->dokterRujukan;
+            $new_pendaftaran->keluhan = $request->keluhan;
+            $new_pendaftaran->save();
+
+            $id_pendaftaran = $new_pendaftaran->id;
+
+            DB::beginTransaction();
+            try{
+                $tarif = Layanan::where('id', $request->layanan)->value('tarif');
+                $pemeriksaan = new Pemeriksaan;
+                $pemeriksaan->pendaftaran_id = $id_pendaftaran;
+                $pemeriksaan->jenis_pemeriksaan = $request->jenisPemeriksaan;
+                $pemeriksaan->cito = $request->cito;
+                $pemeriksaan->pasien_id = $id;
+                $pemeriksaan->id_jadwal = $request->jadwal;
+                $pemeriksaan->id_layanan = $request->layanan;
+                $pemeriksaan->id_dokterRadiologi = $request->dokterRujukan;
+                $pemeriksaan->keluhan = $request->keluhan;
+                $pemeriksaan->total_tarif = $tarif;
+                $pemeriksaan->save();
+
+                $nama_pasien = $pemeriksaan->pasien->nama;
+
+                Notification::send($penerima_radiografer, new PendaftaranNotifikasi($pemeriksaan, $nama_pasien));
+
+                DB::commit();
+
+                Session::flash('store_succeed', 'Pendaftaran berhasil tersimpan');
+                return redirect()->route('resepsionis.pasien.index.pendaftaran');
+            }catch (QueryException $x){
+                DB::rollBack();
+                dd($x->getMessage());
+                Session::flash('store_failed', 'Pendaftaran gagal tersimpan');
+                return redirect()->route('resepsionis.pasien.pendaftaran.pasien-umum');
+            }
+        }else{
+            $new_pendaftaran = new Pendaftaran();
+            $new_pendaftaran->jenis_pemeriksaan = $request->jenisPemeriksaan;
+            $new_pendaftaran->pasien_id = $id;
+            $new_pendaftaran->id_jadwal = $request->jadwal;
+            $new_pendaftaran->id_layanan = $request->layanan;
+            $new_pendaftaran->id_resepsionis = Auth::user()->id;
+            $new_pendaftaran->id_dokterRadiologi = $request->dokterRujukan;
+            $new_pendaftaran->id_dokterPoli = $request->dokterPerujuk;
+            $new_pendaftaran->keluhan = $request->keluhan;
+            $new_pendaftaran->save();
+
+            $id_pendaftaran = $new_pendaftaran->id;
+
+            DB::beginTransaction();
+            try{
+                $tarif = Layanan::where('id', $request->layanan)->value('tarif');
+                $pemeriksaan = new Pemeriksaan;
+                $pemeriksaan->pendaftaran_id = $id_pendaftaran;
+                $pemeriksaan->jenis_pemeriksaan = $request->jenisPemeriksaan;
+                $pemeriksaan->cito = $request->cito;
+                $pemeriksaan->pasien_id = $id;
+                $pemeriksaan->id_jadwal = $request->jadwal;
+                $pemeriksaan->id_layanan = $request->layanan;
+                $pemeriksaan->id_dokterRadiologi = $request->dokterRujukan;
+                $pemeriksaan->id_dokterPoli = $request->dokterPerujuk;
+                $pemeriksaan->keluhan = $request->keluhan;
+                $pemeriksaan->permintaan_tambahan = $request->permintaan;
+                $pemeriksaan->total_tarif = $tarif;
+                $pemeriksaan->save();
+
+                $nama_pasien = $pemeriksaan->pasien->nama;
+
+                Notification::send($penerima_radiografer, new PendaftaranNotifikasi($pemeriksaan, $nama_pasien));
 
                 DB::commit();
 
@@ -417,98 +536,6 @@ class PendaftaranController extends Controller
         return Storage::disk('local')->download('public/surat_rujukan/'.$nama_file);
     }
 
-    public function storePendaftaranPasienRs(Request $request, $id){
-        $validator = Validator::make($request->all(),[
-            "jenisPemeriksaan" => "required",
-            "layanan" => "required",
-            "jadwal" => "required",
-        ])->validate();
-
-        if($request->jenisPemeriksaan == 'biasa'){
-            $new_pendaftaran = new Pendaftaran();
-            $new_pendaftaran->jenis_pemeriksaan = $request->jenisPemeriksaan;
-            $new_pendaftaran->pasien_id = $id;
-            $new_pendaftaran->id_jadwal = $request->jadwal;
-            $new_pendaftaran->id_layanan = $request->layanan;
-            $new_pendaftaran->id_resepsionis = Auth::user()->id;
-            $new_pendaftaran->id_dokterPoli = $request->dokterPerujuk;
-            $new_pendaftaran->id_dokterRadiologi = $request->dokterRujukan;
-
-            $new_pendaftaran->keluhan = $request->keluhan;
-            $new_pendaftaran->save();
-            $id_pendaftaran = $new_pendaftaran->id;
-
-            DB::beginTransaction();
-            try{
-                $tarif = Layanan::where('id', $request->layanan)->value('tarif');
-                $pemeriksaan = new Pemeriksaan;
-                $pemeriksaan->id_pendaftaran = $id_pendaftaran;
-                $pemeriksaan->jenis_pemeriksaan = $request->jenisPemeriksaan;
-                $pemeriksaan->cito = $request->cito;
-                $pemeriksaan->pasien_id = $id;
-                $pemeriksaan->id_jadwal = $request->jadwal;
-                $pemeriksaan->id_layanan = $request->layanan;
-                $pemeriksaan->id_dokterRadiologi = $request->dokterRujukan;
-                $pemeriksaan->keluhan = $request->keluhan;
-                $pemeriksaan->total_tarif = $tarif;
-                $pemeriksaan->save();
-
-                DB::commit();
-
-                Session::flash('store_succeed', 'Pendaftaran berhasil tersimpan');
-                return redirect()->route('resepsionis.index-pendaftaran');
-            }catch (QueryException $x){
-                DB::rollBack();
-                dd($x->getMessage());
-                Session::flash('store_failed', 'Pendaftaran gagal tersimpan');
-                return redirect()->route('resepsionis.pasien.pendaftaran.pasien-umum');
-            }
-        }else{
-            $new_pendaftaran = new Pendaftaran();
-            $new_pendaftaran->jenis_pemeriksaan = $request->jenisPemeriksaan;
-            $new_pendaftaran->pasien_id = $id;
-            $new_pendaftaran->id_jadwal = $request->jadwal;
-            $new_pendaftaran->id_layanan = $request->layanan;
-            $new_pendaftaran->id_resepsionis = Auth::user()->id;
-            $new_pendaftaran->id_dokterRadiologi = $request->dokterRujukan;
-            $new_pendaftaran->id_dokterPoli = $request->dokterPerujuk;
-
-            $new_pendaftaran->keluhan = $request->keluhan;
-            $new_pendaftaran->save();
-            $id_pendaftaran = $new_pendaftaran->id;
-
-            DB::beginTransaction();
-            try{
-                $tarif = Layanan::where('id', $request->layanan)->value('tarif');
-                $pemeriksaan = new Pemeriksaan;
-                $pemeriksaan->pendaftaran_id = $id_pendaftaran;
-                $pemeriksaan->jenis_pemeriksaan = $request->jenisPemeriksaan;
-                $pemeriksaan->cito = $request->cito;
-                $pemeriksaan->pasien_id = $id;
-                $pemeriksaan->id_jadwal = $request->jadwal;
-                $pemeriksaan->id_layanan = $request->layanan;
-                $pemeriksaan->id_dokterRadiologi = $request->dokterRujukan;
-                $pemeriksaan->id_dokterPoli = $request->dokterPerujuk;
-                $pemeriksaan->keluhan = $request->keluhan;
-                $pemeriksaan->permintaan_tambahan = $request->permintaan;
-                $pemeriksaan->total_tarif = $tarif;
-                $pemeriksaan->save();
-
-                DB::commit();
-
-                $pendaftaran = Pendaftaran::findOrFail($id_pendaftaran);
-
-                Session::flash('store_succeed', 'Pendaftaran berhasil tersimpan, silahkan unduh surat rujukan terlebih dahulu');
-                return view('suratRujukan.surat_rujukan', compact('pendaftaran'));
-            }catch (QueryException $x){
-                DB::rollBack();
-                dd($x->getMessage());
-                Session::flash('store_failed', 'Pendaftaran gagal tersimpan');
-                return redirect()->route('resepsionis.pasien.pendaftaran.pasien-umum');
-            }
-        }
-    }
-
     public function detailSuratRujukan($id){
         $pendaftaran = Pendaftaran::findOrFail($id);
 
@@ -518,8 +545,9 @@ class PendaftaranController extends Controller
     public function suratRujukan($id){
         $pendaftaran = Pendaftaran::findOrFail($id);
 
-        $pdf = PDF::loadview('suratRujukan.surat_rujukan_pdf', compact('pendaftaran'))->setPaper('A4', 'potrait');
-        return $pdf->stream('surat-rujukan-'.$pendaftaran->nomor_pendaftaran.'.pdf');
+        $pdf = PDF::loadview('suratRujukan.surat_rujukan_pdf', ['pendaftaran' => $pendaftaran])
+        ->setPaper('A4', 'potrait');
+        return $pdf->stream('surat-rujukan-'.$pendaftaran->nomor_pendaftaran.'.pdf', array('Attachment' => false));
     }
 
 }

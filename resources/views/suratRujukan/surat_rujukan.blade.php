@@ -113,7 +113,7 @@
         <br>
         <div class="row">
             <div class="col-xs-9">
-                @if (request()->is('resepsionis/*/pendaftaran/pasien*'))
+                @if (request()->is('resepsionis/*/pendaftaran/pasien*') && $pendaftaran->pasien->jenis_pasien == 'rs')
                 <a class="btn btn-danger btn"
                     href="{{ route('resepsionis.pasien.pendaftaran.print.surat-rujukan', ['id'=>$pendaftaran->id]) }}"
                     target="_blank"><i class="fa fa-print"></i> Export PDF</a>
@@ -128,6 +128,13 @@
                         <button type="submit" class="btn btn-success">Simpan</button>
                     </div>
                 </form>
+                @endif
+
+                @if ($pendaftaran->jenis_pemeriksaan == 'penuh' && $pendaftaran->pasien->jenis_pasien == 'umum')
+                <a class="btn btn-success btn" href="{{ route('resepsionis.pasien.index.pendaftaran') }}" style="margin-right: 5px">Kembali</a>
+                <a class="btn btn-danger btn"
+                    href="{{ route('resepsionis.pasien.pendaftaran.print.surat-rujukan', ['id'=>$pendaftaran->id]) }}"
+                    target="_blank"><i class="fa fa-print"></i> Export PDF</a>
                 @endif
 
                 @if(request()->is('dokter-poli/*/rujuk-pasien'))
@@ -181,11 +188,13 @@
             </div>
             <div class="col-xs-3">
                 Tanggal cetak &nbsp;: {{ $pendaftaran->created_at }} WIB<br>
+                @if ($pendaftaran->jenis_pemeriksaan == 'penuh' && $pendaftaran->pasien->jenis_pasien == 'rs')
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Dokter
                 Perujuk <br>
                 <br><br>
 
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ ($pendaftaran->id_dokterPoli != null ? ucfirst($pendaftaran->dokterPoli->nama) : "-") }}
+                @endif
             </div>
         </div>
         <br>

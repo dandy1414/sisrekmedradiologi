@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use PDF;
 use Session;
 use App\Models\Pasien;
+use App\User;
 use App\Models\Pendaftaran;
 use App\Models\Pemeriksaan;
 use Illuminate\Http\Request;
@@ -13,6 +14,9 @@ use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Notification;
+use App\Notifications\ExpertiseNotifikasi;
+use App\Notifications\ExpertisePoliNotifikasi;
 
 class ExpertiseController extends Controller
 {
@@ -50,7 +54,7 @@ class ExpertiseController extends Controller
     public function indexPemeriksaan(){
         $tgl_hari_ini = date('Y-m-d').'%';
         $total_belum = Pemeriksaan::where('status_pemeriksaan', 'pending')->where('updated_at', 'like', $tgl_hari_ini)->count();
-        $total_selesai = Pemeriksaan::where('status_pemeriksaan', 'selesai')->where('updated_at', 'like', $tgl_hari_ini)->count();
+        $total_selesai = Pemeriksaan::where('expertise_pdf', '>', '0')->where('updated_at', 'like', $tgl_hari_ini)->count();
 
         $id_dokterRadiologi = Auth::user()->id;
         $belum = Pemeriksaan::where('status_pemeriksaan', 'pending')->where('id_dokterRadiologi', $id_dokterRadiologi)->orderBy('created_at', 'desc')->get();
@@ -67,12 +71,18 @@ class ExpertiseController extends Controller
 
     public function expertisePasien($id){
         $pemeriksaan = Pemeriksaan::where('id', $id)->firstOrFail();
+        $id = DB::table('notifications')->where('data', 'like', '%"id":'.$id.'%')->value('id');
+        $this->markAsReadNotification($id);
 
         return view('dokterRadiologi.expertise_pasien', ['pemeriksaan'=>$pemeriksaan]);
     }
 
     public function storeExpertisePasien(Request $request, $id){
-        $waktu_kirim = Pemeriksaan::where('id', $id)->value('waktu_kirim');
+        $pemeriksaan = Pemeriksaan::where('id', $id)->firstOrFail();
+        $waktu_kirim = $pemeriksaan->waktu_kirim;
+        $penerima_radiografer = User::where('id', $pemeriksaan->id_radiografer)->get();
+        $penerima_dokterPoli = User::where('id', $pemeriksaan->id_dokterPoli)->get();
+
         DB::beginTransaction();
         try{
             $timestamp = date('Y-m-d H:i:s');
@@ -87,12 +97,15 @@ class ExpertiseController extends Controller
             $expertise->status_pemeriksaan = "selesai";
             $expertise->save();
 
+            $nama_pasien = $pemeriksaan->pasien->nama;
+
+            Notification::send($penerima_radiografer, new ExpertiseNotifikasi($expertise, $nama_pasien));
+            Notification::send($penerima_dokterPoli, new ExpertisePoliNotifikasi($expertise, $nama_pasien));
+
             DB::commit();
 
-            $pemeriksaan = Pemeriksaan::findOrFail($id);
-
             Session::flash('store_succeed', 'Expertise berhasil tersimpan, silahkan export pdf hasil expertise terlebih dahulu untuk di tanda tangani');
-            return view('hasilExpertise.hasil_expertise', compact('pemeriksaan'));
+            return view('dokterRadiologi.hasil_expertise', ['pemeriksaan' => $expertise]);
         }
         catch(QueryException $x){
             DB::rollBack();
@@ -156,5 +169,16 @@ class ExpertiseController extends Controller
 
         $pdf = PDF::loadview('hasilExpertise.hasil_expertise_pdf', ['pemeriksaan'=>$pemeriksaan])->setPaper('A4', 'potrait');
         return $pdf->stream('hasil-expertise-'.$pemeriksaan->nomor_pemeriksaan.'.pdf');
+    }
+
+    public function markAsReadNotification($id){
+        auth()->user()
+        ->unreadNotifications
+        ->when($id, function ($query) use ($id) {
+            return $query->where('id', $id);
+        })
+        ->markAsRead();
+
+        return response()->noContent();
     }
 }

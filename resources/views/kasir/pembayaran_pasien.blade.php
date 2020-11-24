@@ -2,6 +2,10 @@
 
 @section('title')Pembayaran @endsection
 
+@section('csrf')
+<meta name="csrf-token" content="{{ csrf_token() }}" />
+@endsection
+
 @section('content')
 <section class="content-header" style="margin-top: 50px;">
     <h1>
@@ -158,7 +162,7 @@
                             <div class="col-xs-12">
                                 <div class="form-group">
                                     <label>Metode Pembayaran :</label>
-                                    <select class="form-control select2" name="metode" style="width: 100%;">
+                                    <select class="form-control select2" name="metode" style="width: 100%;" required>
                                         <option selected disabled>Silahkan pilih salah satu</option>
                                         <option value="cash">Cash</option>
                                         <option value="kartu_kredit">Kartu Kredit</option>
@@ -167,7 +171,7 @@
                                     <br>
 
                                     <label>Bayar :</label>
-                                    <input id="bayar" type="text" name="bayar" class="form-control" placeholder="Bayar ...">
+                                    <input id="bayar" type="text" name="bayar" class="form-control" placeholder="Bayar ..." required>
                                     <br>
 
                                     <label>Kembalian :</label>

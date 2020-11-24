@@ -9,12 +9,16 @@ use App\Models\Pendaftaran;
 use App\Models\Pemeriksaan;
 use App\Models\Film;
 use App\Models\Tagihan;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Notification;
+use App\Notifications\TagihanNotifikasi;
+use App\Notifications\PemeriksaanNotifikasi;
 
 class PemeriksaanController extends Controller
 {
@@ -95,6 +99,9 @@ class PemeriksaanController extends Controller
 
     public function pemeriksaanPasien($id){
         $pemeriksaan = Pemeriksaan::where('id', $id)->firstOrFail();
+        $id = DB::table('notifications')->where('data', 'like', '%"id":'.$id.'%')->value('id');
+        $this->markAsReadNotification($id);
+
         $film = Film::all();
 
         return view('radiografer.pemeriksaan_pasien', ['pemeriksaan'=>$pemeriksaan, 'film'=>$film]);
@@ -102,11 +109,14 @@ class PemeriksaanController extends Controller
 
     public function storePemeriksaanPasien(Request $request, $id){
         $validator = Validator::make($request->all(),[
-            "hasilFoto" => '|required|file|image|mimes:jpeg,png,gif,webp|max:2048',
+            "hasilFoto" => '|required|file|image|mimes:jpeg,png,webp|max:2048',
             "film" =>'required',
         ])->validate();
 
         $pemeriksaan = Pemeriksaan::where('id', $id)->firstOrFail();
+        $penerima_kasir = User::where('role', 'kasir')->get();
+        $penerima_dokterRadiologi = User::where('id', $pemeriksaan->id_dokterRadiologi)->first();
+        $penerima_dokterPoli = User::where('id', $pemeriksaan->id_dokterPoli)->first();
         $id_jadwal = $pemeriksaan->id_jadwal;
         $pasien_id = $pemeriksaan->pasien_id;
         $id_layanan = $pemeriksaan->id_layanan;
@@ -115,7 +125,6 @@ class PemeriksaanController extends Controller
         $film = Film::where('id', $request->film)->firstOrFail();
         $id_film = $film->id;
         $harga_film = $film->harga;
-
 
         if($pemeriksaan->jenis_pemeriksaan == 'biasa'){
             DB::beginTransaction();
@@ -146,6 +155,12 @@ class PemeriksaanController extends Controller
             $new_pemeriksaan->total_tarif = $total_tarif;
             $new_pemeriksaan->save();
 
+            if($pemeriksaan->pasien->jenis_pasien == 'rs' && $pemeriksaan->id_dokterPoli > 0){
+                $nama_pasien = $new_pemeriksaan->pasien->nama;
+
+                Notification::send($penerima_dokterPoli, new ExpertisePoliNotifikasi($new_pemeriksaan, $nama_pasien));
+            }
+
             $new_tagihan = new Tagihan;
             $new_tagihan->pasien_id = $pasien_id;
             $new_tagihan->id_pemeriksaan = $id;
@@ -157,6 +172,9 @@ class PemeriksaanController extends Controller
             $new_tagihan->tarif_jasa = (10/100)*$tarif_layanan;
             $new_tagihan->total_harga = $total_tarif;
             $new_tagihan->save();
+
+            $nama_pasien_tagihan = $new_tagihan->pasien->nama;
+            Notification::send($penerima_kasir, new TagihanNotifikasi($new_tagihan, $nama_pasien_tagihan));
 
             DB::commit();
 
@@ -198,6 +216,10 @@ class PemeriksaanController extends Controller
             $new_pemeriksaan->total_tarif = $total_tarif;
             $new_pemeriksaan->save();
 
+            $nama_pasien = $pemeriksaan->pasien->nama;
+
+            Notification::send($penerima_dokterRadiologi, new PemeriksaanNotifikasi($pemeriksaan, $nama_pasien));
+
             $new_tagihan = new Tagihan;
             $new_tagihan->pasien_id = $pasien_id;
             $new_tagihan->id_pemeriksaan = $id;
@@ -209,6 +231,9 @@ class PemeriksaanController extends Controller
             $new_tagihan->tarif_jasa = (10/100)*$tarif_layanan;
             $new_tagihan->total_harga = $total_tarif;
             $new_tagihan->save();
+
+            $nama_pasien_tagihan = $new_tagihan->pasien->nama;
+            Notification::send($penerima_kasir, new TagihanNotifikasi($new_tagihan, $nama_pasien_tagihan));
 
             DB::commit();
 
@@ -229,5 +254,16 @@ class PemeriksaanController extends Controller
         $pendaftaran = Pendaftaran::findOrFail($id);
 
         return view('suratRujukan.surat_rujukan', compact('pendaftaran'));
+    }
+
+    public function markAsReadNotification($id){
+        auth()->user()
+        ->unreadNotifications
+        ->when($id, function ($query) use ($id) {
+            return $query->where('id', $id);
+        })
+        ->markAsRead();
+
+        return response()->noContent();
     }
 }

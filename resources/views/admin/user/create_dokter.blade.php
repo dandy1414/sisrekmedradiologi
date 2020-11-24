@@ -61,18 +61,10 @@
                                     <label><span style="color: red">*</span> Role :</label>
                                     <select class="form-control select2" name="role" style="width: 100%;">
                                         <option selected disabled>Silahkan pilih salah satu</option>
-                                        <option value="resepsionis"
-                                            {{ old('role') == 'resepsionis' ? "selected" : "" }}>
-                                            Resepsionis</option>
-                                        <option value="radiografer"
-                                            {{ old('role') == 'radiografer' ? "selected" : "" }}>
-                                            Radiografer</option>
                                         <option value="dokterPoli" {{ old('role') == 'dokterPoli' ? "selected" : "" }}>
                                             Dokter Poli</option>
                                         <option value="dokterRadiologi"
                                             {{ old('role') == 'dokterRadiologi' ? "selected" : "" }}>Dokter Radiologi
-                                        </option>
-                                        <option value="kasir" {{ old('role') == 'kasir' ? "selected" : "" }}>Kasir
                                         </option>
                                     </select>
                                     <span class="help-block">{{ $errors->first('role') }}</span>
@@ -120,9 +112,6 @@
                                         placeholder="SIP ...">
                                     <span class="help-block">{{ $errors->first('sip') }}</span>
                                 </div>
-
-                                <hr>
-                                <label class="text-muted"><span style="color: red">*</span> Wajib diisi</label>
                             </div>
 
                             <div class="col-md-6">
@@ -171,6 +160,9 @@
                                     <input id="avatar" name="avatar" class="form-control" type="file" id="foto">
                                     <span class="help-block">{{ $errors->first('avatar') }}</span>
                                 </div>
+
+                                <hr>
+                                <label class="text-muted"><span style="color: red">*</span> Wajib diisi</label>
                             </div>
                         </div>
                     </div>

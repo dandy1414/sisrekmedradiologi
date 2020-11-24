@@ -2,6 +2,10 @@
 
 @section('title') Detail @endsection
 
+@section('csrf')
+<meta name="csrf-token" content="{{ csrf_token() }}" />
+@endsection
+
 @section('content')
 
 <section class="content-header" style="margin-top: 50px;">
@@ -92,15 +96,12 @@
                         <thead>
                             <tr>
                                 <th>No.</th>
-                                <th width="30%">Nomor Pemeriksaan</th>
-                                <th>Nomor RM</th>
-                                <th width="20%">Nama</th>
-                                <th width="15%">Jenis Pasien</th>
-                                <th width="2%">Jenis Pemeriksaan</th>
+                                <th>Nomor Pemeriksaan</th>
+                                <th>Jenis Pemeriksaan</th>
                                 <th>Layanan</th>
                                 <th>Jadwal</th>
-                                <th width="5%">Waktu Selesai</th>
-                                <th width="15%">Dokter Rujukan</th>
+                                <th>Waktu Selesai</th>
+                                <th>Dokter Rujukan</th>
                                 <th>Keluhan</th>
                                 <th>Aksi</th>
                             </tr>
@@ -110,12 +111,10 @@
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $p->nomor_pemeriksaan }}</td>
-                                <td>{{ $p->pasien->nama }}</td>
-                                <td>{{ $p->pasien->nomor_rm }}</td>
                                 <td>{{ ucfirst($p->jenis_pemeriksaan) }}</td>
                                 <td>{{ ucfirst($p->layanan->nama) }}</td>
                                 <td>{{ $p->jadwal->waktu_mulai }} WIB - {{ $p->jadwal->waktu_selesai }} WIB</td>
-                                <td>{{ $s->waktu_selesai }}</td>
+                                <td>{{ $p->waktu_selesai }}</td>
                                 <td>{{ ($p->id_dokterRadiologi) != null ? $p->dokterRadiologi->nama : "-" }}</td>
                                 <td>{{ ($p->keluhan) != null ? ucfirst($p->keluhan) : "Tidak ada" }}</td>
                                 <td>

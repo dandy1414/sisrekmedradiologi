@@ -92,14 +92,11 @@
                         <thead>
                             <tr>
                                 <th>No.</th>
-                                <th width="18%">Nomor Pendaftaran</th>
-                                <th>Nomor RM</th>
-                                <th width="30%">Nama</th>
-                                <th width="15%">Jenis Pasien</th>
-                                <th width="5%">Jenis Pemeriksaan</th>
+                                <th>Nomor Pendaftaran</th>
+                                <th>Jenis Pemeriksaan</th>
                                 <th>Layanan</th>
-                                <th width="5%">Jadwal</th>
-                                <th width="40%">Dokter Rujukan</th>
+                                <th>Jadwal</th>
+                                <th>Dokter Rujukan</th>
                                 <th width="30%">Aksi</th>
                             </tr>
                         </thead>
@@ -108,9 +105,6 @@
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $p->nomor_pendaftaran }}</td>
-                                <td>{{ $p->pasien->nomor_rm }}</td>
-                                <td>{{ $p->pasien->nama }}</td>
-                                <td>{{ ($p->pasien->jenis_pasien) == 'umum' ? "Umum" : "Rumah Sakit" }}</td>
                                 <td>{{ ucfirst($p->jenis_pemeriksaan) }}</td>
                                 <td>{{ ucfirst($p->layanan->nama) }}</td>
                                 <td>{{ $p->jadwal->waktu_mulai }} WIB - {{ $p->jadwal->waktu_selesai }} WIB</td>

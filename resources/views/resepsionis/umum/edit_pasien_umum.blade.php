@@ -1,11 +1,11 @@
 @extends('layouts.global')
 
-@section('title')Edit Pasien Rumah Sakit @endsection
+@section('title')Edit Pasien Umum @endsection
 
 @section('content')
 <section class="content-header" style="margin-top: 50px;">
     <h1>
-        Edit Pasien Rumah Sakit
+        Edit Pasien Umum
     </h1>
     <ol class="breadcrumb">
         <li><a href="{{ route('resepsionis.pasien.index-pasien-umum') }}"><i class="fa fa-users"></i> Pasien Umum</a>

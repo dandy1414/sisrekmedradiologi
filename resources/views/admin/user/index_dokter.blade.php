@@ -170,4 +170,13 @@ swal('Berhasil', '{!! Session::get('delete_succeed') !!}', 'warning',{
 });
 </script>
 @endif
+
+@if (Session::has('login_succeed'))
+<script>
+    swal('Login Berhasil', '{!! Session::get('login_succeed') !!}', 'success', {
+            button: 'OK',
+        });
+</script>
+{{ Session::forget('login_succeed') }}
+@endif
 @endpush

@@ -23,6 +23,29 @@ class UserController extends Controller
         $this->middleware('auth');
     }
 
+    public function markAsReadNotification(Request $request){
+        auth()->user()
+        ->unreadNotifications
+        ->when($request->input('id'), function ($query) use ($request) {
+            return $query->where('id', $request->input('id'));
+        })
+        ->markAsRead();
+
+        $total = count(auth()->user()->unreadNotifications);
+
+        return response()->json([
+            'total' => $total
+        ]);
+    }
+
+    public function totalNotifications(){
+        $total = count(auth()->user()->unreadNotifications);
+
+        return response()->json([
+            'total_notifications' => $total
+        ]);
+    }
+
     public function profil($id){
         $user = User::findOrFail($id);
 
@@ -93,19 +116,27 @@ class UserController extends Controller
             DB::commit();
             switch ($user->role) {
                 case 'admin':
-                    Session::flash('store_succeed', 'Profil berhasil terubah');
+                    if($user->hasChanged() == true){
+                        Session::flash('store_succeed', 'Profil berhasil terubah');
+                    }
                     return redirect()->route('profil.show', ['id' => $id]);
                     break;
                 case 'resepsionis':
-                    Session::flash('store_succeed', 'Profil berhasil terubah');
+                    if($user->hasChanged() == true){
+                        Session::flash('store_succeed', 'Profil berhasil terubah');
+                    }
                     return redirect()->route('profil.show.resepsionis', ['id' => $id]);
                     break;
                 case 'radiografer':
-                    Session::flash('store_succeed', 'Profil berhasil terubah');
+                    if($user->hasChanged() == true){
+                        Session::flash('store_succeed', 'Profil berhasil terubah');
+                    }
                     return redirect()->route('profil.show.radiografer', ['id' => $id]);
                     break;
                 case 'kasir':
-                    Session::flash('store_succeed', 'Profil berhasil terubah');
+                    if($user->hasChanged() == true){
+                        Session::flash('store_succeed', 'Profil berhasil terubah');
+                    }
                     return redirect()->route('profil.show.kasir', ['id' => $id]);
                     break;
                 default:
@@ -177,11 +208,15 @@ class UserController extends Controller
             DB::commit();
             switch ($user->role) {
                 case 'dokterPoli':
-                    Session::flash('store_succeed', 'Profil berhasil terubah');
+                    if($user->hasChanged() == true){
+                        Session::flash('store_succeed', 'Profil berhasil terubah');
+                    }
                     return redirect()->route('profil.show.dokterPoli', ['id' => $id]);
                     break;
                 case 'dokterRadiologi':
-                    Session::flash('store_succeed', 'Profil berhasil terubah');
+                    if($user->hasChanged() == true){
+                        Session::flash('store_succeed', 'Profil berhasil terubah');
+                    }
                     return redirect()->route('profil.show.dokterRadiologi', ['id' => $id]);
                     break;
                 default:
@@ -284,6 +319,7 @@ class UserController extends Controller
         $validator = Validator::make($request->all(),[
             "name" => "required|min:5|max:100|unique:users,name",
             "email" => "required|email|unique:users,email",
+            "password" => "required|min:6|regex:/^(?=.*[a-zA-Z])(?=.*\d).+$/",
             "role" => "required",
             "jabatan" => "required",
             "nama" => "required|min:5|max:100",
@@ -300,6 +336,7 @@ class UserController extends Controller
             $new_user = new User;
             $new_user->name = $request->name;
             $new_user->email = $request->email;
+            $new_user->password = Hash::make($request->password);
             $new_user->role = $request->role;
             $new_user->jabatan = $request->jabatan;
             $new_user->nip = $request->nip;
@@ -381,7 +418,9 @@ class UserController extends Controller
             $user->save();
 
             DB::commit();
-            Session::flash('update_succeed', 'Data dokter berhasil terubah');
+            if($user->hasChanged() == true){
+                Session::flash('update_succeed', 'Data dokter berhasil terubah');
+            }
             return redirect()->route('dokter.index');
         } catch (QueryException $x)
         {
@@ -432,7 +471,9 @@ class UserController extends Controller
             $user->save();
 
             DB::commit();
-            Session::flash('update_succeed', 'Data pegawai berhasil terubah');
+            if($user->hasChanged() == true){
+                Session::flash('update_succeed', 'Data dokter berhasil terubah');
+            }
             return redirect()->route('pegawai.index');
         } catch (QueryException $x)
         {

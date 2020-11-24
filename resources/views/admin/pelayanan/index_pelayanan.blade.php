@@ -28,26 +28,43 @@
 <section class="content">
     <div class="row">
         <div class="col-md-6">
-            <div class="box box-info" id="tabelsemuapasien1" style="position: relative;">
+            <div class="box box-warning" id="tabelsemuapasien1" style="position: relative;">
                 <!-- /.box-header -->
                 <div class="box-header with-border">
-                    <h3 class="box-title">Jadwal</h3>
+                    <h3 class="box-title">Film</h3>
                 </div>
                 <div class="box-body">
-                    <table id="table1" class="table table-bordered table-hover" style="width: 100%">
+                    <table id="table3" class="table table-bordered table-hover" style="width: 100%">
                         <thead>
                             <tr>
                                 <th>No.</th>
-                                <th>Waktu Mulai</th>
-                                <th>Waktu Selesai</th>
+                                <th>Nama Film</th>
+                                <th>Harga</th>
+                                <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($jadwal as $j)
+                            @foreach ($film as $f)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
-                                <td>{{ $j->waktu_mulai }}</td>
-                                <td>{{ $j->waktu_selesai }}</td>
+                                <td>{{ $f->nama }}</td>
+                                <td>@currency($f->harga)</td>
+                                <td>
+                                    <div class="btn-group">
+                                        <button id="editFilm" type="button" class="btn btn-success"
+                                            data-myNamaFilm="{{ $f->nama }}" data-myHargaFilm="{{ $f->harga }}"
+                                            data-myIdFIlm="{{ $f->id }}" data-toggle="modal"
+                                            data-target="#edit-film">Edit</button>
+                                        <button type="button" class="btn btn-success dropdown-toggle"
+                                            data-toggle="dropdown">
+                                            <span class="caret"></span>
+                                            <span class="sr-only">Toggle Dropdown</span>
+                                        </button>
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li><a class="delete-film-confirmation" href="{{ route('film.delete', ['id'=>$f->id]) }}">Hapus</a></li>
+                                        </ul>
+                                    </div>
+                                </td>
                             </tr>
                             @endforeach
                         </tbody>
@@ -106,58 +123,11 @@
             </div>
         </div>
 
-        <div class="col-md-6">
-            <div class="box box-warning" id="tabelsemuapasien1" style="position: relative;">
-                <!-- /.box-header -->
-                <div class="box-header with-border">
-                    <h3 class="box-title">Film</h3>
-                </div>
-                <div class="box-body">
-                    <table id="table3" class="table table-bordered table-hover" style="width: 100%">
-                        <thead>
-                            <tr>
-                                <th>No.</th>
-                                <th>Nama Film</th>
-                                <th>Harga</th>
-                                <th>Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($film as $f)
-                            <tr>
-                                <td>{{ $loop->iteration }}</td>
-                                <td>{{ $f->nama }}</td>
-                                <td>@currency($f->harga)</td>
-                                <td>
-                                    <div class="btn-group">
-                                        <button id="editFilm" type="button" class="btn btn-success"
-                                            data-myNamaFilm="{{ $f->nama }}" data-myHargaFilm="{{ $f->harga }}"
-                                            data-myIdFIlm="{{ $l->id }}" data-toggle="modal"
-                                            data-target="#edit-film">Edit</button>
-                                        <button type="button" class="btn btn-success dropdown-toggle"
-                                            data-toggle="dropdown">
-                                            <span class="caret"></span>
-                                            <span class="sr-only">Toggle Dropdown</span>
-                                        </button>
-                                        <ul class="dropdown-menu" role="menu">
-                                            <li><a class="delete-film-confirmation" href="{{ route('film.delete', ['id'=>$f->id]) }}">Hapus</a></li>
-                                        </ul>
-                                    </div>
-                                </td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <!-- /.col -->
-        </div>
-
         <!-- modal-tambah-layanan -->
         <div class="modal fade" id="tambah-layanan">
             <div class="modal-dialog modal-md">
                 <div class="modal-content">
-                    <form method="POST" action="{{ route('layanan.store') }}">
+                    <form method="POST" action="{{ route('layanan.store') }}" id="layanan-store">
                         @csrf
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -169,11 +139,11 @@
                                 <div class="col-xs-12">
                                     <div class="form-group">
                                         <label>Nama :</label>
-                                        <input type="text" name="nama" class="form-control" placeholder="Nama ...">
+                                        <input type="text" name="nama" id="namaLayanan" class="form-control" placeholder="Nama ..." required>
                                         <br>
 
                                         <label>Kategori :</label>
-                                        <select class="form-control select2" name="kategori" style="width: 100%;">
+                                        <select class="form-control select2" name="kategori" style="width: 100" required>
                                             <option selected disabled>Silahkan pilih salah satu</option>
                                             @foreach ($kategori as $k)
                                             <option value="{{ $k->id }}">{{ ucfirst($k->nama) }}</option>
@@ -182,7 +152,7 @@
                                         <br>
 
                                         <label>Harga :</label>
-                                        <input type="text" name="tarif" class="form-control" placeholder="Tarif ...">
+                                            <input type="text" name="tarif" class="form-control" placeholder="Tarif ..." required>
                                         <br>
                                     </div>
                                 </div>
@@ -219,12 +189,12 @@
                                     <form action="">
                                         <div class="form-group">
                                             <label>Nama :</label>
-                                            <input type="text" name="nama" class="form-control" placeholder="Nama ...">
+                                            <input type="text" name="nama" class="form-control" placeholder="Nama ..." required>
                                             <br>
 
                                             <label>Harga :</label>
                                             <input type="text" name="harga" class="form-control"
-                                                placeholder="Harga ...">
+                                                placeholder="Harga ..." required>
                                             <br>
                                         </div>
                                     </form>
@@ -259,17 +229,18 @@
                         @csrf
                         {{ method_field('PUT') }}
                         <div class="modal-body">
-
                             <div class="form-group">
-                                <input id="id-layanan" type="hidden" name="id_layanan" value>
-
                                 <label>Nama :</label>
-                                <input id="nama-layanan" type="text" name="nama" class="form-control">
+                                <input id="nama-layanan" type="text" name="nama" class="form-control" required>
                                 <br>
 
-                                <label>Kategori :</label>
-                                <select id="kategori-layanan" class="form-control select2" name="kategori"
-                                    style="width: 100%;">
+                                <label>Kategori lama :</label>
+                                <input id="kategori-layanan" type="text" name="" class="form-control" disabled>
+                                <br>
+
+                                <label>Kategori baru :</label>
+                                <select class="form-control select2" name="kategori"
+                                    style="width: 100%;" required>
                                     @foreach ($kategori as $k)
                                     <option value="{{ $k->id }}">{{ $k->nama }}</option>
                                     @endforeach
@@ -277,7 +248,7 @@
                                 <br>
 
                                 <label>Harga :</label>
-                                <input id="tarif" type="text" name="tarif" class="form-control" placeholder="Tarif ...">
+                                <input id="tarif" type="text" name="tarif" class="form-control" placeholder="Tarif ..." required>
                                 <br>
                             </div>
 
@@ -313,16 +284,16 @@
                             <div class="col-xs-12">
                                 <form action="">
                                     <div class="form-group">
-                                        <input id="id-film" type="hidden" name="id_film">
+                                        <input id="id-film" type="hidden" name="id_film" required>
 
                                         <label>Nama :</label>
                                         <input id="nama-film" type="text" name="nama" class="form-control"
-                                            placeholder="Nama ...">
+                                            placeholder="Nama ..." required>
                                         <br>
 
                                         <label>Harga :</label>
                                         <input id="harga-film" type="text" name="harga" class="form-control"
-                                            placeholder="Harga ...">
+                                            placeholder="Harga ..." required>
                                         <br>
                                     </div>
                                 </form>
@@ -388,11 +359,9 @@
         var tarif = $('#editLayanan').attr('data-myTarif')
 
         var modal = $(this)
-        var _option = ""
-        _option = ('<option value="'+ id_kategori+'" selected>'+ nama_kategori +'</option>');
         modal.find('.modal-body #id-layanan').val(id_layanan);
         modal.find('.modal-body #nama-layanan').val(nama);
-        $('#kategori-layanan').append(_option);
+        modal.find('.modal-body #kategori-layanan').val(nama_kategori);
         modal.find('.modal-body #tarif').val(tarif);
     })
 

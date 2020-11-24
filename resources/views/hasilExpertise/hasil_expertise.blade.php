@@ -122,20 +122,8 @@
             <a class="pull left btn btn-danger btn" href="{{ route('dokterRadiologi.pasien.download.hasil-expertise', ['id'=>$pemeriksaan->id]) }}" target="_blank"><i class="fa fa-print"></i> Download Expertise</a>
             @endif
 
-            @if (request()->is('radiografer/*/pemeriksaan/hasil-expertise') && $pemeriksaan->expertise_pdf_radiografer == null)
+            @if (request()->is('radiografer/*/pemeriksaan/hasil-expertise'))
             <a class="pull left btn btn-danger btn" href="{{ route('radiografer.pasien.download.hasil-expertise', ['id'=>$pemeriksaan->id]) }}" target="_blank"><i class="fa fa-print"></i> Download Expertise</a>
-            <br>
-            <br>
-                <form method="POST" action="{{ route('radiografer.pasien.upload.hasil-expertise', ['id'=>$pemeriksaan->id]) }}" enctype="multipart/form-data">
-                    @csrf
-                    <div class="form-group">
-                        <label for="hasil">Hasil Expertise :</label>
-                        <input id="hasil" name="hasil" class="form-control" type="file" id="hasil" style="width: 50%">
-                    </div>
-                    <div class="form-group">
-                        <button type="submit" class="btn btn-success">Simpan</button>
-                    </div>
-                </form>
             @endif
 
             @if (request()->is('dokter-poli/*/pemeriksaan/hasil-expertise') && $pemeriksaan->expertise_pdf_radiografer != null)
@@ -150,13 +138,7 @@
         <div class="row">
             <br>
             <br>
-            <div class="col-xs-7">
-                <br>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Petugas Radiografer <br><br><br>
-
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ ($pemeriksaan->id_radiografer != null ? ucfirst($pemeriksaan->radiografer->nama) : "-") }}
-            </div>
-            <div class="col-xs-5">
+            <div class="pull-right">
                 Tanggal cetak &nbsp;: {{ \Carbon\Carbon::parse($pemeriksaan->waktu_selesai)->format('d, F Y H:i') }} WIB<br>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Salam sejawat <br>
                 <br><br>

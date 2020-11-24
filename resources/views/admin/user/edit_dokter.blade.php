@@ -56,16 +56,9 @@
                                 <div class="form-group {{ $errors->first('role') ? "has-error": "" }}">
                                     <label><span style="color: red">*</span> Role :</label>
                                     <select class="form-control select2" name="role" style="width: 100%;">
-                                        <option value="admin"
-                                            {{ $user->role  == 'admin' ? "selected" : "" }}>Admin</option>
-                                        <option value="resepsionis"
-                                            {{ $user->role  == 'resepsionis' ? "selected" : "" }}>Resepsionis</option>
-                                        <option value="radiografer"
-                                            {{ $user->role == 'radiografer' ? "selected" : "" }}>Radiografer</option>
                                         <option value="dokterPoli" {{ $user->role == 'dokterPoli' ? "selected" : "" }}>Dokter Poli</option>
                                         <option value="dokterRadiologi" {{ $user->role == 'dokterRadiologi' ? "selected" : "" }}>Dokter Radiologi
                                         </option>
-                                        <option value="kasir" {{ $user->name == 'kasir' ? "selected" : "" }}>Kasir</option>
                                     </select>
                                     <span class="help-block">{{ $errors->first('role') }}</span>
                                 </div>
@@ -177,6 +170,7 @@
     </div>
 </section>
 @endsection
+@push('scripts')
 @if (Session::has('update_failed'))
 <script>
 swal('Berhasil', '{!! Session::get('update_failed') !!}', 'error',{

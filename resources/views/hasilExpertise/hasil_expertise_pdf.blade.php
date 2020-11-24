@@ -30,8 +30,8 @@
     <div class="container">
         <div class="row">
             <div class="col-xs-12">
-                <img src="{{ asset('storage/kop_surat/kop_surat.PNG') }}" alt="Kop Surat" class="responsive"
-                    height="100%" width="80%" style="margin-left:60px">
+                <h3 style="text-align: center">PT. Patroman Medical Center</h3>
+                <h1 style="text-align: center">RSU Banjar Patroman</h1>
             </div>
         </div>
 
@@ -100,16 +100,10 @@
 
         <br>
         <br>
+        <br>
 
         <div class="row">
-            <div class="col-xs-7">
-                <br>
-                <br>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Petugas Radiografer <br><br><br>
-
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ ($pemeriksaan->id_radiografer != null ? ucfirst($pemeriksaan->radiografer->nama) : "-") }}
-            </div>
-            <div class="col-xs-5" style="margin-right: 40px">
+            <div class="pull-right" style="margin-right: 40px">
                 Tanggal cetak : {{ \Carbon\Carbon::parse($pemeriksaan->waktu_selesai)->format('d, F Y H:i') }} WIB<br>
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Salam sejawat <br>
                 <br><br>

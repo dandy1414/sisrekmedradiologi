@@ -39,11 +39,11 @@
         <!-- sidebar menu: : style can be found in sidebar.less -->
         <ul class="sidebar-menu" data-widget="tree">
             <li class="header">MENU</li>
-            <li class="{{ (request()->is('admin/dashboard')) ? 'active' : '' }}">
+            {{-- <li class="{{ (request()->is('admin/dashboard')) ? 'active' : '' }}">
                 <a href="{{ route('admin.dashboard') }}">
                     <i class="fa fa-dashboard"></i> <span>Dashboard</span>
                 </a>
-            </li>
+            </li> --}}
             <li class="{{ (request()->is('admin/user/*')) ? 'active' : '' }} treeview">
                 <a href="#">
                   <i class="fa fa-users"></i> <span>User</span>

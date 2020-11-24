@@ -6,6 +6,7 @@ use PDF;
 use Session;
 use App\Models\Pasien;
 use App\Models\Tagihan;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\QueryException;
@@ -46,8 +47,8 @@ class TagihanController extends Controller
 
     public function indexTagihan(){
         $tgl_hari_ini = date('Y-m-d').'%';
-        $total_belum = Tagihan::where('status_pembayaran', 'pending')->where('created_at', 'like', $tgl_hari_ini)->count();
-        $total_sudah = Tagihan::where('status_pembayaran', 'selesai')->where('updated_at', 'like', $tgl_hari_ini)->count();
+        $total_belum = Tagihan::where('status_pembayaran', 'belum')->where('created_at', 'like', $tgl_hari_ini)->count();
+        $total_sudah = Tagihan::where('status_pembayaran', 'sudah')->where('updated_at', 'like', $tgl_hari_ini)->count();
 
         $belum = Tagihan::where('status_pembayaran', 'belum')->orderBy('created_at', 'desc')->get();
         $sudah = Tagihan::where('status_pembayaran', 'sudah')->orderBy('created_at', 'desc')->get();
@@ -57,6 +58,8 @@ class TagihanController extends Controller
 
     public function pembayaranPasien($id){
         $tagihan = Tagihan::where('id', $id)->firstOrFail();
+        $id = DB::table('notifications')->where('data', 'like', '%"id":'.$id.'%')->value('id');
+        $this->markAsReadNotification($id);
         $tarif = $tagihan->layanan->tarif - 25000;
 
         return view('kasir.pembayaran_pasien', ['tagihan'=>$tagihan, 'tarif'=>$tarif]);
@@ -102,5 +105,16 @@ class TagihanController extends Controller
 
         $pdf = PDF::loadview('strukPembayaran.struk_pembayaran_pdf', ['tagihan'=>$tagihan, 'tarif'=>$tarif])->setPaper('A4', 'potrait');
         return $pdf->stream('struk-pembayaran'.$tagihan->nomor_tagihan.'.pdf');
+    }
+
+    public function markAsReadNotification($id){
+        auth()->user()
+        ->unreadNotifications
+        ->when($id, function ($query) use ($id) {
+            return $query->where('id', $id);
+        })
+        ->markAsRead();
+
+        return response()->noContent();
     }
 }

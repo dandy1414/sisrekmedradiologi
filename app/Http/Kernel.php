@@ -70,5 +70,6 @@ class Kernel extends HttpKernel
         'role.radiografer' => \App\Http\Middleware\RoleRadiografer::class,
         'role.kasir' => \App\Http\Middleware\RoleKasir::class,
         'prevent.login' => \App\Http\Middleware\PreventLogin::class,
+        'terontetikasi' => \App\Http\Middleware\Terontetikasi::class,
     ];
 }

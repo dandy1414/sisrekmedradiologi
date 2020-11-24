@@ -2,6 +2,10 @@
 
 @section('title') Detail Pasien Umum @endsection
 
+@section('csrf')
+<meta name="csrf-token" content="{{ csrf_token() }}" />
+@endsection
+
 @section('content')
 
 <section class="content-header" style="margin-top: 50px;">
@@ -80,10 +84,6 @@
                                 <th>No.</th>
                                 <th>Tanggal Pembayaran</th>
                                 <th>Nomor Tagihan</th>
-                                <th>Nama</th>
-                                <th>Nomor RM</th>
-                                <th>Nomor KTP</th>
-                                <th>Jenis Pasien</th>
                                 <th>Jenis Pemeriksaan</th>
                                 <th>Layanan</th>
                                 <th>Jadwal</th>
@@ -99,10 +99,6 @@
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $t->tanggal }}</td>
                                 <td>{{ $t->nomor_tagihan }}</td>
-                                <td>{{ $t->pasien->nama }}</td>
-                                <td>{{ $t->pasien->nomor_rm }}</td>
-                                <td>{{ $t->pasien->nomor_ktp }}</td>
-                                <td>{{ ($t->pasien->jenis_pasien) == 'umum' ? "Umum" : "Rumah Sakit" }}</td>
                                 <td>{{ ucfirst($t->pemeriksaan->jenis_pemeriksaan) }}</td>
                                 <td>{{ ucfirst($t->layanan->nama) }}</td>
                                 <td>{{ $t->jadwal->waktu_mulai }} - {{ $t->jadwal->waktu_selesai }}</td>

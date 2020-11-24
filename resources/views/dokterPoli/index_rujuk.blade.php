@@ -2,6 +2,10 @@
 
 @section('title') List Rujuk Pemeriksaan @endsection
 
+@section('csrf')
+<meta name="csrf-token" content="{{ csrf_token() }}" />
+@endsection
+
 @section('content')
 <section class="content-header" style="margin-top: 50px;">
     <h1>
@@ -96,6 +100,13 @@
 
 @endsection
 @push('scripts')
+@if (Session::has('store_succeed'))
+<script>
+swal('Berhasil', '{!! Session::get('store_succeed') !!}', 'success',{
+    button:'OK',
+});
+</script>
+@endif
 
 @if (Session::has('upload_succeed'))
 <script>

@@ -2,6 +2,10 @@
 
 @section('title') Detail Pasien Rumah Sakit @endsection
 
+@section('csrf')
+<meta name="csrf-token" content="{{ csrf_token() }}" />
+@endsection
+
 @section('content')
 
 <section class="content-header" style="margin-top: 50px;">
@@ -92,11 +96,8 @@
                         <thead>
                             <tr>
                                 <th>No.</th>
-                                <th width="25%">Nomor Pemeriksaan</th>
-                                <th>Nomor RM</th>
-                                <th width="25%">Nama</th>
-                                <th width="10%">Jenis Pasien</th>
-                                <th width="1%">Jenis Pemeriksaan</th>
+                                <th>Nomor Pemeriksaan</th>
+                                <th>Jenis Pemeriksaan</th>
                                 <th>Layanan</th>
                                 <th>Jadwal</th>
                                 <th>Waktu Selesai</th>

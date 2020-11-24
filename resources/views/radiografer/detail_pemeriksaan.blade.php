@@ -2,6 +2,10 @@
 
 @section('title')Detail Pemeriksaan @endsection
 
+@section('csrf')
+<meta name="csrf-token" content="{{ csrf_token() }}" />
+@endsection
+
 @section('content')
 <section class="content-header" style="margin-top: 50px;">
     <h1>

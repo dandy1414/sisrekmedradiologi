@@ -30,8 +30,8 @@
     <div class="container">
         <div class="row">
             <div class="col-xs-12">
-                <img src="{{ asset('storage/kop_surat/kop_surat.PNG') }}" alt="Kop Surat" class="responsive"
-                    height="100%" width="80%" style="margin-left:60px">
+                <h3 style="text-align: center">PT. Patroman Medical Center</h3>
+                <h1 style="text-align: center">RSU Banjar Patroman</h1>
             </div>
         </div>
 
@@ -113,10 +113,12 @@
         <div class="row">
             <div style="margin-left: 400px">
                 Tanggal cetak &nbsp;: {{ $pendaftaran->created_at }} WIB<br>
+                @if ($pendaftaran->jenis_pemeriksaan == 'penuh' && $pendaftaran->pasien->jenis_pasien == 'rs')
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Dokter Perujuk <br>
                 <br><br>
 
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ ($pendaftaran->id_dokterPoli != null ? ucfirst($pendaftaran->dokterPoli->nama) : "-") }}
+                @endif
             </div>
         </div>
     </div>

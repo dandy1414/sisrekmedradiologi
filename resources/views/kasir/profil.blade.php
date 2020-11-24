@@ -2,6 +2,10 @@
 
 @section('title')Profil Saya @endsection
 
+@section('csrf')
+<meta name="csrf-token" content="{{ csrf_token() }}" />
+@endsection
+
 @section('content')
 <section class="content-header" style="margin-top: 50px;">
     <h1>
@@ -66,7 +70,7 @@
             <div id="box-riwayat" class="box box-info" id="tabelsemuapasien1" style="position: relative;">
                 <!-- /.box-header -->
                 <div class="box-header">
-                    <h3 class="box-title">Riwayat Pemeriksaan</h3>
+                    <h3 class="box-title">Riwayat Pembayaran</h3>
                 </div>
                 <div class="box-body">
                     <table id="table1" class="table table-bordered table-hover" style="width: 100%">

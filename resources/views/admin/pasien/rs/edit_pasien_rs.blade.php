@@ -17,7 +17,7 @@
 <section class="content">
     <div class="row">
         <div class="col-xs-12">
-            <form method="POST" action="{{ route('resepsionis.pasien.update-pasien-rs', ['id' => $pas->id]) }}" enctype="multipart/form-data">
+            <form method="POST" action="{{ route('pasien.update-pasien-rs', ['id' => $pas->id]) }}" enctype="multipart/form-data">
                 @csrf
                 {{ method_field('PUT') }}
 
@@ -27,7 +27,7 @@
                             <div class="col-md-6">
                                 <div class="form-group {{ $errors->first('rekamMedis') ? "has-error": "" }}">
                                     <label>Nomor Rekam Medis :</label>
-                                    <input value="{{ str_pad($pasien->nomor_rm, 6, '0', STR_PAD_LEFT) }}" type="text" name="rekamMedis" class="form-control" placeholder="Nomor Rekam Medis ..." readonly>
+                                    <input value="{{ str_pad($pas->nomor_rm, 6, '0', STR_PAD_LEFT) }}" type="text" name="rekamMedis" class="form-control" placeholder="Nomor Rekam Medis ..." readonly>
                                     <span class="help-block">{{ $errors->first('rekamMedis') }}</span>
                                 </div>
 

@@ -31,8 +31,8 @@
         <!-- title row -->
         <div class="row">
             <div class="col-xs-12">
-                <img src="{{ asset('storage/kop_surat/kop_surat.PNG') }}" alt="Kop Surat" class="responsive"
-                    height="100%" width="80%" style="margin-left:60px">
+                <h3 style="text-align: center">PT. Patroman Medical Center</h3>
+                <h1 style="text-align: center">RSU Banjar Patroman</h1>
             </div>
             <!-- /.col -->
         </div>

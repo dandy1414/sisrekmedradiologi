@@ -8,7 +8,8 @@
         Edit Pasien Rumah Sakit
     </h1>
     <ol class="breadcrumb">
-        <li><a href="{{ route('resepsionis.pasien.index-pasien-rs') }}"><i class="fa fa-users"></i> Pasien RS</></li>
+        <li>
+            <a href="{{ route('resepsionis.pasien.index-pasien-rs') }}"><i class="fa fa-users"></i> Pasien RS</a></li>
         <li class="active">Edit Pasien</li>
     </ol>
 </section>
@@ -24,10 +25,9 @@
                     <div class="box-body">
                         <div class="row">
                             <div class="col-md-6">
-                                <div id="ifYes1" class="form-group {{ $errors->first('noRm') ? "has-error": "" }}">
+                                <div class="form-group {{ $errors->first('noRm') ? "has-error": "" }}">
                                     <label>Nomor Rekam Medis :</label>
-                                    <input value="{{ $pasien->nomor_rm }}" type="text" name="noRm" class="form-control"
-                                        placeholder="Nomor Rekam Medis ..." readonly>
+                                    <input value="{{ str_pad($pasien->nomor_rm, 6, '0', STR_PAD_LEFT) }}" type="text" name="noRm" class="form-control" placeholder="Nomor Rekam Medis ..." readonly>
                                     <span class="help-block">{{ $errors->first('noRm') }}</span>
                                 </div>
 
@@ -84,6 +84,7 @@
                                         </label>
                                         <span class="help-block">{{ $errors->first('jenisKelamin') }}</span>
                                     </div>
+                                </div>
 
                                 <div class="form-group {{ $errors->first('alamat') ? "has-error": "" }}">
                                     <label><span style="color: red">*</span> Alamat :</label>

@@ -67,11 +67,6 @@
                                         <option value="radiografer"
                                             {{ old('role') == 'radiografer' ? "selected" : "" }}>
                                             Radiografer</option>
-                                        <option value="dokterPoli" {{ old('role') == 'dokterPoli' ? "selected" : "" }}>
-                                            Dokter Poli</option>
-                                        <option value="dokterRadiologi"
-                                            {{ old('role') == 'dokterRadiologi' ? "selected" : "" }}>Dokter Radiologi
-                                        </option>
                                         <option value="kasir" {{ old('role') == 'kasir' ? "selected" : "" }}>Kasir
                                         </option>
                                     </select>
@@ -104,9 +99,6 @@
                                         placeholder="NIP ...">
                                     <span class="help-block">{{ $errors->first('nip') }}</span>
                                 </div>
-
-                                <hr>
-                                <label class="text-muted"><span style="color: red">*</span> Wajib diisi</label>
                             </div>
 
                             <div class="col-md-6">
@@ -155,6 +147,9 @@
                                     <input id="avatar" name="avatar" class="form-control" type="file" id="foto">
                                     <span class="help-block">{{ $errors->first('avatar') }}</span>
                                 </div>
+
+                                <hr>
+                                <label class="text-muted"><span style="color: red">*</span> Wajib diisi</label>
                             </div>
                         </div>
                     </div>

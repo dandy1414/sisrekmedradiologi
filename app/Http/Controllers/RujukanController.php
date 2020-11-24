@@ -16,6 +16,8 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
+use App\Notifications\PendaftaranNotifikasi;
 
 class RujukanController extends Controller
 {
@@ -67,7 +69,7 @@ class RujukanController extends Controller
         DB::beginTransaction();
 
         try{
-            $new_pasien = new \App\Models\Pasien;
+            $new_pasien = new Pasien;
             $new_pasien->nomor_rm = $request->noRm;
             $new_pasien->nomor_ktp = $request->nomorKtp;
             $new_pasien->nama = $request->nama;
@@ -79,7 +81,6 @@ class RujukanController extends Controller
             $new_pasien->nomor_telepon = $request->nomorTelepon;
             $new_pasien->jenis_asuransi = $request->jenisAsuransi;
             $new_pasien->nomor_bpjs = $request->noBpjs;
-
             $new_pasien->save();
 
             DB::commit();
@@ -105,36 +106,36 @@ class RujukanController extends Controller
     public function updatePasien(Request $request, $id){
         $validator = Validator::make($request->all(),[
             "nama" => "required|min:3|max:100",
-            "nomorKtp" => "required|max:16|unique:trans_pasien,nomor_ktp,". $id,
+            "nomorKtp" => "required|size:16|string|unique:trans_pasien,nomor_ktp,". $id,
             "umur" => "required|numeric",
             "jenisKelamin" => "required",
             "asalRuangan" => "required",
             "alamat" => "required|min:5|max:200",
-            "nomorTelepon" => "required|digits_between:10,12|unique:trans_pasien,nomor_telepon". $id,
+            "nomorTelepon" => "required|numeric|digits_between:10,12|unique:trans_pasien,nomor_telepon". $id,
             "jenisAsuransi" => "required"
         ])->validate();
 
         DB::beginTransaction();
 
         try{
-
-            Pasien::where('id', $id)->update([
-                'nomor_rm' => $request->noRm,
-                'nomor_ktp' => $request->nomorKtp,
-                'nama' => $request->nama,
-                'umur' => $request->umur,
-                'id_ruangan' => $request->asalRuangan,
-                'jenis_kelamin' => $request->jenisKelamin,
-                'id_ruangan' => $request->asalRuangan,
-                'alamat' => $request->alamat,
-                'nomor_telepon' => $request->nomorTelepon,
-                'jenis_asuransi' => $request->jenisAsuransi,
-                'nomor_bpjs' => $request->noBpjs,
-            ]);
+            $pasien = Pasien::where('id', $id)->first();
+            $pasien->nomor_ktp = $request->nomorKtp;
+            $pasien->nama = $request->nama;
+            $pasien->umur = $request->umur;
+            $pasien->id_ruangan = $request->asalRuangan;
+            $pasien->jenis_kelamin = $request->jenisKelamin;
+            $pasien->id_ruangan = $request->asalRuangan;
+            $pasien->alamat = $request->alamat;
+            $pasien->nomor_telepon = $request->nomorTelepon;
+            $pasien->jenis_asuransi = $request->jenisAsuransi;
+            $pasien->nomor_bpjs = $request->noBpjs;
+            $pasien->save();
 
             DB::commit();
 
-            Session::flash('update_succeed', 'Data pasien berhasil terubah');
+            if($pasien->wasChanged() == true){
+                Session::flash('update_succeed', 'Data pasien berhasil terubah');
+            }
             return redirect()->route('dokterPoli.pasien.index-pasien');
 
         } catch (QueryException $x)
@@ -159,7 +160,9 @@ class RujukanController extends Controller
         $id_dokter = Auth::user()->id;
         $tgl_hari_ini = date('Y-m-d').'%';
         $pemeriksaan = Pemeriksaan::where('id_dokterPoli', $id_dokter)->where('status_pemeriksaan', 'selesai')->orderBy('created_at', 'desc')->get();
-        $total_pasien = Pemeriksaan::where('id_dokterPoli', $id_dokter)->where('created_at', 'like', $tgl_hari_ini)->where('status_pemeriksaan', 'selesai')->count();
+        $total_pasien = Pemeriksaan::where('id_dokterPoli', $id_dokter)
+        ->where('waktu_selesai', 'like', $tgl_hari_ini)
+        ->where('status_pemeriksaan', 'selesai')->count();
 
         return view('dokterPoli.index_pemeriksaan', ['pemeriksaan'=> $pemeriksaan, 'total_pasien' => $total_pasien]);
     }
@@ -172,8 +175,8 @@ class RujukanController extends Controller
 
     public function rujukPasien($id){
         $pasien = Pasien::where('id', $id)->firstOrFail();
-        $layanan_rontgen = Layanan::where('id', '2')->get();
-        $layanan_usg = Layanan::where('id', '1')->get();
+        $layanan_rontgen = Layanan::where('id_kategori', '2')->get();
+        $layanan_usg = Layanan::where('id_kategori', '1')->get();
         $dokter_radiologi = User::where('role', 'dokterRadiologi')->get();
 
         $tgl_hari_ini = date('Y-m-d').'%';
@@ -190,6 +193,8 @@ class RujukanController extends Controller
             "jadwal" => "required",
         ])->validate();
 
+        $penerima_radiografer = User::where('role', 'radiografer')->get();
+
         if($request->jenisPemeriksaan == 'biasa'){
             $new_pendaftaran = new Pendaftaran();
             $new_pendaftaran->jenis_pemeriksaan = $request->jenisPemeriksaan;
@@ -198,9 +203,9 @@ class RujukanController extends Controller
             $new_pendaftaran->id_layanan = $request->layanan;
             $new_pendaftaran->id_dokterPoli = Auth::user()->id;
             $new_pendaftaran->id_dokterRadiologi = $request->dokterRujukan;
-
             $new_pendaftaran->keluhan = $request->keluhan;
             $new_pendaftaran->save();
+
             $id_pendaftaran = $new_pendaftaran->id;
 
             DB::beginTransaction();
@@ -219,10 +224,14 @@ class RujukanController extends Controller
                 $pemeriksaan->total_tarif = $tarif;
                 $pemeriksaan->save();
 
+                $nama_pasien = $pemeriksaan->pasien->nama_pasien;
+
+                Notification::send($penerima_radiografer, new PendaftaranNotifikasi($pemeriksaan, $nama_pasien));
+
                 DB::commit();
 
                 Session::flash('store_succeed', 'Rujukan pasien berhasil tersimpan');
-                return redirect()->route('dokterPoli.index-rujuk');
+                return redirect()->route('dokterPoli.pasien.index-rujuk');
             }catch (QueryException $x){
                 DB::rollBack();
                 dd($x->getMessage());
@@ -240,6 +249,7 @@ class RujukanController extends Controller
 
             $new_pendaftaran->keluhan = $request->keluhan;
             $new_pendaftaran->save();
+
             $id_pendaftaran = $new_pendaftaran->id;
 
             DB::beginTransaction();
@@ -248,7 +258,6 @@ class RujukanController extends Controller
                 $pemeriksaan = new Pemeriksaan;
                 $pemeriksaan->pendaftaran_id = $id_pendaftaran;
                 $pemeriksaan->jenis_pemeriksaan = $request->jenisPemeriksaan;
-                $pemeriksaan->cito = $request->cito;
                 $pemeriksaan->pasien_id = $id;
                 $pemeriksaan->id_jadwal = $request->jadwal;
                 $pemeriksaan->id_layanan = $request->layanan;
@@ -258,6 +267,10 @@ class RujukanController extends Controller
                 $pemeriksaan->permintaan_tambahan = $request->permintaan;
                 $pemeriksaan->total_tarif = $tarif;
                 $pemeriksaan->save();
+
+                $nama_pasien = $pemeriksaan->pasien->nama;
+
+                Notification::send($penerima_radiografer, new PendaftaranNotifikasi($pemeriksaan, $nama_pasien));
 
                 DB::commit();
 

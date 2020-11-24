@@ -81,11 +81,11 @@ class PasienController extends Controller
     public function storePasienUmum(Request $request){
         $validator = Validator::make($request->all(),[
             "nama" => "required|min:3|max:100",
-            "nomorKtp" => "required|max:16|unique:trans_pasien,nomor_ktp",
+            "nomorKtp" => "required|size:16|string|unique:trans_pasien,nomor_ktp",
             "umur" => "required|numeric",
             "jenisKelamin" => "required",
             "alamat" => "required|min:5|max:200",
-            "nomorTelepon" => "required|digits_between:10,12|unique:trans_pasien,nomor_telepon",
+            "nomorTelepon" => "required|numeric|digits_between:10,12|unique:trans_pasien,nomor_telepon",
             "jenisAsuransi" => "required",
         ])->validate();
 
@@ -122,12 +122,12 @@ class PasienController extends Controller
     public function storePasienRs(Request $request){
         $validator = Validator::make($request->all(),[
             "nama" => "required|min:3|max:100",
-            "nomorKtp" => "required|max:16|unique:trans_pasien,nomor_ktp",
+            "nomorKtp" => "required|size:16|string|unique:trans_pasien,nomor_ktp",
             "umur" => "required|numeric",
             "asalRuangan" => "required",
             "jenisKelamin" => "required",
             "alamat" => "required|min:5|max:200",
-            "nomorTelepon" => "required|digits_between:10,12|unique:trans_pasien,nomor_telepon",
+            "nomorTelepon" => "required|numeric|digits_between:10,12|unique:trans_pasien,nomor_telepon",
             "jenisAsuransi" => "required"
         ])->validate();
 
@@ -184,33 +184,36 @@ class PasienController extends Controller
     public function updatePasienUmum(Request $request, $id){
         $validator = Validator::make($request->all(),[
             "nama" => "required|min:3|max:100",
-            "nomorKtp" => "required|max:16|unique:trans_pasien,nomor_ktp,". $id,
+            "nomorKtp" => "required|size:16|string|unique:trans_pasien,nomor_ktp,". $id,
             "umur" => "required|numeric",
             "jenisKelamin" => "required",
             "alamat" => "required|min:5|max:200",
-            "nomorTelepon" => "required|digits_between:10,12|unique:trans_pasien,nomor_telepon,". $id,
+            "nomorTelepon" => "required|numeric|digits_between:10,12|unique:trans_pasien,nomor_telepon,". $id,
             "jenisAsuransi" => "required"
         ])->validate();
 
         DB::beginTransaction();
 
         try{
-            Pasien::where('id', $id)->update([
-                'nomor_rm' => $request->rekamMedis,
-                'nomor_ktp' => $request->nomorKtp,
-                'nama' => $request->nama,
-                'jenis_pasien' => $request->jenisPasien,
-                'umur' => $request->umur,
-                'id_ruangan' => $request->asalRuangan,
-                'jenis_kelamin' => $request->jenisKelamin,
-                'alamat' => $request->alamat,
-                'nomor_telepon' => $request->nomorTelepon,
-                'jenis_asuransi' => $request->jenisAsuransi,
-                'nomor_bpjs' => $request->noBpjs,
-            ]);
+            $pasien = Pasien::where('id', $id)->first();
+            $pasien->nomor_ktp = $request->nomorKtp;
+            $pasien->nama = $request->nama;
+            $pasien->jenis_pasien = $request->jenisPasien;
+            $pasien->umur = $request->umur;
+            $pasien->id_ruangan = $request->asalRuangan;
+            $pasien->jenis_kelamin = $request->jenisKelamin;
+            $pasien->id_ruangan = $request->asalRuangan;
+            $pasien->alamat = $request->alamat;
+            $pasien->nomor_telepon = $request->nomorTelepon;
+            $pasien->jenis_asuransi = $request->jenisAsuransi;
+            $pasien->nomor_bpjs = $request->noBpjs;
+            $pasien->save();
+
+            if($pasien->wasChanged() == true){
+                Session::flash('update_succeed', 'Data pasien berhasil terubah');
+            }
 
             DB::commit();
-            Session::flash('update_succeed', 'Data pasien berhasil terubah');
             return redirect()->route('pasien.index-pasien-umum');
 
         } catch (QueryException $x)
@@ -225,35 +228,37 @@ class PasienController extends Controller
     public function updatePasienRs(Request $request, $id){
         $validator = Validator::make($request->all(),[
             "nama" => "required|min:3|max:100",
-            "nomorKtp" => "required|max:6|unique:trans_pasien,nomor_ktp,". $id,
+            "nomorKtp" => "required|size:16|string|unique:trans_pasien,nomor_ktp,". $id,
             "umur" => "required|numeric",
             "jenisKelamin" => "required",
             "alamat" => "required|min:5|max:200",
-            "nomorTelepon" => "required|digits_between:10,12|unique:trans_pasien,nomor_telepon,". $id,
+            "nomorTelepon" => "required|numeric|digits_between:10,12|unique:trans_pasien,nomor_telepon,". $id,
             "jenisAsuransi" => "required"
         ])->validate();
 
         DB::beginTransaction();
 
         try{
-
-            Pasien::where('id', $id)->update([
-                'nomor_rm' => $request->rekamMedis,
-                'nomor_ktp' => $request->nomorKtp,
-                'nama' => $request->nama,
-                'umur' => $request->umur,
-                'id_ruangan' => $request->asalRuangan,
-                'jenis_kelamin' => $request->jenisKelamin,
-                'id_ruangan' => $request->asalRuangan,
-                'alamat' => $request->alamat,
-                'nomor_telepon' => $request->nomorTelepon,
-                'jenis_asuransi' => $request->jenisAsuransi,
-                'nomor_bpjs' => $request->noBpjs,
-            ]);
+            $pasien = Pasien::where('id', $id)->first();
+            $pasien->nomor_ktp = $request->nomorKtp;
+            $pasien->nama = $request->nama;
+            $pasien->umur = $request->umur;
+            $pasien->id_ruangan = $request->asalRuangan;
+            $pasien->jenis_kelamin = $request->jenisKelamin;
+            $pasien->id_ruangan = $request->asalRuangan;
+            $pasien->alamat = $request->alamat;
+            $pasien->nomor_telepon = $request->nomorTelepon;
+            $pasien->jenis_asuransi = $request->jenisAsuransi;
+            $pasien->nomor_bpjs = $request->noBpjs;
+            $pasien->save();
 
             DB::commit();
 
-            Session::flash('update_succeed', 'Data pasien berhasil terubah');
+            if($pasien->wasChanged() == true){
+                Session::flash('update_succeed', 'Data pasien berhasil terubah');
+            }
+
+
             return redirect()->route('pasien.index-pasien-rs');
 
         } catch (QueryException $x)

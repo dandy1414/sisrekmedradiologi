@@ -37,7 +37,7 @@ class LoginController extends Controller
         switch ($role) {
             case 'admin':
                 Session::flash('login_succeed', 'Selamat datang di Sistem Rekam Medis Unit Radiologi Rumah Sakit Banjar Patroman');
-                return route('admin.dashboard');
+                return route('dokter.index');
                 break;
             case 'resepsionis':
                 Session::flash('login_succeed', 'Selamat datang di Sistem Rekam Medis Unit Radiologi Rumah Sakit Banjar Patroman');

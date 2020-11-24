@@ -73,6 +73,8 @@
             @include('sweet::alert')
 
             @yield('content')
+
+            @yield('modals-pelaporan')
         </div>
         <!-- /.content -->
 
@@ -81,7 +83,7 @@
         <!-- /footer -->
 
         <!-- Control Sidebar -->
-        <aside class="control-sidebar control-sidebar-dark">
+        {{--  <aside class="control-sidebar control-sidebar-dark">
             <!-- Create the tabs -->
             <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
                 <li><a href="#control-sidebar-home-tab" data-toggle="tab"><i class="fa fa-home"></i></a></li>
@@ -269,7 +271,7 @@
                 </div>
                 <!-- /.tab-pane -->
             </div>
-        </aside>
+        </aside>  --}}
         <!-- /.control-sidebar -->
         <!-- Add the sidebar's background. This div must be placed
        immediately after the control sidebar -->
@@ -329,6 +331,51 @@
 
         $("#dropdown-menu").dropdown('toggle')
 
+        function sendMarkRequest(id){
+            $.ajax({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            url: '/markAsRead',
+            method: 'POST',
+            data: {
+                id
+            },
+            dataType: "JSON",
+            success: function (data) {
+                var notif = '.'+id;
+                $(notif).click(function() {
+                document.getElementById(notif).remove();
+                })
+            }
+        });
+        }
+
+        $(function() {
+            $('.mark-as-read').click(function() {
+                let request = sendMarkRequest($(this).data('id'));
+            })
+        })
+
+        $(document).ready(function (){
+            $.ajax({
+                headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url: '/total-notifications',
+                method: 'GET',
+                dataType: "JSON",
+                success: function(data) {
+                    document.getElementById("total-location").innerHTML = data['total_notifications'];
+                    if(data['total_notifications'] > 0){
+                        document.getElementById("text-notifications").innerHTML = 'Anda punya '+data['total_notifications']+' notifikasi';
+                    } else {
+                        document.getElementById("text-notifications").innerHTML = 'Anda tidak punya notifikasi';
+                    }
+                }
+            })
+        })
+
         // function zoomin() {
         //     var GFG = document.getElementById("imagepreview");
         //     var currWidth = GFG.clientWidth;
@@ -344,33 +391,6 @@
         //     GFG.style.width = (currWidth + 100) + "px";
         //     GFG.style.height = (currHeight + 100) + "px";
         // }
-
-
-        // $('.edit-layanan').click(function(e){
-        // e.preventDefault();
-        // $.ajax({
-        // url: $(this).attr('href'),
-        // dataType: 'json',
-        // success: function(v){
-        //     $('#edit-layanan').modal('show');
-        //     $('#nama-layanan').val(v['nama'])
-        //     $('#harga-layanan').val(v['tarif'])
-        //     }
-        // })
-        // })
-
-        // $('.edit-film').click(function(e){
-        // e.preventDefault();
-        // $.ajax({
-        // url: $(this).attr('href'),
-        // dataType: 'json',
-        // success: function(v){
-        //     $('#edit-film').modal('show');
-        //     $('#nama-film').val(v['nama'])
-        //     $('#harga-layanan').val(v['tarif'])
-        //     }
-        // })
-        // })
 
     </script>
 </body>
