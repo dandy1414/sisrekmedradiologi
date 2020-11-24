@@ -65,6 +65,7 @@ class ExpertiseController extends Controller
 
     public function detailPemeriksaan($id){
         $pemeriksaan = Pemeriksaan::findOrFail($id);
+        $this->markAsReadNotification($id);
 
         return view('dokterRadiologi.detail_pemeriksaan', ['pemeriksaan'=> $pemeriksaan]);
     }
@@ -160,6 +161,7 @@ class ExpertiseController extends Controller
 
     public function detailHasilExpertise($id){
         $pemeriksaan = Pemeriksaan::findOrFail($id);
+        $this->markAsReadNotification($id);
 
         return view('hasilExpertise.hasil_expertise', compact('pemeriksaan'));
     }

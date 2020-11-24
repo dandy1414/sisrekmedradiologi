@@ -190,9 +190,12 @@
                     target="_blank"><i class="
                     glyphicon glyphicon-envelope"></i> Surat Rujukan</a>
 
+                    @if ($pemeriksaan->status_pemeriksaan == 'selesai')
                     <a class="btn btn-success btn"
                     href="{{ route('dokterPoli.pasien.pemeriksaan.hasil-expertise', ['id'=>$pemeriksaan->id]) }}"
                     target="_blank" style="margin-left: 5px"><i class="fa fa-print"></i> Hasil Expertise</a>
+                    @endif
+                    
                     @endif
                 </div>
             </div>

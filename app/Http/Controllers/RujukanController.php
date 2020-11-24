@@ -159,16 +159,20 @@ class RujukanController extends Controller
     public function indexPemeriksaan(){
         $id_dokter = Auth::user()->id;
         $tgl_hari_ini = date('Y-m-d').'%';
-        $pemeriksaan = Pemeriksaan::where('id_dokterPoli', $id_dokter)->where('status_pemeriksaan', 'selesai')->orderBy('created_at', 'desc')->get();
-        $total_pasien = Pemeriksaan::where('id_dokterPoli', $id_dokter)
+        $pemeriksaan_pending = Pemeriksaan::where('id_dokterPoli', $id_dokter)->where('status_pemeriksaan', 'pending')->orderBy('created_at', 'desc')->get();
+        $pemeriksaan_selesai = Pemeriksaan::where('id_dokterPoli', $id_dokter)->where('status_pemeriksaan', 'selesai')->orderBy('created_at', 'desc')->get();
+
+        $total_pasien_pending = Pemeriksaan::where('id_dokterPoli', $id_dokter)->where('status_pemeriksaan', 'pending')->count();
+        $total_pasien_selesai = Pemeriksaan::where('id_dokterPoli', $id_dokter)
         ->where('waktu_selesai', 'like', $tgl_hari_ini)
         ->where('status_pemeriksaan', 'selesai')->count();
 
-        return view('dokterPoli.index_pemeriksaan', ['pemeriksaan'=> $pemeriksaan, 'total_pasien' => $total_pasien]);
+        return view('dokterPoli.index_pemeriksaan', ['pemeriksaan_pending'=> $pemeriksaan_pending, 'pemeriksaan_selesai'=> $pemeriksaan_selesai, 'total_pasien_pending' => $total_pasien_pending, 'total_pasien_selesai' => $total_pasien_selesai]);
     }
 
     public function detailPemeriksaan($id){
         $pemeriksaan = Pemeriksaan::findOrFail($id);
+        $this->markAsReadNotification($id);
 
         return view('dokterPoli.detail_pemeriksaan', ['pemeriksaan'=> $pemeriksaan]);
     }
@@ -316,5 +320,16 @@ class RujukanController extends Controller
         $pendaftaran = Pendaftaran::findOrFail($id);
 
         return view('suratRujukan.surat_rujukan', compact('pendaftaran'));
+    }
+
+    public function markAsReadNotification($id){
+        auth()->user()
+        ->unreadNotifications
+        ->when($id, function ($query) use ($id) {
+            return $query->where('id', $id);
+        })
+        ->markAsRead();
+
+        return response()->noContent();
     }
 }

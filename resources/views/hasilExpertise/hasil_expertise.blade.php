@@ -126,7 +126,7 @@
             <a class="pull left btn btn-danger btn" href="{{ route('radiografer.pasien.download.hasil-expertise', ['id'=>$pemeriksaan->id]) }}" target="_blank"><i class="fa fa-print"></i> Download Expertise</a>
             @endif
 
-            @if (request()->is('dokter-poli/*/pemeriksaan/hasil-expertise') && $pemeriksaan->expertise_pdf_radiografer != null)
+            @if (request()->is('dokter-poli/*/pemeriksaan/hasil-expertise') && $pemeriksaan->expertise_pdf != null)
             <a class="pull left btn btn-danger btn" href="{{ route('dokterPoli.pasien.download.hasil-expertise', ['id'=>$pemeriksaan->id]) }}" target="_blank"><i class="fa fa-print"></i> Download Expertise</a>
             @endif
 

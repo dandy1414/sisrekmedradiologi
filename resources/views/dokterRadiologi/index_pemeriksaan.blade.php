@@ -16,16 +16,6 @@
     </ol>
 </section>
 
-{{--  <div class="row">
-    <div class="col-md-8">
-        <div class="btn-group" style="float: left; margin-left: 15px; margin-top: 20px">
-            <button class="btn btn-default" style="background-color: #3c8dbc; color: white" id="button-one"><i class="fa fa-user" style="margin-right: 5px"></i>Belum</button>
-            <button class="btn btn-default" id="button-two">Pending</button>
-            <button class="btn btn-default" id="button-three">Selesai</button>
-        </div>
-    </div>
-</div>  --}}
-
 <div class="row">
     <div class="col-md-8">
         <div class="btn-group" style="float: left; margin-left: 15px; margin-top: 20px">
@@ -261,22 +251,10 @@
     })
 
 $("#tombol-satu").click(function () {
-            // $(this).css("background", "#3c8dbc");
-            // $(this).css("color", "white");
-            // $("#button-two").css("background", "#ecf0f5")
-            // $("#button-two").css("color", "black")
-            // $("#button-three").css("background", "#ecf0f5")
-            // $("#button-three").css("color", "black")
     $("#tabel-belum-expertise").show(1000)
     $("#tabel-selesai-expertise").hide(300)
 })
 $("#tombol-dua").click(function () {
-            // $(this).css("background", "#3c8dbc");
-            // $(this).css("color", "white");
-            // $("#button-one").css("background", "#ecf0f5")
-            // $("#button-one").css("color", "black")
-            // $("#button-three").css("background", "#ecf0f5")
-            // $("#button-three").css("color", "black")
     $("#tabel-selesai-expertise").show(1000)
     $("#tabel-belum-expertise").hide(300)
 })
