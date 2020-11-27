@@ -38,13 +38,13 @@
 
                     <hr>
 
-                    <strong><i class="fa fa-map-marker margin-r-5"></i> Nomor Telepon</strong>
+                    <strong><i class="fa fa-phone margin-r-5"></i> Nomor Telepon</strong>
 
                     <p class="text-muted">{{ $user->nomor_telepon }}</p>
 
                     <hr>
 
-                    <strong><i class="fa fa-map-marker margin-r-5"></i> Email</strong>
+                    <strong><i class="fa fa-envelope margin-r-5"></i> Email</strong>
 
                     <p class="text-muted">{{ $user->email }}</p>
 

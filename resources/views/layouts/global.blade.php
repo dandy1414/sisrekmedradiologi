@@ -391,7 +391,6 @@
         //     GFG.style.width = (currWidth + 100) + "px";
         //     GFG.style.height = (currHeight + 100) + "px";
         // }
-
     </script>
 </body>
 

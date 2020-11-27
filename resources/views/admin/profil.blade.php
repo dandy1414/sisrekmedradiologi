@@ -17,49 +17,52 @@
             <div class="box box-primary">
                 <div class="box-body box-profile">
                     @if ($user->avatar == null)
-                    <img class="profile-user-img img-responsive img-circle" src="{{ asset('adminlte/dist/img/avatar1.png') }}" alt="User profile picture">
+                    <img class="profile-user-img img-responsive img-circle"
+                        src="{{ asset('adminlte/dist/img/avatar1.png') }}" alt="User profile picture">
                     @else
-                    <img class="profile-user-img img-responsive img-circle" src="{{ asset('storage/avatars/'.$user->avatar) }}" alt="User profile picture">
+                    <img class="profile-user-img img-responsive img-circle"
+                        src="{{ asset('storage/avatars/'.$user->avatar) }}" alt="User profile picture">
                     @endif
-                  <h3 class="profile-username text-center">{{ $user->nama }}</h3>
+                    <h3 class="profile-username text-center">{{ $user->nama }}</h3>
 
-                  <p class="text-muted text-center">
-                    Administrator
-                  </p>
+                    <p class="text-muted text-center">
+                        Administrator
+                    </p>
 
-                  <hr>
+                    <hr>
 
-              <strong><i class="fa fa-book margin-r-5"></i> NIP</strong>
+                    <strong><i class="fa fa-book margin-r-5"></i> NIP</strong>
 
-              <p class="text-muted">
-                {{ $user->nip }}
-              </p>
+                    <p class="text-muted">
+                        {{ $user->nip }}
+                    </p>
 
-              <hr>
+                    <hr>
 
-              <strong><i class="fa fa-map-marker margin-r-5"></i> Nomor Telepon</strong>
+                    <strong><i class="fa fa-phone margin-r-5"></i> Nomor Telepon</strong>
 
-              <p class="text-muted">{{ $user->nomor_telepon }}</p>
+                    <p class="text-muted">{{ $user->nomor_telepon }}</p>
 
-              <hr>
+                    <hr>
 
-              <strong><i class="fa fa-map-marker margin-r-5"></i> Email</strong>
+                    <strong><i class="fa fa-envelope margin-r-5"></i> Email</strong>
 
-              <p class="text-muted">{{ $user->email }}</p>
+                    <p class="text-muted">{{ $user->email }}</p>
 
-              <hr>
+                    <hr>
 
-              <strong><i class="fa fa-map-marker margin-r-5"></i> Alamat</strong>
+                    <strong><i class="fa fa-map-marker margin-r-5"></i> Alamat</strong>
 
-              <p class="text-muted">{{ $user->alamat }}</p>
+                    <p class="text-muted">{{ $user->alamat }}</p>
 
                 </div>
                 <!-- /.box-body -->
-              </div>
+            </div>
         </div>
 
         <div class="col-md-8">
-            <form method="POST" action="{{ route('profil.update.pegawai', ['id' => $user->id]) }}" enctype="multipart/form-data">
+            <form method="POST" action="{{ route('profil.update.pegawai', ['id' => $user->id]) }}"
+                enctype="multipart/form-data">
                 @csrf
 
                 {{ method_field('PUT') }}
@@ -94,7 +97,8 @@
 
                                 <div class="form-group {{ $errors->first('password') ? "has-error": "" }}">
                                     <label>Password Baru :</label>
-                                    <input type="password" name="password" class="form-control" placeholder="Password ...">
+                                    <input type="password" name="password" class="form-control"
+                                        placeholder="Password ...">
                                     <span class="help-block">{{ $errors->first('password') }}</span>
                                 </div>
 
@@ -142,7 +146,9 @@
 
                                 <div class="form-group {{ $errors->first('avatar') ? "has-error": "" }}">
                                     <label for="foto">Avatar</label>
-                                    <input id="avatar" class="form-control {{$errors->first('avatar') ? "is-invalid" : ""}}" name="avatar" type="file" id="foto">
+                                    <input id="avatar"
+                                        class="form-control {{$errors->first('avatar') ? "is-invalid" : ""}}"
+                                        name="avatar" type="file" id="foto">
                                     <span class="help-block">{{ $errors->first('avatar') }}</span>
                                 </div>
                             </div>
@@ -162,17 +168,21 @@
 @push('scripts')
 @if (Session::has('store_succeed'))
 <script>
-swal('Berhasil', '{!! Session::get('store_succeed') !!}', 'success',{
-    button:'OK',
-});
+    swal('Berhasil', '{!! Session::get('
+        store_succeed ') !!}', 'success', {
+            button: 'OK',
+        });
+
 </script>
 @endif
 
 @if (Session::has('store_failed'))
 <script>
-swal('Gagal', '{!! Session::get('store_failed') !!}', 'error',{
-    button:'OK',
-});
+    swal('Gagal', '{!! Session::get('
+        store_failed ') !!}', 'error', {
+            button: 'OK',
+        });
+
 </script>
 @endif
 @endpush
