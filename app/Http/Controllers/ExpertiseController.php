@@ -110,7 +110,7 @@ class ExpertiseController extends Controller
         }
         catch(QueryException $x){
             DB::rollBack();
-            dd($x->getMessage());
+            // dd($x->getMessage());
             Session::flash('store_failed', 'Expertise gagal tersimpan');
             return redirect()->route('dokterRadiologi.pasien.expertise-pasien');
         }
@@ -135,7 +135,7 @@ class ExpertiseController extends Controller
             return redirect()->route('dokterRadiologi.pasien.index-pemeriksaan');
         }catch (QueryException $x){
             DB::rollBack();
-            dd($x->getMessage());
+            // dd($x->getMessage());
             Session::flash('upload_failed', 'Upload hasil expertise gagal');
             return view('hasilExpertise.hasil_expertise', compact('upload_expertise'));
         }

@@ -90,7 +90,7 @@ class RujukanController extends Controller
         } catch (QueryException $x)
         {
             DB::rollBack();
-            dd($x->getMessage());
+            // dd($x->getMessage());
             Session::flash('store_failed', 'Data pasien gagal tersimpan');
             return redirect()->route('dokterPoli.pasien.create-pasien');
         }
@@ -141,7 +141,7 @@ class RujukanController extends Controller
         } catch (QueryException $x)
         {
             DB::rollBack();
-            dd($x->getMessage());
+            // dd($x->getMessage());
             Session::flash('update_failed', 'Data pasien gagal tersimpan');
             return redirect()->route('dokterPoli.pasien.edit-pasien')->with(['error' => 'Pasien gagal diedit']);
         }
@@ -238,7 +238,7 @@ class RujukanController extends Controller
                 return redirect()->route('dokterPoli.pasien.index-rujuk');
             }catch (QueryException $x){
                 DB::rollBack();
-                dd($x->getMessage());
+                // dd($x->getMessage());
                 Session::flash('store_failed', 'Rujukan pasien gagal tersimpan');
                 return redirect()->route('dokterPoli.pasien.rujuk-pasien');
             }
@@ -284,7 +284,7 @@ class RujukanController extends Controller
                 return view('suratRujukan.surat_rujukan', compact('pendaftaran'));
             }catch (QueryException $x){
                 DB::rollBack();
-                dd($x->getMessage());
+                // dd($x->getMessage());
                 Session::flash('store_failed', 'Rujukan pasien gagal tersimpan');
                 return redirect()->route('dokterPoli.pasien.rujuk-pasien');
             }
@@ -310,7 +310,7 @@ class RujukanController extends Controller
             return redirect()->route('dokterPoli.pasien.index-rujuk');
         }catch (QueryException $x){
             DB::rollBack();
-            dd($x->getMessage());
+            // dd($x->getMessage());
             Session::flash('upload_failed', 'Upload surat gagal');
             return view('suratRujukan.surat_rujukan', compact('pendaftaran'));
         }

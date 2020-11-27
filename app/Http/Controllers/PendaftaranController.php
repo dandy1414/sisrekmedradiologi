@@ -116,7 +116,7 @@ class PendaftaranController extends Controller
         } catch (QueryException $x)
         {
             DB::rollBack();
-            dd($x->getMessage());
+            // dd($x->getMessage());
             Session::flash('store_failed', 'Data pasien gagal tersimpan');
             return redirect()->route('resepsionis.pasien.create.pasien-umum');
         }
@@ -158,7 +158,7 @@ class PendaftaranController extends Controller
         } catch (QueryException $x)
         {
             DB::rollBack();
-            dd($x->getMessage());
+            // dd($x->getMessage());
             Session::flash('store_failed', 'Data pasien gagal tersimpan');
             return redirect()->route('resepsionis.pasien.create.pasien-rs');
         }
@@ -218,7 +218,7 @@ class PendaftaranController extends Controller
         } catch (QueryException $x)
         {
             DB::rollBack();
-            dd($x->getMessage());
+            // dd($x->getMessage());
             Session::flash('update_failed', 'Data pasien gagal terubah');
             return redirect()->route('resepsionis.pasien.edit-pasien-umum');
         }
@@ -262,7 +262,7 @@ class PendaftaranController extends Controller
         } catch (QueryException $x)
         {
             DB::rollBack();
-            dd($x->getMessage());
+            // dd($x->getMessage());
             Session::flash('update_failed', 'Data pasien gagal terubah');
             return redirect()->route('resepsionis.pasien.edit-pasien-rs');
         }
@@ -349,7 +349,7 @@ class PendaftaranController extends Controller
                 return redirect()->route('resepsionis.pasien.index.pendaftaran');
             }catch (QueryException $x){
                 DB::rollBack();
-                dd($x->getMessage());
+                // dd($x->getMessage());
                 Session::flash('store_failed', 'Pendaftaran gagal tersimpan');
                 return redirect()->route('resepsionis.pasien.pendaftaran.pasien-umum');
             }
@@ -395,7 +395,7 @@ class PendaftaranController extends Controller
                 return view('suratRujukan.surat_rujukan', compact('pendaftaran'));
             }catch (QueryException $x){
                 DB::rollBack();
-                dd($x->getMessage());
+                // dd($x->getMessage());
                 Session::flash('store_failed', 'Pendaftaran gagal tersimpan');
                 return redirect()->route('resepsionis.pasien.pendaftaran.pasien-umum');
             }
@@ -450,7 +450,7 @@ class PendaftaranController extends Controller
                 return redirect()->route('resepsionis.pasien.index.pendaftaran');
             }catch (QueryException $x){
                 DB::rollBack();
-                dd($x->getMessage());
+                // dd($x->getMessage());
                 Session::flash('store_failed', 'Pendaftaran gagal tersimpan');
                 return redirect()->route('resepsionis.pasien.pendaftaran.pasien-umum');
             }
@@ -497,7 +497,7 @@ class PendaftaranController extends Controller
                 return view('suratRujukan.surat_rujukan', compact('pendaftaran'));
             }catch (QueryException $x){
                 DB::rollBack();
-                dd($x->getMessage());
+                // dd($x->getMessage());
                 Session::flash('store_failed', 'Pendaftaran gagal tersimpan');
                 return redirect()->route('resepsionis.pasien.pendaftaran.pasien-umum');
             }
@@ -523,7 +523,7 @@ class PendaftaranController extends Controller
             return redirect()->route('resepsionis.pasien.index.pendaftaran');
         }catch (QueryException $x){
             DB::rollBack();
-            dd($x->getMessage());
+            // dd($x->getMessage());
             Session::flash('upload_failed', 'Upload surat gagal');
             return view('suratRujukan.surat_rujukan', compact('pendaftaran'));
         }

@@ -36,6 +36,8 @@ Route::group(['prefix' => 'admin', 'middleware' => 'role.admin'], function () {
     Route::get('/user/index/dokter', 'UserController@indexDokter')->name('dokter.index');
     Route::get('/user/index/pegawai', 'UserController@indexPegawai')->name('pegawai.index');
 
+    Route::get('{id}/user/detail', 'UserController@detailUser')->name('user.detail');
+
     Route::get('{id}/detail/profil', 'UserController@profil')->name('profil.show');
     Route::put('/{id}/update/profil', 'UserController@updateProfilPegawai')->name('profil.update.pegawai');
 

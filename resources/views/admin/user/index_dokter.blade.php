@@ -61,39 +61,7 @@
                                     @endif
                                 </td>
                                 <td>
-                                    @if ($user->spesialis == 'umum')
-                                    Dokter Umum
-                                    @endif
-                                    @if ($user->spesialis == 'obgyn')
-                                    Spesialis Obgyn
-                                    @endif
-                                    @if ($user->spesialis == 'syaraf')
-                                    Spesialis Syaraf
-                                    @endif
-                                    @if ($user->spesialis == 'jiwa')
-                                    Spesialis Jiwa
-                                    @endif
-                                    @if ($user->spesialis == 'gigi')
-                                    Dokter Gigi
-                                    @endif
-                                    @if ($user->spesialis == 'penyakit_dalam')
-                                    Spesialis Penyakit Dalam
-                                    @endif
-                                    @if ($user->spesialis == 'penyakit_mulut')
-                                    Spesialis Penyakit Mulut
-                                    @endif
-                                    @if ($user->spesialis == 'anak')
-                                    Spesialis Anak
-                                    @endif
-                                    @if ($user->spesialis == 'mata')
-                                    Spesialis Mata
-                                    @endif
-                                    @if ($user->spesialis == 'anasthesi')
-                                    Spesialis Anasthesi
-                                    @endif
-                                    @if ($user->spesialis == 'radiologi')
-                                    Dokter Radiologi
-                                    @endif
+                                    {{ Str::replaceArray('_', [' '], ucfirst($user->spesialis)) }}
                                 </td>
                                 <td>{{ ucfirst($user->jenis_kelamin) }}</td>
                                 <td>{{ ucfirst($user->alamat) }}</td>
@@ -106,7 +74,7 @@
                                                 <span class="fa fa-caret-down"></span>
                                             </button>
                                             <ul class="dropdown-menu">
-                                                <li><a href="#">Detail Dokter</a></li>
+                                                <li><a href="{{ route('user.detail', ['id' => $user->id]) }}">Detail Dokter</a></li>
                                                 <li><a href="{{ route('dokter.edit',
                                                     ['id'=>$user->id]) }}">Edit Dokter</a></li>
                                                 <li><a class="delete-confirmation" href="{{ route('user.delete',

@@ -92,7 +92,7 @@
                                                 <span class="fa fa-caret-down"></span>
                                             </button>
                                             <ul class="dropdown-menu">
-                                                <li><a href="#">Detail Pegawai</a></li>
+                                                <li><a href="{{ route('user.detail', ['id' => $user->id]) }}">Detail Pegawai</a></li>
                                                 <li><a href="{{ route('pegawai.edit',
                                                     ['id'=>$user->id]) }}">Edit Pegawai</a></li>
                                                 <li><a class="delete-confirmation" href="{{ route('user.delete',

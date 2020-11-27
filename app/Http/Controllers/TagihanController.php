@@ -86,7 +86,7 @@ class TagihanController extends Controller
             return view('kasir.detail_pembayaran', ['tagihan'=>$tagihan, 'tarif'=>$tarif]);
         } catch(QueryException $x) {
             DB::rollBack();
-            dd($x->getMessage());
+            // dd($x->getMessage());
             Session::flash('store_failed', 'Pembayaran gagal tersimpan');
             return redirect()->route('kasir.pasien.pembayaran-pasien');
         }

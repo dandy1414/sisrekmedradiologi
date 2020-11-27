@@ -113,7 +113,7 @@ class PasienController extends Controller
     } catch (QueryException $x)
     {
         DB::rollBack();
-        dd($x->getMessage());
+        // dd($x->getMessage());
         Session::flash('store_failed', 'Data pasien gagal tersimpan');
         return redirect()->route('pasien.create.pasien-umum');
     }
@@ -155,7 +155,7 @@ class PasienController extends Controller
         } catch (QueryException $x)
         {
             DB::rollBack();
-            dd($x->getMessage());
+            // dd($x->getMessage());
             Session::flash('store_failed', 'Data pasien gagal tersimpan');
             return redirect()->route('pasien.create.pasien-rs');
         }
@@ -219,7 +219,7 @@ class PasienController extends Controller
         } catch (QueryException $x)
         {
             DB::rollBack();
-            dd($x->getMessage());
+            // dd($x->getMessage());
             Session::flash('update_failed', 'Data pasien gagal terubah');
             return redirect()->route('pasien.edit-pasien-umum');
         }
@@ -264,7 +264,7 @@ class PasienController extends Controller
         } catch (QueryException $x)
         {
             DB::rollBack();
-            dd($x->getMessage());
+            // dd($x->getMessage());
             Session::flash('update_failed', 'Data pasien gagal terubah');
             return redirect()->route('pasien.edit-pasien-rs');
         }

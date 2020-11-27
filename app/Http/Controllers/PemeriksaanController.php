@@ -85,7 +85,7 @@ class PemeriksaanController extends Controller
             return redirect()->route('radiografer.pasien.index-pemeriksaan');
         }catch (QueryException $x){
             DB::rollBack();
-            dd($x->getMessage());
+            // dd($x->getMessage());
             Session::flash('upload_failed', 'Upload hasil expertise gagal');
             return view('hasilExpertise.hasil_expertise', compact('upload_expertise'));
         }
@@ -184,7 +184,7 @@ class PemeriksaanController extends Controller
             } catch (QueryException $x)
             {
                 DB::rollBack();
-                dd($x->getMessage());
+                // dd($x->getMessage());
                 Session::flash('store_failed', 'Pemeriksaan gagal tersimpan');
                 return redirect()->route('radiografer.pasien.pemeriksaan-pasien');
             }
@@ -243,7 +243,7 @@ class PemeriksaanController extends Controller
             } catch (QueryException $x)
             {
                 DB::rollBack();
-                dd($x->getMessage());
+                // dd($x->getMessage());
                 Session::flash('store_failed', 'Pemeriksaan gagal tersimpan');
                 return redirect()->route('radiografer.pasien.pemeriksaan-pasien');
             }

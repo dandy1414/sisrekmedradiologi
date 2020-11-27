@@ -145,7 +145,7 @@ class UserController extends Controller
         } catch (QueryException $x)
         {
             DB::rollBack();
-            dd($x->getMessage());
+            // dd($x->getMessage());
             switch ($user->role) {
                 case 'admin':
                     Session::flash('store_failed', 'Profil gagal terubah');
@@ -225,7 +225,7 @@ class UserController extends Controller
         } catch (QueryException $x)
         {
             DB::rollBack();
-            dd($x->getMessage());
+            // dd($x->getMessage());
             switch ($user->role) {
                 case 'dokterPoli':
                     Session::flash('store_failed', 'Profil gagal terubah');
@@ -255,6 +255,17 @@ class UserController extends Controller
         ])->orderBy('created_at', 'desc')->get();
 
         return view('admin.user.index_pegawai', ['users'=> $users]);
+    }
+
+    public function detailUser($id){
+        $user = User::findOrFail($id);
+        $pendaftaran = Pendaftaran::where('id_resepsionis', $id)->get();
+        $rujukan = Pendaftaran::where('id_dokterPoli', $id)->get();
+        $pemeriksaan_dokter = Pemeriksaan::where('id_dokterRadiologi', $id)->get();
+        $pemeriksaan_radiografer = Pemeriksaan::where('id_radiografer', $id)->get();
+        $tagihan = Tagihan::where('id_kasir', $id)->get();
+
+        return view('admin.user.detail_user', ['user'=> $user, 'pendaftaran' => $pendaftaran, 'rujukan' => $rujukan, 'pemeriksaan_dokter'  => $pemeriksaan_dokter, 'pemerikasan_radiografer' => $pemeriksaan_radiografer , 'tagihan' => $tagihan]);
     }
 
     public function createDokter(){
@@ -309,7 +320,7 @@ class UserController extends Controller
         } catch (QueryException $x)
         {
             DB::rollBack();
-            dd($x->getMessage());
+            // dd($x->getMessage());
             Session::flash('store_failed', 'Data dokter gagal tersimpan');
             return redirect()->route('dokter.create');
         }
@@ -359,7 +370,7 @@ class UserController extends Controller
         } catch (QueryException $x)
         {
             DB::rollBack();
-            dd($x->getMessage());
+            // dd($x->getMessage());
             Session::flash('store_failed', 'Data pegawai gagal tersimpan');
             return redirect()->route('pegawai.create');
         }
@@ -418,14 +429,14 @@ class UserController extends Controller
             $user->save();
 
             DB::commit();
-            if($user->hasChanged() == true){
+            if($user->wasChanged() == true){
                 Session::flash('update_succeed', 'Data dokter berhasil terubah');
             }
             return redirect()->route('dokter.index');
         } catch (QueryException $x)
         {
             DB::rollBack();
-            dd($x->getMessage());
+            // dd($x->getMessage());
             Session::flash('update_failed', 'Data dokter gagal terubah');
             return redirect()->route('dokter.edit');
         }
@@ -471,14 +482,14 @@ class UserController extends Controller
             $user->save();
 
             DB::commit();
-            if($user->hasChanged() == true){
-                Session::flash('update_succeed', 'Data dokter berhasil terubah');
+            if($user->wasChanged() == true){
+                Session::flash('update_succeed', 'Data pegawai berhasil terubah');
             }
             return redirect()->route('pegawai.index');
         } catch (QueryException $x)
         {
             DB::rollBack();
-            dd($x->getMessage());
+            // dd($x->getMessage());
             Session::flash('update_failed', 'Data pegawai gagal terubah');
             return redirect()->route('pegawai.edit');
         }

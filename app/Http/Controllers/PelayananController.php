@@ -24,8 +24,6 @@ class PelayananController extends Controller
         $kategori = Kategori::all();
         $film = Film::all();
 
-        // dd($layanan->id_kategori);
-
         return view('admin.pelayanan.index_pelayanan', ['jadwal'=> $jadwal, 'layanan' => $layanan, 'film' => $film, 'kategori' => $kategori]);
     }
 
@@ -45,7 +43,7 @@ class PelayananController extends Controller
         } catch (QueryException $x)
         {
             DB::rollBack();
-            dd($x->getMessage());
+            // dd($x->getMessage());
             Session::flash('store_layanan_failed', 'Data layanan gagal tersimpan');
             return redirect()->route('pelayanan.index');
         }
@@ -67,7 +65,7 @@ class PelayananController extends Controller
         } catch (QueryException $x)
         {
             DB::rollBack();
-            dd($x->getMessage());
+            // dd($x->getMessage());
             Session::flash('store_film_failed', 'Data film gagal tersimpan');
             return redirect()->route('pelayanan.index');
         }
@@ -93,7 +91,7 @@ class PelayananController extends Controller
             return redirect()->route('pelayanan.index');
         } catch(QueryException $x){
             DB::rollBack();
-            dd($x->getMessage());
+            // dd($x->getMessage());
             Session::flash('update_layanan_failed', 'Data layanan gagal terubah');
             return redirect()->route('pelayanan.index');
         }
@@ -118,7 +116,7 @@ class PelayananController extends Controller
             return redirect()->route('pelayanan.index');
         } catch(QueryException $x){
             DB::rollBack();
-            dd($x->getMessage());
+            // dd($x->getMessage());
             Session::flash('update_film_failed', 'Data film gagal terubah');
             return redirect()->route('pelayanan.index');
         }
