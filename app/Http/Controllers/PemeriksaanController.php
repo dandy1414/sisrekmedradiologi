@@ -54,10 +54,9 @@ class PemeriksaanController extends Controller
     }
 
     public function indexPemeriksaan(){
-        $tgl_hari_ini = date('Y-m-d').'%';
-        $total_belum = Pemeriksaan::where('status_pemeriksaan', 'belum')->where('created_at', 'like', $tgl_hari_ini)->count();
-        $total_pending = Pemeriksaan::where('status_pemeriksaan', 'pending')->where('updated_at', 'like', $tgl_hari_ini)->count();
-        $total_selesai = Pemeriksaan::where('status_pemeriksaan', 'selesai')->where('updated_at', 'like', $tgl_hari_ini)->count();
+        $total_belum = Pemeriksaan::where('status_pemeriksaan', 'belum')->count();
+        $total_pending = Pemeriksaan::where('status_pemeriksaan', 'pending')->count();
+        $total_selesai = Pemeriksaan::where('status_pemeriksaan', 'selesai')->count();
 
         $belum = Pemeriksaan::where('status_pemeriksaan', 'belum')->orderBy('created_at', 'desc')->get();
         $pending = Pemeriksaan::where('status_pemeriksaan', 'pending')->orderBy('created_at', 'desc')->get();

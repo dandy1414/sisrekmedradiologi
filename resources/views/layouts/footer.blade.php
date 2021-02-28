@@ -1,7 +1,6 @@
 <footer class="main-footer">
     <div class="pull-right hidden-xs">
-      <b>Version</b> 2.4.0
+      <b>2020</b>
     </div>
-    <strong>Copyright &copy; 2014-2016 <a href="https://adminlte.io"></a>.</strong> All rights
-    reserved.
+    <strong>Sistem Rekam Medis Radiologi Rumah Sakit Umum Banjar Patroman</strong>
   </footer>

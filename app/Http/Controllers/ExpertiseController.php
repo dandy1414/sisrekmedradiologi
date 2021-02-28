@@ -53,7 +53,7 @@ class ExpertiseController extends Controller
 
     public function indexPemeriksaan(){
         $tgl_hari_ini = date('Y-m-d').'%';
-        $total_belum = Pemeriksaan::where('status_pemeriksaan', 'pending')->where('updated_at', 'like', $tgl_hari_ini)->count();
+        $total_belum = Pemeriksaan::where('status_pemeriksaan', 'pending')->count();
         $total_selesai = Pemeriksaan::where('expertise_pdf', '>', '0')->where('updated_at', 'like', $tgl_hari_ini)->count();
 
         $id_dokterRadiologi = Auth::user()->id;
