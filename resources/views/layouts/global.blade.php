@@ -375,22 +375,6 @@
                 }
             })
         })
-
-        // function zoomin() {
-        //     var GFG = document.getElementById("imagepreview");
-        //     var currWidth = GFG.clientWidth;
-        //     var currHeight = GFG.clientHeight;
-        //     GFG.style.width = (currWidth + 100) + "px";
-        //     GFG.style.height = (currHeight + 100) + "px";
-        // }
-
-        // function zoomout() {
-        //     var GFG = document.getElementById("imagepreview");
-        //     var currWidth = GFG.clientWidth;
-        //     var currHeight = GFG.clientHeight;
-        //     GFG.style.width = (currWidth + 100) + "px";
-        //     GFG.style.height = (currHeight + 100) + "px";
-        // }
     </script>
 </body>
 
