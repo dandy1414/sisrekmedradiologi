@@ -47,7 +47,7 @@ class TagihanController extends Controller
 
     public function indexTagihan(){
         $tgl_hari_ini = date('Y-m-d').'%';
-        $total_belum = Tagihan::where('status_pembayaran', 'belum')->where('created_at', 'like', $tgl_hari_ini)->count();
+        $total_belum = Tagihan::where('status_pembayaran', 'belum')->count();
         $total_sudah = Tagihan::where('status_pembayaran', 'sudah')->where('updated_at', 'like', $tgl_hari_ini)->count();
 
         $belum = Tagihan::where('status_pembayaran', 'belum')->orderBy('created_at', 'desc')->get();

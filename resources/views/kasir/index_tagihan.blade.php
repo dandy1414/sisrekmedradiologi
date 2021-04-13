@@ -59,7 +59,7 @@
                 <div class="inner">
                     <h3>{{ $total_sudah }}</h3>
 
-                    <p>Pasien sudah bayar</p>
+                    <p>Pasien sudah bayar hari ini</p>
                 </div>
                 <div class="icon">
                     <i class="ion ion-person"></i>
